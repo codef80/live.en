@@ -13,6 +13,292 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <link href="assets/css/styles.css" rel="stylesheet">
+
+  <style>
+    .home-hero{
+      padding: 120px 0 72px;
+      position: relative;
+      overflow: hidden;
+    }
+    .home-hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at top right, rgba(251,199,13,.18), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(250,235,180,.40), transparent 20%);
+      pointer-events:none;
+    }
+    .home-wrap{ position:relative; z-index:1; }
+
+    .hero-panel{
+      background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.96));
+      border: 1px solid rgba(251,199,13,.22);
+      border-radius: 34px;
+      box-shadow: 0 24px 60px rgba(88,89,91,.14);
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-panel::after{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      left:-70px;
+      bottom:-70px;
+      background: rgba(251,199,13,.12);
+    }
+
+    .home-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:999px;
+      background: rgba(251,199,13,.12);
+      border:1px solid rgba(251,199,13,.22);
+      color:#7b5f00;
+      font-weight:800;
+      margin-bottom:18px;
+    }
+
+    .home-title{
+      font-size: clamp(2.2rem, 4vw, 4.2rem);
+      line-height:1.15;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:18px;
+    }
+
+    .home-desc{
+      color:#6c6d72;
+      font-size:1.08rem;
+      line-height:2;
+      margin-bottom:26px;
+      max-width:720px;
+    }
+
+    .home-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:24px;
+    }
+
+    .hero-media-box{
+      background:#fff;
+      border:1px solid rgba(239,231,207,.95);
+      border-radius:28px;
+      min-height:420px;
+      box-shadow:0 18px 36px rgba(88,89,91,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-media-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(251,199,13,.06), rgba(255,255,255,.02));
+      pointer-events:none;
+    }
+
+    .hero-media-inner{
+      position:relative;
+      z-index:1;
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#7a7b7f;
+      font-weight:700;
+      line-height:2;
+    }
+
+    .section-head{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:end;
+      gap:16px;
+      margin-bottom:26px;
+    }
+
+    .section-title-home{
+      font-size:2rem;
+      font-weight:900;
+      color:#58595b;
+      margin:0;
+    }
+
+    .section-note-home{
+      color:#7a7b7f;
+      margin:0;
+    }
+
+    .package-card-home,
+    .year-card-home{
+      background:rgba(255,255,255,.98);
+      border:1px solid #efe7cf;
+      border-radius:28px;
+      box-shadow:0 12px 28px rgba(88,89,91,.08);
+      height:100%;
+      overflow:hidden;
+      transition:.28s ease;
+    }
+
+    .package-card-home:hover,
+    .year-card-home:hover{
+      transform:translateY(-8px);
+      box-shadow:0 22px 42px rgba(88,89,91,.14);
+    }
+
+    .package-cover{
+      width:100%;
+      aspect-ratio: 16/11;
+      object-fit:cover;
+      background:#f7f1df;
+      display:block;
+    }
+
+    .package-body-home,
+    .year-body-home{
+      padding:22px;
+    }
+
+    .package-title-home,
+    .year-title-home{
+      font-size:1.18rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:10px;
+    }
+
+    .package-desc-home,
+    .year-desc-home{
+      color:#6f7075;
+      line-height:1.9;
+      margin-bottom:16px;
+    }
+
+    .package-price-home{
+      font-size:1.4rem;
+      font-weight:900;
+      color:#58595b;
+    }
+
+    .year-topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .year-badge-home{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(251,199,13,.14);
+      color:#8a6900;
+      font-weight:800;
+      font-size:.92rem;
+    }
+
+    .quick-links-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .quick-link-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.96));
+      border:1px solid #efe7cf;
+      border-radius:28px;
+      padding:24px;
+      box-shadow:0 12px 28px rgba(88,89,91,.08);
+      transition:.28s ease;
+      height:100%;
+    }
+
+    .quick-link-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 22px 42px rgba(88,89,91,.14);
+    }
+
+    .quick-link-icon{
+      width:64px;
+      height:64px;
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(251,199,13,.18), rgba(251,199,13,.34));
+      color:#58595b;
+      font-size:1.5rem;
+      margin-bottom:16px;
+    }
+
+    .quick-link-title{
+      font-size:1.18rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:10px;
+    }
+
+    .quick-link-text{
+      color:#6f7075;
+      line-height:1.9;
+      margin-bottom:18px;
+    }
+
+    .footer-clean{
+      background:linear-gradient(135deg, #58595b, #4a4b4e);
+      color:#fff;
+      padding:28px 0;
+      margin-top:72px;
+    }
+
+    .footer-social{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+    }
+
+    .footer-social a{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      transition:.28s ease;
+    }
+
+    .footer-social a:hover{
+      background:#fbc70d;
+      color:#58595b;
+      transform:translateY(-3px);
+    }
+
+    @media (max-width: 991.98px){
+      .home-hero{ padding-top:105px; }
+      .quick-links-grid{ grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
 
@@ -29,11 +315,10 @@
 
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto mb-3 mb-lg-0 align-items-lg-center gap-lg-2">
-          <li class="nav-item"><a class="nav-link" href="#about">عن البرنامج</a></li>
-          <li class="nav-item"><a class="nav-link" href="#features">المزايا</a></li>
-          <li class="nav-item"><a class="nav-link" href="#packages">الباقات</a></li>
-          <li class="nav-item"><a class="nav-link" href="#years">عبر السنوات</a></li>
-          <li class="nav-item"><a class="nav-link" href="register.html">التسجيل</a></li>
+          <li class="nav-item"><a class="nav-link" href="#packagesSection">الباقات</a></li>
+          <li class="nav-item"><a class="nav-link" href="#yearsSection">عبر السنوات</a></li>
+          <li class="nav-item"><a class="nav-link" href="track.html">متابعة الطلب</a></li>
+          <li class="nav-item"><a class="nav-link" href="staff-login.html">دخول العاملين</a></li>
         </ul>
 
         <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3">
@@ -41,122 +326,54 @@
             <i class="fa-solid fa-pen-to-square"></i>
             ابدأ التسجيل
           </a>
-          <a href="track.html" class="btn btn-le-outline">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            متابعة الطلب
-          </a>
         </div>
       </div>
     </div>
   </nav>
 
-  <section class="hero-section">
-    <div class="hero-blur one"></div>
-    <div class="hero-blur two"></div>
-
-    <div class="container hero-wrap">
-      <div class="row align-items-center g-4">
+  <section class="home-hero">
+    <div class="container home-wrap">
+      <div class="row g-4 align-items-center">
         <div class="col-lg-7">
-          <div class="hero-chip">
-            <i class="fa-solid fa-star"></i>
-            برنامج صيفي نوعي لتعلم اللغة الإنجليزية
-          </div>
-
-          <h1 class="hero-title">
-            انطلاقة تعليمية
-            <span class="accent">فاخرة</span>
-            لأبناء Live English
-          </h1>
-
-          <p class="hero-desc">
-            منصة متكاملة لبرنامج Live English، تجمع بين التسجيل السلس، المتابعة الذكية،
-            عرض الباقات، واستعراض البرنامج عبر السنوات، بهوية حديثة وتجربة عربية راقية
-            ومتجاوبة بالكامل على الجوال والكمبيوتر.
-          </p>
-
-          <div class="d-flex flex-column flex-sm-row gap-3">
-            <a href="register.html" class="btn btn-le btn-lg">
-              <i class="fa-solid fa-arrow-left-long"></i>
-              ابدأ التسجيل الآن
-            </a>
-            <a href="#about" class="btn btn-le-dark btn-lg">
-              <i class="fa-solid fa-circle-play"></i>
-              تعرّف على البرنامج
-            </a>
-          </div>
-
-          <div class="row g-3 mt-4">
-            <div class="col-sm-4">
-              <div class="kpi-card">
-                <div class="kpi-label">بوابات رئيسية</div>
-                <div class="kpi-value">6</div>
-                <div class="kpi-note">تجربة متكاملة ومنظمة</div>
-                <i class="fa-solid fa-grid-2 bg-icon-float"></i>
-              </div>
+          <div class="hero-panel">
+            <div class="home-badge">
+              <i class="fa-solid fa-star"></i>
+              التسجيل مفتوح الآن
             </div>
-            <div class="col-sm-4">
-              <div class="kpi-card">
-                <div class="kpi-label">تجربة متجاوبة</div>
-                <div class="kpi-value">100%</div>
-                <div class="kpi-note">مهيأة للجوال والكمبيوتر</div>
-                <i class="fa-solid fa-mobile-screen-button bg-icon-float"></i>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="kpi-card">
-                <div class="kpi-label">إدارة احترافية</div>
-                <div class="kpi-value">Smart</div>
-                <div class="kpi-note">سداد، قبول، متابعة</div>
-                <i class="fa-solid fa-chart-line bg-icon-float"></i>
-              </div>
+
+            <h1 class="home-title">Live English</h1>
+
+            <p class="home-desc">
+              برنامج صيفي لتعلّم اللغة الإنجليزية، بتجربة تسجيل منظمة، متابعة واضحة، وعرض أنيق للباقات
+              ومحتوى البرنامج عبر السنوات، ضمن واجهة عربية راقية ومباشرة.
+            </p>
+
+            <div class="home-actions">
+              <a href="register.html" class="btn btn-le btn-lg">
+                <i class="fa-solid fa-arrow-left-long"></i>
+                التسجيل الآن
+              </a>
+              <a href="track.html" class="btn btn-le-dark btn-lg">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                متابعة الطلب
+              </a>
+              <a href="staff-login.html" class="btn btn-le-outline btn-lg">
+                <i class="fa-solid fa-user-shield"></i>
+                دخول العاملين
+              </a>
             </div>
           </div>
         </div>
 
         <div class="col-lg-5">
-          <div class="hero-card">
-            <span class="badge-soft mb-3">
-              <i class="fa-solid fa-shield-heart"></i>
-              تسجيل منظم • متابعة واضحة • إدارة سريعة
-            </span>
-
-            <h3 class="card-title-le mb-2">رحلة الطالب من التسجيل إلى القبول</h3>
-            <p class="card-text-le mb-4">
-              تم تصميم المنصة لتجعل رحلة التسجيل والقبول أكثر وضوحًا، مع حفظ الملفات،
-              متابعة الحالة، وإدارة الطلبات والسداد باحتراف.
-            </p>
-
-            <div class="timeline-line">
-              <div class="timeline-item">
-                <div class="timeline-title">التسجيل متعدد الخطوات</div>
-                <div class="timeline-text">إدخال البيانات ورفع الجواز والفيديو التعريفي بسهولة.</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-title">المراجعة والقبول الأولي</div>
-                <div class="timeline-text">فريق العمل يراجع الطلب ويتخذ القرار بشكل منظم.</div>
-              </div>
-              <div class="timeline-item mb-0">
-                <div class="timeline-title">السداد والانضمام</div>
-                <div class="timeline-text">متابعة السداد والحالة حتى اكتمال التسجيل وبدء الرحلة التعليمية.</div>
-              </div>
-            </div>
-
-            <div class="hero-stat-grid">
-              <div class="hero-stat">
-                <div class="label">نمط الواجهة</div>
-                <div class="value">RTL</div>
-              </div>
-              <div class="hero-stat">
-                <div class="label">طريقة الربط</div>
-                <div class="value">Fetch</div>
-              </div>
-              <div class="hero-stat">
-                <div class="label">التخزين</div>
-                <div class="value">Sheets</div>
-              </div>
-              <div class="hero-stat">
-                <div class="label">المرفقات</div>
-                <div class="value">Drive</div>
+          <div class="hero-media-box">
+            <div class="hero-media-inner">
+              <div>
+                <div style="font-size:3rem;color:#fbc70d;margin-bottom:12px;">
+                  <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <div>يمكنك لاحقًا استبدال هذه المساحة</div>
+                <div>بصورة رئيسية أو فيديو تعريفي للبرنامج</div>
               </div>
             </div>
           </div>
@@ -165,121 +382,39 @@
     </div>
   </section>
 
-  <section id="about" class="section-padding">
+  <section id="packagesSection" class="section-padding">
     <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="section-title">عن البرنامج</h2>
-        <p class="section-subtitle mx-auto">
-          Live English برنامج صيفي لتعلم اللغة الإنجليزية تحت إشراف نخبة من التربويين المتخصصين،
-          ويهدف إلى بناء تجربة تعليمية ثرية تجمع بين المحتوى النوعي، البيئة الجاذبة، والمتابعة الاحترافية.
-        </p>
-      </div>
-
-      <div class="row g-4">
-        <div class="col-md-6 col-xl-3">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-user-graduate"></i></div>
-            <h3 class="card-title-le">فئات عمرية واضحة</h3>
-            <p class="card-text-le">تقسيم مناسب بين فئة الشبال وفئة القادة بما يخدم النمو العمري والتعليمي لكل مشارك.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-earth-europe"></i></div>
-            <h3 class="card-title-le">طابع دولي</h3>
-            <p class="card-text-le">تجربة تعليمية تحمل إشرافًا تربويًا متخصصًا وتوجهًا حديثًا في تعليم الإنجليزية.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-laptop-file"></i></div>
-            <h3 class="card-title-le">تسجيل منظم</h3>
-            <p class="card-text-le">نموذج متعدد الخطوات يسهّل الإدخال ويرفع جودة البيانات ويقلل الأخطاء.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-            <h3 class="card-title-le">متابعة وإدارة</h3>
-            <p class="card-text-le">قبول، سداد، خط زمني للحالة، وتقارير تساعد الإدارة وولي الأمر معًا.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="features" class="section-padding soft-section">
-    <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="section-title">لماذا هذه المنصة مميزة؟</h2>
-        <p class="section-subtitle mx-auto">
-          ليست مجرد صفحة تسجيل، بل منظومة متكاملة تمنح الإدارة وولي الأمر والطالب تجربة واضحة ومريحة.
-        </p>
-      </div>
-
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-          <div class="step-card">
-            <div class="step-icon"><i class="fa-solid fa-layer-group"></i></div>
-            <h3 class="card-title-le">بوابات منظمة</h3>
-            <p class="card-text-le">تنظيم واضح بين التسجيل، المتابعة، الباقات، السنوات، العاملين، والإعدادات.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="step-card">
-            <div class="step-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-            <h3 class="card-title-le">رفع مرفقات آمن</h3>
-            <p class="card-text-le">الجواز والفيديو التعريفي يرفعان بطريقة منظمة إلى Google Drive عبر النظام.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="step-card">
-            <div class="step-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-            <h3 class="card-title-le">خط زمني للحالة</h3>
-            <p class="card-text-le">ولي الأمر يتابع تطور الطلب من الاستلام حتى اكتمال التسجيل بخطوات واضحة.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="packages" class="section-padding">
-    <div class="container">
-      <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-lg-between gap-3 mb-5">
+      <div class="section-head">
         <div>
-          <h2 class="section-title mb-2">الباقات</h2>
-          <p class="section-subtitle mb-0">قسم جاهز للربط المباشر مع بيانات الباقات من النظام.</p>
+          <h2 class="section-title-home">الباقات</h2>
+          <p class="section-note-home">اختر الباقة المناسبة وابدأ التسجيل مباشرة.</p>
         </div>
-        <a href="register.html" class="btn btn-le">
-          <i class="fa-solid fa-bolt"></i>
-          التسجيل في الباقة المناسبة
+        <a href="register.html" class="btn btn-le-outline">
+          <i class="fa-solid fa-arrow-left-long"></i>
+          الانتقال إلى التسجيل
         </a>
       </div>
 
       <div class="row g-4" id="packagesContainer">
-        <div class="col-md-6 col-lg-4">
-          <div class="package-card">
-            <div class="empty-box">سيتم تحميل الباقات من النظام هنا.</div>
-          </div>
+        <div class="col-12">
+          <div class="empty-box">جاري تحميل الباقات...</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="years" class="section-padding soft-section">
+  <section id="yearsSection" class="section-padding soft-section">
     <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="section-title">Live English عبر السنوات</h2>
-        <p class="section-subtitle mx-auto">
-          مساحة أنيقة لعرض مسيرة البرنامج سنويًا، من خلال الصور، الفيديوهات، والإنجازات البارزة.
-        </p>
+      <div class="section-head">
+        <div>
+          <h2 class="section-title-home">Live English عبر السنوات</h2>
+          <p class="section-note-home">استعراض السنوات السابقة والأنشطة والمحتوى المرتبط بها.</p>
+        </div>
       </div>
 
       <div class="row g-4" id="yearsContainer">
-        <div class="col-md-6 col-lg-3">
-          <div class="year-card">
-            <div class="empty-box">سيتم تحميل السنوات من النظام هنا.</div>
-          </div>
+        <div class="col-12">
+          <div class="empty-box">جاري تحميل السنوات...</div>
         </div>
       </div>
     </div>
@@ -287,57 +422,53 @@
 
   <section class="section-padding">
     <div class="container">
-      <div class="row g-4 align-items-center">
-        <div class="col-lg-6">
-          <div class="info-card">
-            <span class="badge-soft mb-3">
-              <i class="fa-solid fa-circle-check"></i>
-              بوابة التسجيل
-            </span>
-            <h3 class="card-title-le">ابدأ الآن بخطوات واضحة وسلسة</h3>
-            <p class="card-text-le mb-4">
-              نموذج تسجيل متعدد الخطوات، برفع مرفقات منظم، ورسالة نجاح واضحة بعد الإرسال.
-            </p>
-            <a href="register.html" class="btn btn-le">
-              <i class="fa-solid fa-arrow-left-long"></i>
-              الانتقال إلى التسجيل
-            </a>
-          </div>
+      <div class="quick-links-grid">
+        <div class="quick-link-card">
+          <div class="quick-link-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+          <div class="quick-link-title">بوابة التسجيل</div>
+          <div class="quick-link-text">ابدأ التسجيل عبر نموذج متعدد الخطوات، مع رفع الجواز والفيديو التعريفي بسهولة.</div>
+          <a href="register.html" class="btn btn-le">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            التسجيل
+          </a>
         </div>
 
-        <div class="col-lg-6">
-          <div class="info-card">
-            <span class="badge-soft mb-3">
-              <i class="fa-solid fa-binoculars"></i>
-              بوابة المتابعة
-            </span>
-            <h3 class="card-title-le">تابع حالة الطلب بسهولة</h3>
-            <p class="card-text-le mb-4">
-              من خلال هوية الطالب أو ولي الأمر، يمكن الوصول إلى حالة الطلب والخط الزمني والملاحظات العامة.
-            </p>
-            <a href="track.html" class="btn btn-le-dark">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              متابعة الطلب
-            </a>
-          </div>
+        <div class="quick-link-card">
+          <div class="quick-link-icon"><i class="fa-solid fa-timeline"></i></div>
+          <div class="quick-link-title">متابعة الطلب</div>
+          <div class="quick-link-text">ابحث بهوية الطالب أو ولي الأمر واطلع على حالة الطلب والخط الزمني والملاحظات.</div>
+          <a href="track.html" class="btn btn-le-dark">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            متابعة الطلب
+          </a>
+        </div>
+
+        <div class="quick-link-card">
+          <div class="quick-link-icon"><i class="fa-solid fa-user-lock"></i></div>
+          <div class="quick-link-title">دخول العاملين</div>
+          <div class="quick-link-text">دخول مخصص للعاملين للوصول إلى لوحة الإدارة ومراجعة الطلبات والمتابعة الداخلية.</div>
+          <a href="staff-login.html" class="btn btn-le-outline">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            دخول العاملين
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="footer-le">
+  <footer class="footer-clean">
     <div class="container">
       <div class="row g-4 align-items-center">
         <div class="col-lg-6">
-          <h5 class="mb-2 fw-bold">Live English</h5>
-          <div class="text-white-50">منصة عربية حديثة لإدارة التسجيل والقبول والمتابعة.</div>
+          <div class="fw-bold mb-1">Live English</div>
+          <div class="text-white-50">جميع الحقوق محفوظة</div>
         </div>
         <div class="col-lg-6">
-          <div class="d-flex justify-content-lg-end flex-wrap gap-2">
-            <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
-            <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#" class="social-btn"><i class="fa-brands fa-snapchat"></i></a>
+          <div class="footer-social">
+            <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
           </div>
         </div>
       </div>
@@ -357,38 +488,37 @@
         renderYears(data.years || []);
       } catch (e) {
         console.error(e);
+        document.getElementById('packagesContainer').innerHTML = '<div class="col-12"><div class="empty-box">تعذر تحميل الباقات.</div></div>';
+        document.getElementById('yearsContainer').innerHTML = '<div class="col-12"><div class="empty-box">تعذر تحميل السنوات.</div></div>';
       }
+    }
+
+    function safeImg(url, text) {
+      return url || `https://placehold.co/900x620/f8f1db/58595b?text=${encodeURIComponent(text || 'Live English')}`;
     }
 
     function renderPackages(items) {
       const container = document.getElementById('packagesContainer');
+
       if (!items.length) {
-        container.innerHTML = `
-          <div class="col-12">
-            <div class="empty-box">لا توجد باقات مفعلة حاليًا.</div>
-          </div>
-        `;
+        container.innerHTML = '<div class="col-12"><div class="empty-box">لا توجد باقات مفعلة حاليًا.</div></div>';
         return;
       }
 
       container.innerHTML = items.map(item => `
-        <div class="col-md-6 col-lg-4">
-          <div class="package-card">
-            <img class="package-image" src="${item.imageUrl || 'https://placehold.co/800x500/f7f1de/58595b?text=Live+English'}" alt="${item.title}">
-            <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
-              <h3 class="card-title-le mb-0">${item.title || ''}</h3>
-              <span class="package-badge">
-                <i class="fa-solid fa-gem"></i>
-                باقة
-              </span>
-            </div>
-            <p class="card-text-le mb-3">${item.description || ''}</p>
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-              <div class="package-price">${Number(item.price || 0).toLocaleString('en-US')} ر.س</div>
-              <a href="register.html" class="btn btn-le ${item.registerEnabled ? '' : 'disabled'}">
-                <i class="fa-solid fa-arrow-left-long"></i>
-                ابدأ التسجيل
-              </a>
+        <div class="col-md-6 col-xl-4">
+          <div class="package-card-home">
+            <img class="package-cover" src="${safeImg(item.imageUrl, item.title)}" alt="${escapeHtml(item.title || '')}">
+            <div class="package-body-home">
+              <div class="package-title-home">${escapeHtml(item.title || '')}</div>
+              <div class="package-desc-home">${escapeHtml(item.description || '')}</div>
+              <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                <div class="package-price-home">${Number(item.price || 0).toLocaleString('en-US')} ر.س</div>
+                <a href="register.html" class="btn btn-le ${item.registerEnabled ? '' : 'disabled'}">
+                  <i class="fa-solid fa-arrow-left-long"></i>
+                  التسجيل
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -397,37 +527,41 @@
 
     function renderYears(items) {
       const container = document.getElementById('yearsContainer');
+
       if (!items.length) {
-        container.innerHTML = `
-          <div class="col-12">
-            <div class="empty-box">لا توجد سنوات مفعلة حاليًا.</div>
-          </div>
-        `;
+        container.innerHTML = '<div class="col-12"><div class="empty-box">لا توجد سنوات مفعلة حاليًا.</div></div>';
         return;
       }
 
       container.innerHTML = items.map(item => `
-        <div class="col-md-6 col-lg-3">
-          <div class="year-card">
-            <div class="package-badge mb-3">
-              <i class="fa-solid fa-calendar-days"></i>
-              ${item.year || ''}
-            </div>
-            <h3 class="card-title-le">${item.title || ('Live English ' + item.year)}</h3>
-            <p class="card-text-le mb-3">${item.description || ''}</p>
-            <div class="summary-card">
-              <div class="summary-item">
-                <div class="summary-key">عدد المشاركين</div>
-                <div class="summary-value">${item.participants || '-'}</div>
+        <div class="col-md-6 col-xl-3">
+          <div class="year-card-home">
+            <div class="year-body-home">
+              <div class="year-topline">
+                <span class="year-badge-home">
+                  <i class="fa-solid fa-calendar-days"></i>
+                  ${escapeHtml(item.year || '')}
+                </span>
               </div>
-              <div class="summary-item">
-                <div class="summary-key">أبرز الأنشطة</div>
-                <div class="summary-value">${item.activities || '-'}</div>
-              </div>
+              <div class="year-title-home">${escapeHtml(item.title || ('Live English ' + item.year))}</div>
+              <div class="year-desc-home">${escapeHtml(item.description || '')}</div>
+              <a href="years.html" class="btn btn-le-outline w-100">
+                <i class="fa-solid fa-images"></i>
+                عرض السنة
+              </a>
             </div>
           </div>
         </div>
       `).join('');
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     loadHomeData();
