@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live English | عبر السنوات</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root{
+      --le-primary:#fbc70d;
+      --le-primary-soft:#fde08a;
+      --le-primary-pale:#fff8e1;
+      --le-dark:#58595b;
+      --le-dark-2:#3f4042;
+      --le-gray:#8b8c90;
+      --le-bg:#f3f4f6;
+      --le-white:#ffffff;
+      --le-border:#ececec;
+      --le-shadow:0 10px 30px rgba(0,0,0,.08);
+      --le-shadow-hover:0 18px 40px rgba(0,0,0,.14);
+      --le-radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:'Tajawal',sans-serif;
+      background:linear-gradient(180deg,#fffdf7 0%, #f7f8fa 35%, #f3f4f6 100%);
+      color:var(--le-dark);
+      scroll-behavior:smooth;
+    }
+
+    a{text-decoration:none}
+
+    .topbar{
+      background:rgba(255,255,255,.86);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(0,0,0,.06);
+      position:sticky;
+      top:0;
+      z-index:1030;
+    }
+
+    .brand-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-logo{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--le-primary),#ffd84c);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--le-dark-2);
+      box-shadow:0 8px 22px rgba(251,199,13,.35);
+      font-size:1.15rem;
+    }
+
+    .brand-text h1{
+      font-size:1.12rem;
+      margin:0;
+      font-weight:900;
+      color:var(--le-dark-2);
+    }
+
+    .brand-text p{
+      margin:2px 0 0;
+      font-size:.82rem;
+      color:var(--le-gray);
+      font-weight:500;
+    }
+
+    .nav-link-custom{
+      color:var(--le-dark);
+      font-weight:700;
+      padding:.8rem 1rem;
+      border-radius:14px;
+      transition:.25s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .nav-link-custom:hover,
+    .nav-link-custom.active{
+      background:var(--le-primary-pale);
+      color:var(--le-dark-2);
+    }
+
+    .hero-section{
+      position:relative;
+      overflow:hidden;
+      padding:42px 0 24px;
+    }
+
+    .hero-card{
+      position:relative;
+      background:
+        radial-gradient(circle at top right, rgba(251,199,13,.22), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #fffaf0 58%, #fffef9 100%);
+      border:1px solid rgba(251,199,13,.18);
+      border-radius:32px;
+      box-shadow:var(--le-shadow);
+      padding:32px;
+      overflow:hidden;
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      left:-80px;
+      bottom:-80px;
+      width:240px;
+      height:240px;
+      background:radial-gradient(circle, rgba(251,199,13,.16), transparent 70%);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--le-primary-pale);
+      color:var(--le-dark-2);
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:.9rem;
+      font-weight:800;
+      margin-bottom:16px;
+    }
+
+    .hero-title{
+      font-size:clamp(1.8rem,4vw,3rem);
+      font-weight:900;
+      color:var(--le-dark-2);
+      line-height:1.4;
+      margin-bottom:12px;
+    }
+
+    .hero-text{
+      color:#666;
+      font-size:1.02rem;
+      line-height:2;
+      margin-bottom:20px;
+      max-width:850px;
+    }
+
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .mini-stat{
+      background:#fff;
+      border:1px solid var(--le-border);
+      border-radius:20px;
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      min-height:96px;
+    }
+
+    .mini-stat .label{
+      font-size:.9rem;
+      color:var(--le-gray);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .mini-stat .value{
+      font-size:1.4rem;
+      font-weight:900;
+      color:var(--le-dark-2);
+    }
+
+    .mini-stat i{
+      position:absolute;
+      left:14px;
+      bottom:10px;
+      font-size:2rem;
+      color:rgba(251,199,13,.25);
+    }
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .section-title h2{
+      margin:0;
+      font-size:1.45rem;
+      font-weight:900;
+      color:var(--le-dark-2);
+    }
+
+    .section-title p{
+      margin:6px 0 0;
+      color:var(--le-gray);
+      font-weight:500;
+    }
+
+    .filter-box{
+      background:#fff;
+      border:1px solid var(--le-border);
+      border-radius:18px;
+      padding:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      box-shadow:0 4px 18px rgba(0,0,0,.04);
+    }
+
+    .filter-chip{
+      border:none;
+      background:#f7f7f7;
+      color:var(--le-dark);
+      padding:10px 16px;
+      border-radius:999px;
+      font-weight:800;
+      transition:.25s ease;
+    }
+
+    .filter-chip.active,
+    .filter-chip:hover{
+      background:var(--le-primary);
+      color:var(--le-dark-2);
+      box-shadow:0 10px 20px rgba(251,199,13,.24);
+    }
+
+    .kpi-card{
+      position:relative;
+      background:var(--le-white);
+      border:1px solid var(--le-border);
+      border-radius:var(--le-radius);
+      box-shadow:var(--le-shadow);
+      transition:all .28s ease;
+      overflow:hidden;
+    }
+
+    .kpi-card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--le-shadow-hover);
+    }
+
+    .bg-icon-float{
+      position:absolute;
+      left:18px;
+      top:18px;
+      font-size:3.4rem;
+      color:rgba(251,199,13,.14);
+      transition:all .28s ease;
+      pointer-events:none;
+    }
+
+    .kpi-card:hover .bg-icon-float{
+      transform:scale(1.12) translateY(-3px);
+      color:rgba(251,199,13,.22);
+    }
+
+    .year-card{
+      height:100%;
+      padding:22px;
+      cursor:pointer;
+    }
+
+    .year-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--le-primary-pale);
+      color:var(--le-dark-2);
+      font-weight:800;
+      font-size:.9rem;
+      margin-bottom:14px;
+    }
+
+    .year-title{
+      font-size:1.45rem;
+      font-weight:900;
+      color:var(--le-dark-2);
+      margin-bottom:8px;
+    }
+
+    .year-desc{
+      color:#666;
+      line-height:1.9;
+      min-height:62px;
+      margin-bottom:18px;
+    }
+
+    .year-meta{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    .year-meta .meta-box{
+      background:#fafafa;
+      border:1px solid #f0f0f0;
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .meta-box .meta-label{
+      font-size:.84rem;
+      color:var(--le-gray);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .meta-box .meta-value{
+      font-size:1.02rem;
+      color:var(--le-dark-2);
+      font-weight:900;
+    }
+
+    .year-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn-le-primary{
+      background:linear-gradient(135deg,var(--le-primary),#ffd84c);
+      color:var(--le-dark-2);
+      border:none;
+      border-radius:14px;
+      padding:11px 18px;
+      font-weight:900;
+      transition:.25s ease;
+    }
+
+    .btn-le-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 24px rgba(251,199,13,.26);
+      color:var(--le-dark-2);
+    }
+
+    .btn-le-outline{
+      background:#fff;
+      color:var(--le-dark-2);
+      border:1px solid #e7e7e7;
+      border-radius:14px;
+      padding:11px 18px;
+      font-weight:800;
+      transition:.25s ease;
+    }
+
+    .btn-le-outline:hover{
+      background:#fafafa;
+      color:var(--le-dark-2);
+      transform:translateY(-2px);
+    }
+
+    .details-panel{
+      display:none;
+      margin-top:28px;
+    }
+
+    .details-panel.show{
+      display:block;
+      animation:fadeUp .35s ease;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(12px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .details-card{
+      padding:24px;
+    }
+
+    .details-head{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+    }
+
+    .details-head h3{
+      font-size:1.8rem;
+      font-weight:900;
+      color:var(--le-dark-2);
+      margin-bottom:8px;
+    }
+
+    .details-head p{
+      margin:0;
+      color:#666;
+      line-height:2;
+    }
+
+    .details-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:20px;
+    }
+
+    .content-box,
+    .side-box{
+      background:#fff;
+      border:1px solid var(--le-border);
+      border-radius:22px;
+      padding:20px;
+      height:100%;
+    }
+
+    .sub-title{
+      font-size:1.1rem;
+      font-weight:900;
+      color:var(--le-dark-2);
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:14px;
+    }
+
+    .gallery-item{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      background:#f5f5f5;
+      min-height:180px;
+      cursor:pointer;
+      border:1px solid #f0f0f0;
+    }
+
+    .gallery-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform .35s ease;
+    }
+
+    .gallery-item:hover img{
+      transform:scale(1.05);
+    }
+
+    .gallery-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,transparent 0%, rgba(0,0,0,.45) 100%);
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      padding:12px;
+      color:#fff;
+      font-weight:800;
+      opacity:0;
+      transition:.25s ease;
+    }
+
+    .gallery-item:hover .gallery-overlay{
+      opacity:1;
+    }
+
+    .video-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:16px;
+    }
+
+    .video-wrap{
+      position:relative;
+      width:100%;
+      padding-top:56.25%;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid #eee;
+      background:#000;
+    }
+
+    .video-wrap iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    .activity-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+
+    .activity-item{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      background:#fafafa;
+      border:1px solid #f0f0f0;
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .activity-item i{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--le-primary-pale);
+      color:var(--le-dark-2);
+      flex-shrink:0;
+    }
+
+    .empty-state{
+      background:#fff;
+      border:1px dashed #ddd;
+      border-radius:24px;
+      padding:40px 20px;
+      text-align:center;
+      color:var(--le-gray);
+      box-shadow:0 8px 24px rgba(0,0,0,.03);
+    }
+
+    .empty-state i{
+      font-size:2.4rem;
+      margin-bottom:12px;
+      color:#d6d6d6;
+    }
+
+    .footer{
+      margin-top:46px;
+      background:#fff;
+      border-top:1px solid rgba(0,0,0,.06);
+      padding:22px 0;
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .footer-note{
+      color:var(--le-gray);
+      font-weight:600;
+    }
+
+    .social-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .social-links a{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fafafa;
+      border:1px solid #eee;
+      color:var(--le-dark-2);
+      transition:.25s ease;
+    }
+
+    .social-links a:hover{
+      background:var(--le-primary-pale);
+      transform:translateY(-2px);
+    }
+
+    .loading-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding:40px 0;
+      color:var(--le-gray);
+      font-weight:700;
+    }
+
+    .skeleton{
+      position:relative;
+      overflow:hidden;
+      background:#f1f1f1;
+    }
+
+    .skeleton::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      transform:translateX(-100%);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
+      animation:shine 1.3s infinite;
+    }
+
+    @keyframes shine{
+      100%{transform:translateX(100%)}
+    }
+
+    .skeleton-card{
+      border-radius:22px;
+      min-height:280px;
+    }
+
+    .lightbox-img{
+      width:100%;
+      max-height:80vh;
+      object-fit:contain;
+      border-radius:18px;
+      background:#fafafa;
+    }
+
+    @media (max-width: 991.98px){
+      .details-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-card{
+        padding:24px;
+        border-radius:26px;
+      }
+    }
+
+    @media (max-width: 767.98px){
+      .hero-section{
+        padding-top:24px;
+      }
+
+      .hero-card{
+        padding:20px;
+      }
+
+      .year-meta{
+        grid-template-columns:1fr;
+      }
+
+      .section-title{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .brand-text h1{
+        font-size:1rem;
+      }
+
+      .brand-logo{
+        width:42px;
+        height:42px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container py-3">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="brand-wrap">
+          <div class="brand-logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h1>Live English</h1>
+            <p>بوابة البرنامج عبر السنوات</p>
+          </div>
+        </div>
+
+        <nav class="d-flex flex-wrap gap-2">
+          <a class="nav-link-custom" href="index.html"><i class="fa-solid fa-house"></i> الرئيسية</a>
+          <a class="nav-link-custom" href="register.html"><i class="fa-solid fa-user-plus"></i> التسجيل</a>
+          <a class="nav-link-custom" href="track.html"><i class="fa-solid fa-magnifying-glass-chart"></i> متابعة الطلب</a>
+          <a class="nav-link-custom" href="packages.html"><i class="fa-solid fa-layer-group"></i> الفئات</a>
+          <a class="nav-link-custom active" href="years.html"><i class="fa-solid fa-timeline"></i> عبر السنوات</a>
+          <a class="nav-link-custom" href="staff-login.html"><i class="fa-solid fa-user-shield"></i> العاملين</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-card">
+          <div class="eyebrow">
+            <i class="fa-solid fa-star"></i>
+            <span>منجزات Live English</span>
+          </div>
+
+          <h2 class="hero-title">رحلة البرنامج عبر السنوات بصورة أنيقة وواضحة</h2>
+          <p class="hero-text">
+            استعرض أبرز أعوام البرنامج، الصور والأنشطة والفيديوهات والإنجازات، ضمن تجربة عربية عصرية
+            ومتجاوبة بالكامل، مع عرض سريع ومريح على الجوال والكمبيوتر.
+          </p>
+
+          <div class="hero-stats" id="heroStats">
+            <div class="mini-stat">
+              <div class="label">عدد السنوات</div>
+              <div class="value" id="statYears">0</div>
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="mini-stat">
+              <div class="label">إجمالي المشاركين</div>
+              <div class="value" id="statParticipants">0</div>
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="mini-stat">
+              <div class="label">إجمالي الصور</div>
+              <div class="value" id="statImages">0</div>
+              <i class="fa-solid fa-images"></i>
+            </div>
+            <div class="mini-stat">
+              <div class="label">إجمالي الفيديوهات</div>
+              <div class="value" id="statVideos">0</div>
+              <i class="fa-solid fa-circle-play"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-4">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>الأعوام المتاحة</h2>
+            <p>اختر أي سنة لعرض الصور والفيديوهات والإنجازات الخاصة بها.</p>
+          </div>
+
+          <div class="filter-box" id="yearsFilterBox">
+            <button class="filter-chip active" data-filter="all">الكل</button>
+          </div>
+        </div>
+
+        <div id="yearsLoading" class="loading-wrap">
+          <div class="spinner-border spinner-border-sm text-dark" role="status"></div>
+          <span>جارِ تحميل السنوات...</span>
+        </div>
+
+        <div class="row g-4" id="yearsGrid" style="display:none;"></div>
+
+        <div class="details-panel" id="detailsPanel">
+          <div class="kpi-card details-card">
+            <i class="fa-solid fa-photo-film bg-icon-float"></i>
+
+            <div class="details-head">
+              <div>
+                <h3 id="detailsTitle">تفاصيل السنة</h3>
+                <p id="detailsDescription">سيظهر هنا وصف السنة المحددة.</p>
+              </div>
+
+              <div class="d-flex gap-2 flex-wrap">
+                <button class="btn-le-outline" id="btnScrollGallery">
+                  <i class="fa-solid fa-images me-1"></i>
+                  معرض الصور
+                </button>
+                <button class="btn-le-primary" id="btnScrollVideos">
+                  <i class="fa-solid fa-circle-play me-1"></i>
+                  الفيديوهات
+                </button>
+              </div>
+            </div>
+
+            <div class="details-grid">
+              <div class="content-box">
+                <div class="sub-title" id="galleryAnchor">
+                  <i class="fa-solid fa-images"></i>
+                  <span>معرض الصور</span>
+                </div>
+                <div class="gallery-grid" id="galleryGrid"></div>
+
+                <div class="sub-title mt-4" id="videosAnchor">
+                  <i class="fa-solid fa-circle-play"></i>
+                  <span>فيديوهات السنة</span>
+                </div>
+                <div class="video-grid" id="videosGrid"></div>
+              </div>
+
+              <div class="side-box">
+                <div class="sub-title">
+                  <i class="fa-solid fa-chart-line"></i>
+                  <span>ملخص السنة</span>
+                </div>
+
+                <div class="year-meta mb-3">
+                  <div class="meta-box">
+                    <div class="meta-label">السنة</div>
+                    <div class="meta-value" id="summaryYear">-</div>
+                  </div>
+                  <div class="meta-box">
+                    <div class="meta-label">عدد المشاركين</div>
+                    <div class="meta-value" id="summaryParticipants">0</div>
+                  </div>
+                  <div class="meta-box">
+                    <div class="meta-label">عدد الصور</div>
+                    <div class="meta-value" id="summaryImages">0</div>
+                  </div>
+                  <div class="meta-box">
+                    <div class="meta-label">عدد الفيديوهات</div>
+                    <div class="meta-value" id="summaryVideos">0</div>
+                  </div>
+                </div>
+
+                <div class="sub-title">
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>أبرز الأنشطة</span>
+                </div>
+                <ul class="activity-list" id="activitiesList"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state mt-4 d-none" id="emptyState">
+          <i class="fa-regular fa-folder-open"></i>
+          <h5 class="fw-bold mb-2">لا توجد سنوات متاحة حاليًا</h5>
+          <p class="mb-0">يمكن إضافة السنوات لاحقًا من لوحة الإدارة لتظهر هنا تلقائيًا.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-note">
+          © <span id="currentYear"></span> Live English — جميع الحقوق محفوظة
+        </div>
+
+        <div class="social-links" id="socialLinks">
+          <a href="#" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" target="_blank" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 rounded-4">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="imageModalTitle">عرض الصورة</h5>
+          <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <img id="imageModalPreview" class="lightbox-img" src="" alt="صورة السنة">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.APP_CONFIG = window.APP_CONFIG || {
+      API_URL: '',
+      APP_NAME: 'Live English',
+      SOCIAL: {
+        youtube: 'https://www.youtube.com/@LiveEnglish_ksa',
+        instagram: 'https://www.instagram.com/LiveEnglish_ksa',
+        x: 'https://x.com/LiveEnglish_ksa',
+        snapchat: 'https://www.snapchat.com/add/LiveEnglish_ksa'
+      }
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const state = {
+      years: [],
+      filteredYears: [],
+      currentFilter: 'all',
+      selectedYear: null
+    };
+
+    const fallbackYears = [
+      {
+        السنة: '2026',
+        عنوان_السنة: 'Live English 2026',
+        وصف: 'عام متجدد ركّز على التجربة التعليمية المتكاملة، والأنشطة التفاعلية، وبناء الثقة في مهارات اللغة الإنجليزية.',
+        عدد_المشاركين: '120',
+        أبرز_الأنشطة: 'ورش تفاعلية|عروض تقديمية|لقاءات تربوية|أنشطة محادثة',
+        صور: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop|https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop|https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop',
+        فيديوهات: 'https://www.youtube.com/watch?v=ysz5S6PUM-U|https://www.youtube.com/watch?v=jNQXAC9IVRw',
+        ظاهر: 'نعم',
+        ترتيب: '1'
+      },
+      {
+        السنة: '2025',
+        عنوان_السنة: 'Live English 2025',
+        وصف: 'سنة تميزت بتوسّع البرنامج وزيادة المشاركة، مع إبراز جانب الأنشطة التطبيقية والمشاريع الطلابية.',
+        عدد_المشاركين: '98',
+        أبرز_الأنشطة: 'معسكر لغوي|أنشطة جماعية|برامج مهارية',
+        صور: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1200&auto=format&fit=crop|https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop',
+        فيديوهات: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+        ظاهر: 'نعم',
+        ترتيب: '2'
+      },
+      {
+        السنة: '2024',
+        عنوان_السنة: 'Live English 2024',
+        وصف: 'عام تأسيسي مهم أظهر هوية البرنامج، وركّز على الانطلاقة المنظمة وبناء التجربة الأولى للطلاب.',
+        عدد_المشاركين: '76',
+        أبرز_الأنشطة: 'تعريف بالبرنامج|جلسات تأسيسية|أنشطة تحفيزية',
+        صور: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop',
+        فيديوهات: '',
+        ظاهر: 'نعم',
+        ترتيب: '3'
+      }
+    ];
+
+    const els = {
+      yearsGrid: document.getElementById('yearsGrid'),
+      yearsLoading: document.getElementById('yearsLoading'),
+      emptyState: document.getElementById('emptyState'),
+      detailsPanel: document.getElementById('detailsPanel'),
+      detailsTitle: document.getElementById('detailsTitle'),
+      detailsDescription: document.getElementById('detailsDescription'),
+      summaryYear: document.getElementById('summaryYear'),
+      summaryParticipants: document.getElementById('summaryParticipants'),
+      summaryImages: document.getElementById('summaryImages'),
+      summaryVideos: document.getElementById('summaryVideos'),
+      activitiesList: document.getElementById('activitiesList'),
+      galleryGrid: document.getElementById('galleryGrid'),
+      videosGrid: document.getElementById('videosGrid'),
+      yearsFilterBox: document.getElementById('yearsFilterBox'),
+      statYears: document.getElementById('statYears'),
+      statParticipants: document.getElementById('statParticipants'),
+      statImages: document.getElementById('statImages'),
+      statVideos: document.getElementById('statVideos'),
+      socialLinks: document.getElementById('socialLinks'),
+      currentYear: document.getElementById('currentYear'),
+      btnScrollGallery: document.getElementById('btnScrollGallery'),
+      btnScrollVideos: document.getElementById('btnScrollVideos')
+    };
+
+    document.addEventListener('DOMContentLoaded', initPage);
+
+    async function initPage(){
+      els.currentYear.textContent = new Date().getFullYear();
+      bindStaticEvents();
+      applySocialLinks();
+      renderSkeletonCards();
+      await loadYears();
+    }
+
+    function bindStaticEvents(){
+      els.btnScrollGallery.addEventListener('click', () => {
+        document.getElementById('galleryAnchor')?.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+
+      els.btnScrollVideos.addEventListener('click', () => {
+        document.getElementById('videosAnchor')?.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+    }
+
+    function applySocialLinks(){
+      const social = (window.APP_CONFIG && window.APP_CONFIG.SOCIAL) || {};
+      const anchors = els.socialLinks.querySelectorAll('a');
+      if(anchors[0]) anchors[0].href = social.youtube || '#';
+      if(anchors[1]) anchors[1].href = social.instagram || '#';
+      if(anchors[2]) anchors[2].href = social.x || '#';
+      if(anchors[3]) anchors[3].href = social.snapchat || '#';
+    }
+
+    function renderSkeletonCards(){
+      const skeletonHtml = Array.from({length:3}).map(() => `
+        <div class="col-lg-4 col-md-6">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      `).join('');
+      els.yearsGrid.innerHTML = skeletonHtml;
+      els.yearsGrid.style.display = '';
+    }
+
+    async function loadYears(){
+      try{
+        const apiUrl = (window.APP_CONFIG && window.APP_CONFIG.API_URL) ? String(window.APP_CONFIG.API_URL).trim() : '';
+        let rows = [];
+
+        if(apiUrl){
+          const res = await fetch(`${apiUrl}?action=getYearsPublic`, {
+            method: 'GET'
+          });
+
+          if(!res.ok) throw new Error('تعذر تحميل بيانات السنوات');
+          const data = await res.json();
+          rows = Array.isArray(data?.data) ? data.data : [];
+        }else{
+          rows = fallbackYears;
+        }
+
+        state.years = normalizeYears(rows)
+          .filter(item => item.visible)
+          .sort((a,b) => (a.order - b.order) || String(b.year).localeCompare(String(a.year), 'en'));
+
+        updateHeroStats();
+        renderFilters();
+        applyFilter('all');
+        els.yearsLoading.style.display = 'none';
+      }catch(error){
+        console.error(error);
+        els.yearsLoading.style.display = 'none';
+        state.years = normalizeYears(fallbackYears).filter(item => item.visible);
+        updateHeroStats();
+        renderFilters();
+        applyFilter('all');
+
+        Swal.fire({
+          icon:'warning',
+          title:'تم عرض نسخة تجريبية',
+          text:'تعذر جلب البيانات الحية، لذلك تم عرض بيانات تجريبية مؤقتة.',
+          confirmButtonText:'حسنًا'
+        });
+      }
+    }
+
+    function normalizeYears(rows){
+      return (rows || []).map((row, index) => {
+        const year = valueOf(row, ['السنة','year']) || '';
+        const title = valueOf(row, ['عنوان_السنة','العنوان','title']) || `Live English ${year}`;
+        const desc = valueOf(row, ['وصف','الوصف','description']) || '';
+        const participants = toNumber(valueOf(row, ['عدد_المشاركين','participants']));
+        const activities = splitMulti(valueOf(row, ['أبرز_الأنشطة','activities']));
+        const images = splitMulti(valueOf(row, ['صور','images']));
+        const videos = splitMulti(valueOf(row, ['فيديوهات','videos']));
+        const visibleRaw = String(valueOf(row, ['ظاهر','visible']) || 'نعم').trim();
+        const order = toNumber(valueOf(row, ['ترتيب','order']), index + 1);
+
+        return {
+          year,
+          title,
+          description: desc,
+          participants,
+          activities,
+          images,
+          videos,
+          visible: !['لا','false','0','غير ظاهر'].includes(visibleRaw.toLowerCase()),
+          order
+        };
+      }).filter(item => item.year);
+    }
+
+    function valueOf(obj, keys){
+      for(const key of keys){
+        if(obj && Object.prototype.hasOwnProperty.call(obj, key) && obj[key] !== undefined && obj[key] !== null){
+          return obj[key];
+        }
+      }
+      return '';
+    }
+
+    function splitMulti(value){
+      return String(value || '')
+        .split('|')
+        .map(v => v.trim())
+        .filter(Boolean);
+    }
+
+    function toNumber(value, fallback = 0){
+      const n = Number(String(value ?? '').replace(/[^\d.-]/g,''));
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function updateHeroStats(){
+      const totalYears = state.years.length;
+      const totalParticipants = state.years.reduce((sum, item) => sum + item.participants, 0);
+      const totalImages = state.years.reduce((sum, item) => sum + item.images.length, 0);
+      const totalVideos = state.years.reduce((sum, item) => sum + item.videos.length, 0);
+
+      els.statYears.textContent = formatNumber(totalYears);
+      els.statParticipants.textContent = formatNumber(totalParticipants);
+      els.statImages.textContent = formatNumber(totalImages);
+      els.statVideos.textContent = formatNumber(totalVideos);
+    }
+
+    function renderFilters(){
+      const years = state.years.map(item => item.year);
+      const html = [
+        `<button class="filter-chip active" data-filter="all">الكل</button>`,
+        ...years.map(year => `<button class="filter-chip" data-filter="${escapeHtml(year)}">${escapeHtml(year)}</button>`)
+      ].join('');
+
+      els.yearsFilterBox.innerHTML = html;
+
+      els.yearsFilterBox.querySelectorAll('.filter-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          els.yearsFilterBox.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilter(btn.dataset.filter || 'all');
+        });
+      });
+    }
+
+    function applyFilter(filterValue){
+      state.currentFilter = filterValue;
+      state.filteredYears = filterValue === 'all'
+        ? [...state.years]
+        : state.years.filter(item => item.year === filterValue);
+
+      renderYearsGrid();
+
+      if(state.filteredYears.length){
+        renderYearDetails(state.filteredYears[0]);
+      }else{
+        els.detailsPanel.classList.remove('show');
+      }
+    }
+
+    function renderYearsGrid(){
+      const list = state.filteredYears || [];
+
+      if(!list.length){
+        els.yearsGrid.innerHTML = '';
+        els.yearsGrid.style.display = 'none';
+        els.emptyState.classList.remove('d-none');
+        return;
+      }
+
+      els.emptyState.classList.add('d-none');
+      els.yearsGrid.style.display = '';
+      els.yearsGrid.innerHTML = list.map(item => `
+        <div class="col-lg-4 col-md-6">
+          <div class="kpi-card year-card" data-year="${escapeHtml(item.year)}">
+            <i class="fa-solid fa-medal bg-icon-float"></i>
+
+            <div class="year-badge">
+              <i class="fa-solid fa-calendar"></i>
+              <span>${escapeHtml(item.year)}</span>
+            </div>
+
+            <div class="year-title">${escapeHtml(item.title)}</div>
+            <div class="year-desc">${escapeHtml(item.description || 'لا يوجد وصف مضاف لهذه السنة حتى الآن.')}</div>
+
+            <div class="year-meta">
+              <div class="meta-box">
+                <div class="meta-label">عدد المشاركين</div>
+                <div class="meta-value">${formatNumber(item.participants)}</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-label">عدد الصور</div>
+                <div class="meta-value">${formatNumber(item.images.length)}</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-label">عدد الفيديوهات</div>
+                <div class="meta-value">${formatNumber(item.videos.length)}</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-label">أبرز الأنشطة</div>
+                <div class="meta-value">${formatNumber(item.activities.length)}</div>
+              </div>
+            </div>
+
+            <div class="year-actions">
+              <button class="btn-le-primary flex-grow-1">
+                <i class="fa-solid fa-eye me-1"></i>
+                عرض التفاصيل
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      els.yearsGrid.querySelectorAll('.year-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const year = card.dataset.year;
+          const item = state.filteredYears.find(x => x.year === year);
+          if(item) renderYearDetails(item);
+        });
+      });
+    }
+
+    function renderYearDetails(item){
+      state.selectedYear = item;
+      els.detailsPanel.classList.add('show');
+
+      els.detailsTitle.textContent = item.title;
+      els.detailsDescription.textContent = item.description || 'لا يوجد وصف مضاف لهذه السنة.';
+      els.summaryYear.textContent = item.year;
+      els.summaryParticipants.textContent = formatNumber(item.participants);
+      els.summaryImages.textContent = formatNumber(item.images.length);
+      els.summaryVideos.textContent = formatNumber(item.videos.length);
+
+      renderActivities(item.activities);
+      renderGallery(item.images, item.title);
+      renderVideos(item.videos);
+
+      setTimeout(() => {
+        els.detailsPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 50);
+    }
+
+    function renderActivities(activities){
+      if(!activities.length){
+        els.activitiesList.innerHTML = `
+          <li class="activity-item">
+            <i class="fa-solid fa-circle-info"></i>
+            <div>
+              <div class="fw-bold mb-1">لا توجد أنشطة مضافة</div>
+              <div class="text-muted">يمكن إظهار الأنشطة لاحقًا من لوحة الإدارة.</div>
+            </div>
+          </li>
+        `;
+        return;
+      }
+
+      els.activitiesList.innerHTML = activities.map(activity => `
+        <li class="activity-item">
+          <i class="fa-solid fa-check"></i>
+          <div>
+            <div class="fw-bold">${escapeHtml(activity)}</div>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    function renderGallery(images, title){
+      if(!images.length){
+        els.galleryGrid.innerHTML = `
+          <div class="empty-state w-100">
+            <i class="fa-regular fa-image"></i>
+            <h6 class="fw-bold mb-2">لا توجد صور لهذه السنة</h6>
+            <p class="mb-0">يمكن إضافة الصور لاحقًا من لوحة الإدارة.</p>
+          </div>
+        `;
+        return;
+      }
+
+      els.galleryGrid.innerHTML = images.map((src, index) => `
+        <div class="gallery-item" data-src="${escapeHtmlAttr(src)}" data-title="${escapeHtmlAttr(title)}">
+          <img src="${escapeHtmlAttr(src)}" alt="${escapeHtmlAttr(title)}">
+          <div class="gallery-overlay">
+            <span>عرض الصورة</span>
+            <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+          </div>
+        </div>
+      `).join('');
+
+      els.galleryGrid.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => openImageModal(item.dataset.src, item.dataset.title));
+      });
+    }
+
+    function renderVideos(videos){
+      if(!videos.length){
+        els.videosGrid.innerHTML = `
+          <div class="empty-state w-100">
+            <i class="fa-regular fa-circle-play"></i>
+            <h6 class="fw-bold mb-2">لا توجد فيديوهات لهذه السنة</h6>
+            <p class="mb-0">يمكن إضافة الفيديوهات لاحقًا من لوحة الإدارة.</p>
+          </div>
+        `;
+        return;
+      }
+
+      els.videosGrid.innerHTML = videos.map(url => {
+        const embed = toYoutubeEmbed(url);
+        if(!embed) return '';
+
+        return `
+          <div class="video-wrap">
+            <iframe
+              src="${escapeHtmlAttr(embed)}"
+              title="فيديو السنة"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openImageModal(src, title){
+      document.getElementById('imageModalPreview').src = src;
+      document.getElementById('imageModalTitle').textContent = title || 'عرض الصورة';
+      const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+      modal.show();
+    }
+
+    function toYoutubeEmbed(url){
+      const value = String(url || '').trim();
+      if(!value) return '';
+
+      const shortMatch = value.match(/youtu\.be\/([a-zA-Z0-9_-]{6,})/);
+      if(shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+
+      const watchMatch = value.match(/[?&]v=([a-zA-Z0-9_-]{6,})/);
+      if(watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
+
+      const embedMatch = value.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{6,})/);
+      if(embedMatch) return value;
+
+      return '';
+    }
+
+    function formatNumber(value){
+      return new Intl.NumberFormat('en-US').format(Number(value || 0));
+    }
+
+    function escapeHtml(value){
+      return String(value ?? '')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
+    }
+
+    function escapeHtmlAttr(value){
+      return escapeHtml(value).replace(/`/g, '&#096;');
+    }
+  </script>
+</body>
+</html>
