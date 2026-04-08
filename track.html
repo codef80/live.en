@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متابعة الطلب — Live English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    body { background: linear-gradient(135deg, #fff8e1 0%, #f3f4f6 100%); min-height: 100vh; }
+    .track-header { text-align:center; padding: 32px 20px 20px; }
+    .track-container { max-width: 620px; margin: 0 auto; padding: 0 16px 48px; }
+    .search-card { background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-md); }
+    .search-tabs { display:flex; gap:8px; margin-bottom:20px; }
+    .search-tab-btn { flex:1; padding:10px; border:1.5px solid var(--border-color); border-radius:8px; font-family:'Tajawal',sans-serif; font-size:14px; font-weight:600; background:none; cursor:pointer; transition:all .2s; color:var(--text-muted); }
+    .search-tab-btn.active { background:var(--primary); border-color:var(--primary); color:var(--text-dark); }
+    .result-card { background:var(--white); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-md); margin-top:20px; display:none; }
+    .student-name { font-size:22px; font-weight:800; color:var(--text-dark); }
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
+    .info-item { background:var(--bg-light); border-radius:8px; padding:12px; }
+    .info-item .info-lbl { font-size:12px; color:var(--text-muted); }
+    .info-item .info-val { font-size:15px; font-weight:700; color:var(--text-dark); margin-top:2px; }
+    .timeline-step { display:flex; align-items:flex-start; gap:14px; padding:12px 0; }
+    .timeline-step:not(:last-child) { border-bottom:1px dashed var(--border-color); }
+    .step-dot { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-dot.done { background:var(--primary); color:var(--text-dark); }
+    .step-dot.pending { background:var(--bg-light); color:var(--text-muted); border:2px dashed var(--border-color); }
+    .step-dot.active { background:var(--secondary); color:#fff; }
+    .step-info .step-title { font-size:14px; font-weight:600; }
+    .step-info .step-date { font-size:12px; color:var(--text-muted); margin-top:2px; }
+  </style>
+</head>
+<body>
+
+<div id="global-loader">
+  <div class="spinner-le"></div>
+  <p style="color:var(--text-muted);font-size:14px;">جارٍ البحث...</p>
+</div>
+
+<div class="track-header">
+  <a href="index.html" style="text-decoration:none;">
+    <div style="font-size:22px;font-weight:800;color:var(--text-dark);">
+      Live <span style="color:var(--primary)">English</span>
+    </div>
+  </a>
+  <p style="color:var(--text-muted);margin-top:6px;">متابعة حالة الطلب</p>
+</div>
+
+<div class="track-container">
+  <div class="search-card">
+    <h5 style="margin-bottom:18px;font-size:17px;font-weight:700;">
+      <i class="fa fa-search me-2 text-primary-custom"></i>البحث عن الطلب
+    </h5>
+
+    <div class="search-tabs">
+      <button class="search-tab-btn active" onclick="switchTab('parent')">
+        <i class="fa fa-user-tie me-1"></i>هوية ولي الأمر
+      </button>
+      <button class="search-tab-btn" onclick="switchTab('son')">
+        <i class="fa fa-child me-1"></i>هوية الابن
+      </button>
+      <button class="search-tab-btn" onclick="switchTab('id')">
+        <i class="fa fa-hashtag me-1"></i>رقم الطلب
+      </button>
+    </div>
+
+    <div id="tab-parent">
+      <div class="form-group-le">
+        <label>رقم جوال ولي الأمر</label>
+        <input type="tel" class="form-control-le" id="search-parent" placeholder="05XXXXXXXX" dir="ltr" maxlength="10">
+      </div>
+    </div>
+    <div id="tab-son" style="display:none">
+      <div class="form-group-le">
+        <label>رقم جوال الابن</label>
+        <input type="tel" class="form-control-le" id="search-son" placeholder="05XXXXXXXX" dir="ltr" maxlength="10">
+      </div>
+    </div>
+    <div id="tab-id" style="display:none">
+      <div class="form-group-le">
+        <label>رقم الطلب</label>
+        <input type="text" class="form-control-le" id="search-reqid" placeholder="LE-2026-XXXX" dir="ltr">
+      </div>
+    </div>
+
+    <button class="btn-le btn-primary-le w-100 mt-2" onclick="searchStudent()">
+      <i class="fa fa-search me-2"></i>بحث
+    </button>
+  </div>
+
+  <!-- نتيجة البحث -->
+  <div class="result-card" id="result-card">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <div class="student-name" id="res-name">—</div>
+        <div style="font-size:14px;color:var(--text-muted);margin-top:4px;" id="res-category">—</div>
+      </div>
+      <div id="res-status-badge"></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-lbl">رقم الطلب</div>
+        <div class="info-val" id="res-id" dir="ltr">—</div>
+      </div>
+      <div class="info-item">
+        <div class="info-lbl">تاريخ التسجيل</div>
+        <div class="info-val" id="res-date">—</div>
+      </div>
+      <div class="info-item">
+        <div class="info-lbl">حالة السداد</div>
+        <div class="info-val" id="res-payment">—</div>
+      </div>
+      <div class="info-item">
+        <div class="info-lbl">الباقة</div>
+        <div class="info-val" id="res-package">—</div>
+      </div>
+    </div>
+
+    <!-- ملاحظات للوالد -->
+    <div id="res-notes-box" style="display:none;">
+      <div style="background:var(--primary-soft);border:1px solid var(--primary-light);border-radius:8px;padding:12px;margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">ملاحظات</div>
+        <div style="font-size:14px;" id="res-notes"></div>
+      </div>
+    </div>
+
+    <!-- رابط الفاتورة -->
+    <div id="res-invoice-box" style="display:none;margin-bottom:16px;">
+      <a id="res-invoice-link" href="#" target="_blank"
+         style="display:flex;align-items:center;gap:8px;background:var(--primary-soft);padding:12px;border-radius:8px;color:var(--text-dark);font-weight:600;font-size:14px;">
+        <i class="fa fa-file-invoice" style="color:var(--primary);font-size:20px;"></i>
+        عرض الفاتورة
+      </a>
+    </div>
+
+    <!-- الخط الزمني -->
+    <div style="margin-top:20px;">
+      <h6 style="font-size:15px;font-weight:700;margin-bottom:14px;">
+        <i class="fa fa-timeline me-2 text-primary-custom"></i>مراحل الطلب
+      </h6>
+      <div id="timeline-container"></div>
+    </div>
+  </div>
+
+  <!-- حالة عدم وجود نتائج -->
+  <div id="no-result" style="display:none;" class="card-le text-center py-4 mt-4">
+    <i class="fa fa-search" style="font-size:40px;color:var(--primary-light);margin-bottom:12px;"></i>
+    <h6>لم يُعثر على طلب</h6>
+    <p style="color:var(--text-muted);font-size:14px;">تأكد من البيانات المُدخلة وحاول مرة أخرى</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.5/sweetalert2.all.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script>
+let activeTab = 'parent';
+
+function switchTab(tab) {
+  activeTab = tab;
+  ['parent','son','id'].forEach(t => {
+    document.getElementById(`tab-${t}`).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.search-tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', ['parent','son','id'][i] === tab);
+  });
+}
+
+async function searchStudent() {
+  let query = {};
+  if (activeTab === 'parent') query.phone2 = document.getElementById('search-parent').value.trim();
+  else if (activeTab === 'son') query.phone1 = document.getElementById('search-son').value.trim();
+  else query.id = document.getElementById('search-reqid').value.trim();
+
+  const val = Object.values(query)[0];
+  if (!val) { UTILS.toast('يرجى إدخال بيانات البحث', 'warning'); return; }
+
+  UTILS.loading(true);
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('no-result').style.display   = 'none';
+
+  try {
+    let student = null;
+    if (query.id) {
+      const res = await API.getStudent(query.id);
+      if (res.success) student = res.data;
+    } else {
+      const res = await API.getStudents({ search: val });
+      if (res.success && res.data.length > 0) {
+        student = res.data.find(s =>
+          s['جوال_ولي_الامر'] === val || s['جوال_الابن'] === val
+        ) || null;
+      }
+    }
+
+    UTILS.loading(false);
+
+    if (!student) {
+      document.getElementById('no-result').style.display = 'block';
+      return;
+    }
+
+    renderResult(student);
+  } catch (err) {
+    UTILS.loading(false);
+    UTILS.toast('حدث خطأ في الاتصال، حاول مجدداً', 'error');
+  }
+}
+
+function renderResult(s) {
+  document.getElementById('res-name').textContent     = s['اسم_الطالب'] || '—';
+  document.getElementById('res-category').textContent = s['الفئة'] || '—';
+  document.getElementById('res-id').textContent       = s['رقم_الطلب'] || '—';
+  document.getElementById('res-date').textContent     = UTILS.formatDate(s['تاريخ_التسجيل']);
+  document.getElementById('res-payment').textContent  = s['حالة_السداد'] || '—';
+  document.getElementById('res-package').textContent  = s['الباقة'] || '—';
+  document.getElementById('res-status-badge').innerHTML = UTILS.badgeHtml(s['الحالة']);
+
+  // ملاحظات
+  const notesBox = document.getElementById('res-notes-box');
+  if (s['ملاحظات_داخلية']) {
+    document.getElementById('res-notes').textContent = s['ملاحظات_داخلية'];
+    notesBox.style.display = 'block';
+  } else {
+    notesBox.style.display = 'none';
+  }
+
+  // فاتورة
+  const invBox = document.getElementById('res-invoice-box');
+  if (s['رابط_الفاتورة']) {
+    document.getElementById('res-invoice-link').href = s['رابط_الفاتورة'];
+    invBox.style.display = 'block';
+  } else {
+    invBox.style.display = 'none';
+  }
+
+  // خط زمني
+  buildTimeline(s);
+
+  document.getElementById('result-card').style.display = 'block';
+  document.getElementById('result-card').scrollIntoView({ behavior: 'smooth' });
+}
+
+function buildTimeline(s) {
+  const status = s['الحالة'] || '';
+  const steps = [
+    { key: 'received',  label: 'تم استلام الطلب',        icon: 'fa-inbox' },
+    { key: 'review',    label: 'تمت المراجعة',            icon: 'fa-eye' },
+    { key: 'accepted',  label: 'القبول الأولي',           icon: 'fa-check-circle' },
+    { key: 'invoice',   label: 'تم إصدار الفاتورة',       icon: 'fa-file-invoice' },
+    { key: 'payment',   label: 'تم استلام الدفعة',        icon: 'fa-money-bill' },
+    { key: 'complete',  label: 'اكتمل التسجيل',           icon: 'fa-star' },
+  ];
+
+  const completedMap = {
+    'تسجيل أولي':                            1,
+    'تحت المراجعة':                           2,
+    'مقبول مبدئياً وبانتظار السداد':         3,
+    'سداد جزئي':                              4,
+    'مؤجل السداد':                            4,
+    'مكتمل السداد':                           5,
+    'طالب نشط':                               6,
+  };
+
+  const done = completedMap[status] || 1;
+
+  const html = steps.map((step, i) => {
+    const n = i + 1;
+    const isDone    = n <= done;
+    const isActive  = n === done;
+    const cls = isDone ? (isActive ? 'active' : 'done') : 'pending';
+    return `<div class="timeline-step">
+      <div class="step-dot ${cls}">
+        <i class="fa ${step.icon}" style="font-size:14px;"></i>
+      </div>
+      <div class="step-info">
+        <div class="step-title" style="color:${isDone ? 'var(--text-dark)' : 'var(--text-muted)'}">${step.label}</div>
+        ${isDone ? `<div class="step-date">${isActive ? 'الحالة الحالية' : '✓ مكتمل'}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('timeline-container').innerHTML = html;
+}
+
+// دعم Enter للبحث
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') searchStudent();
+});
+
+// تحقق من URL param
+const urlId = new URLSearchParams(location.search).get('id');
+if (urlId) {
+  document.getElementById('search-reqid').value = urlId;
+  switchTab('id');
+  searchStudent();
+}
+</script>
+</body>
+</html>

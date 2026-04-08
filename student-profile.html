@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بطاقة الطالب — Live English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .profile-header {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--text-dark) 100%);
+      padding: 32px 0 60px;
+      position: relative;
+    }
+    .profile-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 40px;
+      background: var(--bg-light);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .avatar-circle {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(251,199,13,.2);
+      border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .profile-name { font-size: 1.6rem; font-weight: 900; color: #fff; }
+    .profile-meta { color: rgba(255,255,255,.7); font-size: 14px; }
+    .profile-req-num { font-size: 13px; color: var(--primary); font-weight: 700; }
+
+    /* Status badge large */
+    .status-badge-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    /* Payment summary */
+    .payment-bar {
+      height: 10px;
+      border-radius: 5px;
+      background: var(--bg-light);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .payment-bar .fill {
+      height: 100%;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #28a745, #5cb85c);
+      transition: width 1s ease;
+    }
+
+    /* Timeline */
+    .profile-timeline { padding-right: 20px; border-right: 2px solid var(--border-color); }
+    .timeline-event {
+      position: relative;
+      padding-bottom: 24px;
+      padding-right: 20px;
+    }
+    .timeline-event::before {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 4px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .timeline-event.past::before { background: var(--text-muted); box-shadow: 0 0 0 2px var(--text-muted); }
+    .timeline-event .ev-time { font-size: 12px; color: var(--text-muted); }
+    .timeline-event .ev-title { font-weight: 700; font-size: 14px; }
+    .timeline-event .ev-user { font-size: 12px; color: var(--text-muted); }
+
+    /* Info grid */
+    .info-item { margin-bottom: 14px; }
+    .info-item .lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
+    .info-item .val { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+
+    /* Action buttons */
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .action-btn:hover { opacity: .88; transform: translateY(-1px); }
+    .action-btn.green  { background: #d4edda; color: #155724; }
+    .action-btn.red    { background: #f8d7da; color: #842029; }
+    .action-btn.blue   { background: #cfe2ff; color: #084298; }
+    .action-btn.yellow { background: var(--primary-soft); color: var(--secondary); }
+    .action-btn.gray   { background: #e2e3e5; color: #41464b; }
+    .action-btn.wa     { background: #d4edda; color: #155724; }
+
+    .section-title {
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--secondary);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    /* Print */
+    @media print {
+      .no-print { display: none !important; }
+      .profile-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar-le d-flex justify-content-between align-items-center no-print">
+  <div class="brand">
+    <i class="fa fa-user-circle" style="color:var(--primary)"></i>
+    بطاقة الطالب
+  </div>
+  <div class="d-flex gap-2">
+    <a href="admin.html" class="btn btn-sm btn-outline-secondary">
+      <i class="fa fa-arrow-right me-1"></i> لوحة التحكم
+    </a>
+    <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+      <i class="fa fa-print me-1"></i> طباعة
+    </button>
+  </div>
+</nav>
+
+<!-- Loading -->
+<div id="loading-screen" class="text-center py-5">
+  <div class="spinner-border text-warning mb-3" style="width:3rem;height:3rem;"></div>
+  <p class="text-muted">جارٍ تحميل بيانات الطالب...</p>
+</div>
+
+<!-- Not found -->
+<div id="not-found" class="text-center py-5" style="display:none">
+  <i class="fa fa-user-slash fa-3x text-muted mb-3"></i>
+  <h5 class="text-muted">الطالب غير موجود</h5>
+  <a href="admin.html" class="btn btn-sm btn-outline-secondary mt-2">العودة</a>
+</div>
+
+<!-- Profile -->
+<div id="profile-content" style="display:none">
+  <!-- Header -->
+  <div class="profile-header">
+    <div class="container">
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <div class="avatar-circle">
+          <i class="fa fa-user"></i>
+        </div>
+        <div>
+          <div class="profile-req-num" id="hdr-req-num">—</div>
+          <div class="profile-name" id="hdr-name">—</div>
+          <div class="profile-meta">
+            <span id="hdr-category">—</span>
+            <span class="mx-2">•</span>
+            <span id="hdr-city">—</span>
+            <span class="mx-2">•</span>
+            <span id="hdr-school">—</span>
+          </div>
+        </div>
+        <div class="me-auto">
+          <span class="status-badge-lg" id="hdr-status">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container py-4">
+    <div class="row g-4">
+
+      <!-- Right column: Info + Actions -->
+      <div class="col-lg-4">
+
+        <!-- Actions card -->
+        <div class="kpi-card mb-3 no-print" id="actions-card">
+          <div class="section-title"><i class="fa fa-bolt me-2"></i>الإجراءات السريعة</div>
+          <div class="action-grid" id="actions-grid">
+            <!-- filled dynamically -->
+          </div>
+        </div>
+
+        <!-- Payment card -->
+        <div class="kpi-card mb-3" id="payment-card" style="display:none">
+          <div class="section-title"><i class="fa fa-wallet me-2"></i>حالة السداد</div>
+          <div class="row g-2 mb-2">
+            <div class="col-4 text-center">
+              <div class="text-muted small">الإجمالي</div>
+              <div class="fw-800 text-dark" id="pay-total">—</div>
+            </div>
+            <div class="col-4 text-center">
+              <div class="text-muted small">المدفوع</div>
+              <div class="fw-800" style="color:#28a745" id="pay-paid">—</div>
+            </div>
+            <div class="col-4 text-center">
+              <div class="text-muted small">المتبقي</div>
+              <div class="fw-800 text-danger" id="pay-remaining">—</div>
+            </div>
+          </div>
+          <div class="payment-bar"><div class="fill" id="pay-bar" style="width:0%"></div></div>
+          <div class="mt-3">
+            <div class="info-item">
+              <div class="lbl">رقم الفاتورة</div>
+              <div class="val" id="pay-invoice">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student basic info -->
+        <div class="kpi-card mb-3">
+          <div class="section-title"><i class="fa fa-info-circle me-2"></i>البيانات الأساسية</div>
+          <div id="basic-info-grid">
+            <!-- filled dynamically -->
+          </div>
+        </div>
+
+      </div><!-- /left col -->
+
+      <!-- Main column -->
+      <div class="col-lg-8">
+
+        <!-- Tabs -->
+        <div class="d-flex flex-wrap gap-2 mb-4 no-print">
+          <button class="tab-pill active" onclick="switchTab('timeline',this)">
+            <i class="fa fa-clock-rotate-left me-1"></i> السجل الزمني
+          </button>
+          <button class="tab-pill" onclick="switchTab('details',this)">
+            <i class="fa fa-list me-1"></i> البيانات الكاملة
+          </button>
+          <button class="tab-pill" onclick="switchTab('attachments',this)">
+            <i class="fa fa-paperclip me-1"></i> المرفقات
+          </button>
+          <button class="tab-pill" onclick="switchTab('notes',this)">
+            <i class="fa fa-sticky-note me-1"></i> الملاحظات
+          </button>
+        </div>
+
+        <!-- Timeline tab -->
+        <div id="tab-timeline" class="kpi-card">
+          <div class="section-title"><i class="fa fa-clock-rotate-left me-2"></i>سجل الإجراءات</div>
+          <div class="profile-timeline" id="timeline-list">
+            <div class="text-center text-muted py-3">
+              <div class="spinner-border spinner-border-sm me-2"></div> جارٍ التحميل...
+            </div>
+          </div>
+        </div>
+
+        <!-- Details tab -->
+        <div id="tab-details" class="kpi-card" style="display:none">
+          <div class="section-title"><i class="fa fa-list me-2"></i>البيانات الكاملة</div>
+          <div class="row g-2" id="full-info-grid"></div>
+        </div>
+
+        <!-- Attachments tab -->
+        <div id="tab-attachments" class="kpi-card" style="display:none">
+          <div class="section-title"><i class="fa fa-paperclip me-2"></i>المرفقات</div>
+          <div id="attachments-grid">
+            <p class="text-muted small">لا توجد مرفقات مرفوعة</p>
+          </div>
+        </div>
+
+        <!-- Notes tab -->
+        <div id="tab-notes" class="kpi-card" style="display:none">
+          <div class="section-title"><i class="fa fa-sticky-note me-2"></i>الملاحظات الداخلية</div>
+          <div id="notes-list" class="mb-3"></div>
+          <div class="no-print">
+            <textarea class="form-control mb-2" id="new-note" rows="3" placeholder="أضف ملاحظة جديدة..."></textarea>
+            <button class="btn btn-sm" style="background:var(--primary);color:var(--text-dark);font-weight:700;border-radius:50px;" onclick="addNote()">
+              <i class="fa fa-plus me-1"></i> إضافة ملاحظة
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /main col -->
+    </div><!-- /row -->
+  </div><!-- /container -->
+</div><!-- /profile-content -->
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-800">تسجيل دفعة</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label fw-600 small">مبلغ الدفعة (ريال) *</label>
+            <input type="number" class="form-control" id="pay-amount" placeholder="0" min="1">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-600 small">طريقة الدفع</label>
+            <select class="form-select" id="pay-method">
+              <option>تحويل بنكي</option>
+              <option>نقدي</option>
+              <option>مدى</option>
+              <option>أبشر</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-600 small">ملاحظة</label>
+            <input type="text" class="form-control" id="pay-note" placeholder="اختياري">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-light" data-bs-dismiss="modal">إلغاء</button>
+        <button class="btn" style="background:var(--primary);color:var(--text-dark);font-weight:700;border-radius:50px;" onclick="submitPayment()">
+          <i class="fa fa-check me-1"></i> تسجيل الدفعة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.tab-pill {
+  padding: 6px 16px;
+  border-radius: 50px;
+  border: 2px solid var(--border-color);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--white);
+  color: var(--text-muted);
+  transition: .2s;
+}
+.tab-pill.active {
+  background: var(--primary);
+  color: var(--text-dark);
+  border-color: var(--primary);
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script>
+  // ── Auth ──
+  const currentUser = AUTH.getUser();
+  if (!currentUser) window.location.href = 'staff-login.html';
+
+  // ── Get student ID from URL ──
+  const params = new URLSearchParams(window.location.search);
+  const studentId = params.get('id');
+  if (!studentId) { showNotFound(); }
+  else loadStudent();
+
+  let studentData = null;
+
+  async function loadStudent() {
+    try {
+      const data = await API.get('getStudent', { id: studentId });
+      if (!data || !data.student) { showNotFound(); return; }
+      studentData = data.student;
+      renderProfile(studentData);
+      loadTimeline();
+    } catch (e) { showNotFound(); }
+  }
+
+  function showNotFound() {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('not-found').style.display = 'block';
+  }
+
+  function renderProfile(s) {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('profile-content').style.display = 'block';
+
+    // Header
+    document.getElementById('hdr-req-num').textContent  = 'طلب رقم: ' + (s.رقم_الطلب || '—');
+    document.getElementById('hdr-name').textContent     = s.اسم_الطالب || '—';
+    document.getElementById('hdr-category').textContent = s.الفئة || '—';
+    document.getElementById('hdr-city').textContent     = s.مدينة_السكن || '—';
+    document.getElementById('hdr-school').textContent   = s.المدرسة || '—';
+
+    // Status badge
+    const sc = STATUS_COLORS[s.الحالة] || { bg: '#e2e3e5', text: '#333', icon: 'fa-circle' };
+    const statusEl = document.getElementById('hdr-status');
+    statusEl.style.background = sc.bg;
+    statusEl.style.color = sc.text;
+    statusEl.innerHTML = `<i class="fa ${sc.icon}"></i> ${s.الحالة || '—'}`;
+
+    // Payment card
+    if (s.مبلغ_الباقة) {
+      document.getElementById('payment-card').style.display = 'block';
+      const total = parseFloat(s.مبلغ_الباقة) || 0;
+      const paid  = parseFloat(s.المبلغ_المدفوع) || 0;
+      const rem   = total - paid;
+      document.getElementById('pay-total').textContent     = total + ' ريال';
+      document.getElementById('pay-paid').textContent      = paid + ' ريال';
+      document.getElementById('pay-remaining').textContent = rem  + ' ريال';
+      document.getElementById('pay-invoice').textContent   = s.رقم_الفاتورة || '—';
+      const pct = total > 0 ? Math.min(100, Math.round((paid / total) * 100)) : 0;
+      setTimeout(() => { document.getElementById('pay-bar').style.width = pct + '%'; }, 200);
+    }
+
+    // Basic info
+    const basicFields = [
+      { l: 'الصف الدراسي',       v: s.الصف_الدراسي },
+      { l: 'العمر',               v: s.العمر },
+      { l: 'مستوى الإنجليزية',   v: s.مستوى_اللغة },
+      { l: 'جوال ولي الأمر',     v: s.جوال_ولي_الأمر },
+      { l: 'جوال الابن',         v: s.جوال_الابن },
+      { l: 'تاريخ التسجيل',      v: s.تاريخ_التسجيل },
+    ];
+    document.getElementById('basic-info-grid').innerHTML = basicFields
+      .filter(f => f.v)
+      .map(f => `<div class="info-item"><div class="lbl">${f.l}</div><div class="val">${f.v}</div></div>`)
+      .join('');
+
+    // Full info
+    const allFields = [
+      { l: 'اسم الطالب الثلاثي',  v: s.اسم_الطالب },
+      { l: 'مدينة السكن',          v: s.مدينة_السكن },
+      { l: 'المدرسة',             v: s.المدرسة },
+      { l: 'الصف الدراسي',       v: s.الصف_الدراسي },
+      { l: 'العمر',               v: s.العمر },
+      { l: 'الهوايات',            v: s.الهوايات },
+      { l: 'المستوى الدراسي',    v: s.المستوى_الدراسي },
+      { l: 'مستوى الإنجليزية',   v: s.مستوى_اللغة },
+      { l: 'الحالة الصحية',      v: s.الحالة_الصحية },
+      { l: 'الفئة',               v: s.الفئة },
+      { l: 'الباقة',              v: s.الباقة },
+      { l: 'جوال ولي الأمر',     v: s.جوال_ولي_الأمر },
+      { l: 'جوال الابن',         v: s.جوال_الابن },
+      { l: 'كيف عرف البرنامج',   v: s.مصدر_المعرفة },
+      { l: 'تاريخ التسجيل',      v: s.تاريخ_التسجيل },
+    ];
+    document.getElementById('full-info-grid').innerHTML = allFields
+      .filter(f => f.v)
+      .map(f => `<div class="col-sm-6"><div class="info-item"><div class="lbl">${f.l}</div><div class="val">${f.v}</div></div></div>`)
+      .join('');
+
+    // Attachments
+    const attList = [];
+    if (s.رابط_الجواز)  attList.push({ name: 'صورة الجواز', url: s.رابط_الجواز, icon: 'fa-id-card', color: '#0d6efd' });
+    if (s.رابط_الفيديو) attList.push({ name: 'الفيديو التعريفي', url: s.رابط_الفيديو, icon: 'fa-video', color: '#dc3545' });
+    if (s.رابط_الفاتورة) attList.push({ name: 'الفاتورة', url: s.رابط_الفاتورة, icon: 'fa-file-invoice', color: '#198754' });
+    const attEl = document.getElementById('attachments-grid');
+    if (attList.length) {
+      attEl.innerHTML = `<div class="row g-3">` + attList.map(a =>
+        `<div class="col-sm-6 col-md-4">
+          <a href="${a.url}" target="_blank" class="kpi-card d-flex align-items-center gap-3 text-decoration-none">
+            <div style="width:44px;height:44px;border-radius:var(--radius-sm);background:${a.color}20;color:${a.color};display:flex;align-items:center;justify-content:center;font-size:20px;">
+              <i class="fa ${a.icon}"></i>
+            </div>
+            <div>
+              <div class="fw-700 small text-dark">${a.name}</div>
+              <div class="text-muted" style="font-size:12px">اضغط للفتح <i class="fa fa-external-link-alt ms-1"></i></div>
+            </div>
+          </a>
+        </div>`
+      ).join('') + `</div>`;
+    }
+
+    // Actions
+    renderActions(s);
+
+    // Notes
+    renderNotes(s.ملاحظات ? [{ text: s.ملاحظات, user: 'النظام', time: '' }] : []);
+  }
+
+  function renderActions(s) {
+    const role = currentUser.role;
+    const status = s.الحالة;
+    const actions = [];
+    const phone = s.جوال_ولي_الأمر || '';
+
+    if (role !== 'معلم') {
+      if (status === STATUS.REGISTERED || status === STATUS.REVIEWING) {
+        actions.push({ label: 'قبول أولي', cls: 'green', icon: 'fa-check', fn: `updateStatus('${STATUS.ACCEPTED}')` });
+        actions.push({ label: 'رفض', cls: 'red', icon: 'fa-times', fn: `updateStatus('${STATUS.REJECTED}')` });
+      }
+      if (status === STATUS.ACCEPTED) {
+        actions.push({ label: 'دفعة جزئية', cls: 'yellow', icon: 'fa-circle-half-stroke', fn: `openPaymentModal()` });
+        actions.push({ label: 'سداد مكتمل', cls: 'green', icon: 'fa-check-double', fn: `updateStatus('${STATUS.PAID}')` });
+        actions.push({ label: 'تأجيل', cls: 'gray', icon: 'fa-pause', fn: `updateStatus('${STATUS.DEFERRED}')` });
+        actions.push({ label: 'رفض', cls: 'red', icon: 'fa-times', fn: `updateStatus('${STATUS.REJECTED}')` });
+      }
+      if (status === STATUS.PAID) {
+        actions.push({ label: 'تفعيل الطالب', cls: 'blue', icon: 'fa-user-check', fn: `updateStatus('${STATUS.ACTIVE}')` });
+      }
+    }
+    if (phone) {
+      actions.push({ label: 'واتساب ولي الأمر', cls: 'wa', icon: 'fab fa-whatsapp', fn: `openWhatsApp('${phone}')` });
+    }
+    actions.push({ label: 'طباعة البطاقة', cls: 'gray', icon: 'fa-print', fn: `window.print()` });
+
+    if (!actions.length) {
+      document.getElementById('actions-card').style.display = 'none';
+      return;
+    }
+    document.getElementById('actions-grid').innerHTML = actions.map(a =>
+      `<button class="action-btn ${a.cls}" onclick="${a.fn}">
+        <i class="${a.icon.startsWith('fab') ? a.icon : 'fa ' + a.icon}"></i> ${a.label}
+      </button>`
+    ).join('');
+  }
+
+  async function loadTimeline() {
+    try {
+      const data = await API.get('getStudentRecords', { id: studentId });
+      const records = (data && data.records) ? data.records : [];
+      if (!records.length) {
+        document.getElementById('timeline-list').innerHTML = '<p class="text-muted small">لا يوجد سجل إجراءات بعد</p>';
+        return;
+      }
+      document.getElementById('timeline-list').innerHTML = records.map((r, i) => `
+        <div class="timeline-event ${i > 0 ? 'past' : ''}">
+          <div class="ev-time">${r.التاريخ || ''}</div>
+          <div class="ev-title">${r.الإجراء || r.الحالة_الجديدة || '—'}</div>
+          ${r.المستخدم ? `<div class="ev-user"><i class="fa fa-user me-1"></i>${r.المستخدم}</div>` : ''}
+          ${r.الملاحظة ? `<div class="ev-user text-dark">${r.الملاحظة}</div>` : ''}
+        </div>
+      `).join('');
+    } catch (e) { console.error(e); }
+  }
+
+  function renderNotes(notes) {
+    const el = document.getElementById('notes-list');
+    if (!notes.length) { el.innerHTML = '<p class="text-muted small">لا توجد ملاحظات</p>'; return; }
+    el.innerHTML = notes.map(n => `
+      <div class="kpi-card mb-2 p-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="fw-600 small">${n.user || '—'}</div>
+          <div class="text-muted" style="font-size:12px">${n.time || ''}</div>
+        </div>
+        <p class="mb-0 mt-1 small">${n.text}</p>
+      </div>
+    `).join('');
+  }
+
+  async function updateStatus(newStatus) {
+    const result = await Swal.fire({
+      title: 'تأكيد تغيير الحالة',
+      text: `هل تريد تغيير الحالة إلى: ${newStatus}؟`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'نعم، تغيير',
+      cancelButtonText: 'إلغاء',
+      confirmButtonColor: '#fbc70d',
+    });
+    if (!result.isConfirmed) return;
+    try {
+      await API.post('updateStatus', { id: studentId, status: newStatus, user: currentUser.name });
+      Swal.fire({ icon: 'success', title: 'تم تحديث الحالة', timer: 1500, showConfirmButton: false });
+      setTimeout(() => location.reload(), 1600);
+    } catch (e) { Swal.fire('خطأ', 'حدث خطأ أثناء التحديث', 'error'); }
+  }
+
+  function openPaymentModal() {
+    new bootstrap.Modal(document.getElementById('paymentModal')).show();
+  }
+
+  async function submitPayment() {
+    const amount = document.getElementById('pay-amount').value;
+    const method = document.getElementById('pay-method').value;
+    const note   = document.getElementById('pay-note').value;
+    if (!amount || isNaN(amount) || amount <= 0) {
+      Swal.fire('تنبيه', 'يرجى إدخال مبلغ صحيح', 'warning');
+      return;
+    }
+    try {
+      await API.post('addPayment', { id: studentId, amount, method, note, user: currentUser.name });
+      bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+      Swal.fire({ icon: 'success', title: 'تم تسجيل الدفعة', timer: 1500, showConfirmButton: false });
+      setTimeout(() => location.reload(), 1600);
+    } catch (e) { Swal.fire('خطأ', 'حدث خطأ', 'error'); }
+  }
+
+  async function addNote() {
+    const text = document.getElementById('new-note').value.trim();
+    if (!text) return;
+    try {
+      await API.post('addNote', { id: studentId, note: text, user: currentUser.name });
+      document.getElementById('new-note').value = '';
+      Swal.fire({ icon: 'success', title: 'تمت إضافة الملاحظة', timer: 1200, showConfirmButton: false });
+    } catch (e) { Swal.fire('خطأ', 'حدث خطأ', 'error'); }
+  }
+
+  function openWhatsApp(phone) {
+    const clean = phone.replace(/\D/g, '');
+    const intl = clean.startsWith('0') ? '966' + clean.slice(1) : clean;
+    window.open('https://wa.me/' + intl, '_blank');
+  }
+
+  function switchTab(tab, btn) {
+    ['timeline','details','attachments','notes'].forEach(t => {
+      document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    });
+    document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+</script>
+</body>
+</html>

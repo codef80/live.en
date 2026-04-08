@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التسجيل — Live English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    body { background: linear-gradient(135deg, #fff8e1 0%, #f3f4f6 100%); min-height: 100vh; }
+    .register-header {
+      text-align: center;
+      padding: 32px 20px 24px;
+    }
+    .register-header .logo-text {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+    .register-header .logo-text span { color: var(--primary); }
+    .register-header p { color: var(--text-muted); font-size: 15px; }
+    .register-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px 48px;
+    }
+    .preview-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+    .preview-row .lbl { color: var(--text-muted); min-width: 140px; }
+    .preview-row .val { font-weight: 600; }
+    .file-preview-thumb {
+      width: 80px; height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid var(--primary-light);
+    }
+    .success-box {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .success-box .big-icon {
+      font-size: 72px;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .request-id-box {
+      background: var(--primary-soft);
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: inline-block;
+      margin: 16px 0;
+    }
+    .request-id-box .id-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-dark);
+      direction: ltr;
+    }
+  </style>
+</head>
+<body>
+
+<!-- لودر -->
+<div id="global-loader">
+  <div class="spinner-le"></div>
+  <p style="color:var(--text-muted);font-size:14px;">جارٍ المعالجة...</p>
+</div>
+
+<!-- رأس الصفحة -->
+<div class="register-header">
+  <div class="logo-text">Live <span>English</span></div>
+  <p>برنامج تعلم اللغة الإنجليزية الصيفي بإشراف نخبة من المتخصصين في بريطانيا</p>
+</div>
+
+<div class="register-container">
+
+  <!-- شريط الخطوات -->
+  <div class="steps-bar" id="steps-bar">
+    <div class="step-item active" id="step-ind-1">
+      <div class="step-circle">1</div>
+      <span class="step-label">بيانات الطالب</span>
+    </div>
+    <div class="step-item" id="step-ind-2">
+      <div class="step-circle">2</div>
+      <span class="step-label">التواصل</span>
+    </div>
+    <div class="step-item" id="step-ind-3">
+      <div class="step-circle">3</div>
+      <span class="step-label">الفئة</span>
+    </div>
+    <div class="step-item" id="step-ind-4">
+      <div class="step-circle">4</div>
+      <span class="step-label">المرفقات</span>
+    </div>
+    <div class="step-item" id="step-ind-5">
+      <div class="step-circle">5</div>
+      <span class="step-label">مراجعة</span>
+    </div>
+  </div>
+
+  <div class="card-le">
+
+    <!-- ════ الخطوة 1: بيانات الطالب ════ -->
+    <div class="step-panel active" id="panel-1">
+      <h5 class="mb-4"><i class="fa fa-user-graduate text-primary-custom me-2"></i>بيانات الطالب</h5>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="form-group-le">
+            <label>اسم الطالب الثلاثي <span class="required">*</span></label>
+            <input type="text" class="form-control-le" id="f-name" placeholder="الاسم الثلاثي كاملاً">
+            <div class="invalid-feedback">الاسم مطلوب (3 كلمات على الأقل)</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>مدينة السكن <span class="required">*</span></label>
+            <input type="text" class="form-control-le" id="f-city" placeholder="مثال: الرياض">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>المدرسة <span class="required">*</span></label>
+            <input type="text" class="form-control-le" id="f-school" placeholder="اسم المدرسة">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>الصف الدراسي <span class="required">*</span></label>
+            <select class="form-control-le" id="f-grade">
+              <option value="">-- اختر الصف --</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>تاريخ الميلاد (ميلادي) <span class="required">*</span></label>
+            <input type="date" class="form-control-le" id="f-dob">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>المستوى الدراسي <span class="required">*</span></label>
+            <select class="form-control-le" id="f-academic">
+              <option value="">-- اختر --</option>
+              <option>ممتاز</option>
+              <option>جيد جداً</option>
+              <option>جيد</option>
+              <option>مقبول</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>مستوى اللغة الإنجليزية <span class="required">*</span></label>
+            <select class="form-control-le" id="f-lang">
+              <option value="">-- اختر --</option>
+              <option>مبتدئ</option>
+              <option>متوسط</option>
+              <option>متقدم</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group-le">
+            <label>الهوايات</label>
+            <input type="text" class="form-control-le" id="f-hobbies" placeholder="مثال: القراءة، الرياضة، التقنية">
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group-le">
+            <label>الحالة الصحية (إن وجدت)</label>
+            <input type="text" class="form-control-le" id="f-health" placeholder="أي ملاحظات صحية مهمة">
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn-le btn-primary-le" onclick="nextStep(1)">
+          التالي <i class="fa fa-arrow-left ms-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ الخطوة 2: بيانات التواصل ════ -->
+    <div class="step-panel" id="panel-2">
+      <h5 class="mb-4"><i class="fa fa-phone text-primary-custom me-2"></i>بيانات التواصل</h5>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>رقم جوال الابن <span class="required">*</span></label>
+            <input type="tel" class="form-control-le" id="f-phone-son"
+                   placeholder="05XXXXXXXX" maxlength="10" dir="ltr">
+            <div class="invalid-feedback">رقم الجوال يجب أن يبدأ بـ 05</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group-le">
+            <label>رقم جوال ولي الأمر <span class="required">*</span></label>
+            <input type="tel" class="form-control-le" id="f-phone-parent"
+                   placeholder="05XXXXXXXX" maxlength="10" dir="ltr">
+            <div class="invalid-feedback">رقم الجوال يجب أن يبدأ بـ 05</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group-le">
+            <label>رقم جواز السفر <span class="required">*</span></label>
+            <input type="text" class="form-control-le" id="f-passport"
+                   placeholder="رقم الجواز" dir="ltr">
+            <div class="invalid-feedback">رقم الجواز مطلوب</div>
+            <small class="text-muted mt-1 d-block">يُستخدم للتحقق من عدم التسجيل المكرر</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn-le btn-outline-le" onclick="prevStep(2)">
+          <i class="fa fa-arrow-right me-1"></i> السابق
+        </button>
+        <button class="btn-le btn-primary-le" onclick="nextStep(2)">
+          التالي <i class="fa fa-arrow-left ms-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ الخطوة 3: الفئة والمعلومات الإضافية ════ -->
+    <div class="step-panel" id="panel-3">
+      <h5 class="mb-4"><i class="fa fa-layer-group text-primary-custom me-2"></i>الفئة والمعلومات الإضافية</h5>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="form-group-le">
+            <label>الفئة <span class="required">*</span></label>
+            <div class="row g-2 mt-1">
+              <div class="col-6">
+                <label class="category-option" id="cat-shabab">
+                  <input type="radio" name="category" value="شبال (10-15 سنة)" style="display:none">
+                  <div class="cat-card">
+                    <div class="cat-icon"><i class="fa fa-star"></i></div>
+                    <div class="cat-title">شبال</div>
+                    <div class="cat-age">من 10 إلى 15 سنة</div>
+                  </div>
+                </label>
+              </div>
+              <div class="col-6">
+                <label class="category-option" id="cat-qada">
+                  <input type="radio" name="category" value="قادة (16-20 سنة)" style="display:none">
+                  <div class="cat-card">
+                    <div class="cat-icon"><i class="fa fa-crown"></i></div>
+                    <div class="cat-title">قادة</div>
+                    <div class="cat-age">من 16 إلى 20 سنة</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div id="cat-error" class="invalid-feedback" style="display:none">يرجى اختيار الفئة</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group-le">
+            <label>كيف عرفت عن البرنامج؟</label>
+            <select class="form-control-le" id="f-source">
+              <option value="">-- اختر --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn-le btn-outline-le" onclick="prevStep(3)">
+          <i class="fa fa-arrow-right me-1"></i> السابق
+        </button>
+        <button class="btn-le btn-primary-le" onclick="nextStep(3)">
+          التالي <i class="fa fa-arrow-left ms-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ الخطوة 4: رفع الملفات ════ -->
+    <div class="step-panel" id="panel-4">
+      <h5 class="mb-4"><i class="fa fa-paperclip text-primary-custom me-2"></i>المرفقات المطلوبة</h5>
+
+      <!-- صورة الجواز -->
+      <div class="form-group-le">
+        <label>صورة جواز السفر <span class="required">*</span></label>
+        <div class="upload-zone" id="passport-zone"
+             onclick="document.getElementById('passport-input').click()"
+             ondragover="handleDrag(event)" ondrop="handleDrop(event,'passport')">
+          <div class="upload-icon"><i class="fa fa-id-card"></i></div>
+          <p>اضغط لاختيار صورة الجواز أو اسحبها هنا</p>
+          <p style="font-size:12px;">JPG, PNG — حجم أقصى 5MB</p>
+          <div class="file-name" id="passport-name"></div>
+        </div>
+        <input type="file" id="passport-input" accept="image/*" style="display:none"
+               onchange="handleFileSelect(this,'passport')">
+        <img id="passport-preview" class="file-preview-thumb mt-2" style="display:none">
+      </div>
+
+      <!-- الفيديو التعريفي -->
+      <div class="form-group-le mt-4">
+        <label>الفيديو التعريفي <span class="required">*</span></label>
+        <div class="alert" style="background:var(--primary-soft);border:1px solid var(--primary-light);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px;">
+          <i class="fa fa-video me-2" style="color:var(--primary)"></i>
+          <strong>مدة دقيقة واحدة</strong> — يتحدث الطالب عن نفسه وهواياته ومستواه الدراسي وهدفه من البرنامج
+        </div>
+        <div class="upload-zone" id="video-zone"
+             onclick="document.getElementById('video-input').click()"
+             ondragover="handleDrag(event)" ondrop="handleDrop(event,'video')">
+          <div class="upload-icon"><i class="fa fa-video"></i></div>
+          <p>اضغط لاختيار الفيديو أو اسحبه هنا</p>
+          <p style="font-size:12px;">MP4, MOV — حجم أقصى 100MB</p>
+          <div class="file-name" id="video-name"></div>
+        </div>
+        <input type="file" id="video-input" accept="video/*" style="display:none"
+               onchange="handleFileSelect(this,'video')">
+        <div id="video-progress" style="display:none;margin-top:8px;">
+          <div class="progress" style="height:6px;border-radius:3px;">
+            <div class="progress-bar" style="background:var(--primary);width:0%" id="video-pbar"></div>
+          </div>
+          <p class="text-muted mt-1" style="font-size:12px;" id="video-progress-text">جارٍ الرفع...</p>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn-le btn-outline-le" onclick="prevStep(4)">
+          <i class="fa fa-arrow-right me-1"></i> السابق
+        </button>
+        <button class="btn-le btn-primary-le" onclick="nextStep(4)">
+          التالي <i class="fa fa-arrow-left ms-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ الخطوة 5: مراجعة وإرسال ════ -->
+    <div class="step-panel" id="panel-5">
+      <h5 class="mb-4"><i class="fa fa-clipboard-check text-primary-custom me-2"></i>مراجعة البيانات قبل الإرسال</h5>
+
+      <div id="preview-content"></div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn-le btn-outline-le" onclick="prevStep(5)">
+          <i class="fa fa-arrow-right me-1"></i> السابق
+        </button>
+        <button class="btn-le btn-primary-le" id="submit-btn" onclick="submitRegistration()">
+          <i class="fa fa-paper-plane me-1"></i> إرسال الطلب
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ نجاح التسجيل ════ -->
+    <div class="step-panel" id="panel-success">
+      <div class="success-box">
+        <div class="big-icon"><i class="fa fa-check-circle"></i></div>
+        <h4>تم استلام طلبك بنجاح!</h4>
+        <p class="text-muted">سيتم مراجعة طلبك والتواصل معك في أقرب وقت</p>
+
+        <div class="request-id-box">
+          <div style="font-size:13px;color:var(--text-muted);">رقم طلبك</div>
+          <div class="id-num" id="success-id">—</div>
+        </div>
+
+        <p class="text-muted" style="font-size:13px;">احتفظ بهذا الرقم لمتابعة حالة طلبك</p>
+
+        <div class="d-flex gap-3 justify-content-center mt-4 flex-wrap">
+          <a href="track.html" class="btn-le btn-primary-le">
+            <i class="fa fa-search me-1"></i> متابعة الطلب
+          </a>
+          <a href="index.html" class="btn-le btn-outline-le">
+            <i class="fa fa-home me-1"></i> الرئيسية
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /card-le -->
+</div><!-- /container -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.5/sweetalert2.all.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<style>
+  .cat-card {
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .cat-card:hover { border-color: var(--primary); background: var(--primary-soft); }
+  .category-option input:checked + .cat-card {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+  .cat-icon { font-size: 32px; color: var(--primary); margin-bottom: 8px; }
+  .cat-title { font-size: 18px; font-weight: 700; }
+  .cat-age { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+</style>
+<script>
+// ─── حالة النموذج ───────────────────────────────
+let currentStep = 1;
+const totalSteps = 5;
+const uploadedFiles = { passport: null, video: null };
+const fileIds = { passportId: '', passportUrl: '', videoId: '', videoUrl: '', folderId: '' };
+
+// ─── تحميل البيانات الأولية ─────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const data = await API.getInitData();
+    if (data.lists) {
+      populateSelect('f-grade',  data.lists.صفوف);
+      populateSelect('f-source', data.lists.مصادر);
+    }
+    // تحقق من تفعيل التسجيل
+    if (data.settings && data.settings['التسجيل_مفعل'] === 'false') {
+      document.querySelector('.register-container').innerHTML =
+        `<div class="card-le text-center py-5">
+           <i class="fa fa-lock" style="font-size:48px;color:var(--primary);margin-bottom:16px;"></i>
+           <h4>التسجيل مغلق حالياً</h4>
+           <p class="text-muted">سيُعلن عن فتح التسجيل قريباً — تابعونا على السوشيال ميديا</p>
+         </div>`;
+    }
+  } catch (e) {
+    console.warn('تعذّر تحميل الإعدادات:', e);
+  }
+});
+
+function populateSelect(id, items) {
+  const el = document.getElementById(id);
+  if (!el || !items) return;
+  items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = opt.textContent = item;
+    el.appendChild(opt);
+  });
+}
+
+// ─── التنقل بين الخطوات ─────────────────────────
+async function nextStep(from) {
+  if (!validateStep(from)) return;
+
+  if (from === 2) {
+    const ok = await checkForDuplicate();
+    if (!ok) return;
+  }
+
+  currentStep = from + 1;
+  if (currentStep === 5) buildPreview();
+  showStep(currentStep);
+}
+
+function prevStep(from) {
+  currentStep = from - 1;
+  showStep(currentStep);
+}
+
+function showStep(n) {
+  for (let i = 1; i <= totalSteps; i++) {
+    document.getElementById(`panel-${i}`).classList.toggle('active', i === n);
+    const ind = document.getElementById(`step-ind-${i}`);
+    ind.classList.remove('active', 'done');
+    if (i < n) ind.classList.add('done');
+    else if (i === n) ind.classList.add('active');
+  }
+  // تحديث أيقونات الخطوات المنتهية
+  document.querySelectorAll('.step-item.done .step-circle').forEach(c => {
+    c.innerHTML = '<i class="fa fa-check" style="font-size:11px"></i>';
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── التحقق من بيانات كل خطوة ──────────────────
+function validateStep(n) {
+  let valid = true;
+  const clear = el => { el.classList.remove('is-invalid'); };
+  const invalid = el => { el.classList.add('is-invalid'); valid = false; };
+
+  if (n === 1) {
+    const name = document.getElementById('f-name');
+    const city = document.getElementById('f-city');
+    const school = document.getElementById('f-school');
+    const grade = document.getElementById('f-grade');
+    const dob = document.getElementById('f-dob');
+    const academic = document.getElementById('f-academic');
+    const lang = document.getElementById('f-lang');
+
+    [name,city,school,grade,dob,academic,lang].forEach(clear);
+    if (!name.value.trim() || name.value.trim().split(' ').length < 2) invalid(name);
+    if (!city.value.trim()) invalid(city);
+    if (!school.value.trim()) invalid(school);
+    if (!grade.value) invalid(grade);
+    if (!dob.value) invalid(dob);
+    if (!academic.value) invalid(academic);
+    if (!lang.value) invalid(lang);
+  }
+
+  if (n === 2) {
+    const ps = document.getElementById('f-phone-son');
+    const pp = document.getElementById('f-phone-parent');
+    const pass = document.getElementById('f-passport');
+    [ps,pp,pass].forEach(clear);
+    if (!/^05\d{8}$/.test(ps.value.trim())) invalid(ps);
+    if (!/^05\d{8}$/.test(pp.value.trim())) invalid(pp);
+    if (!pass.value.trim()) invalid(pass);
+  }
+
+  if (n === 3) {
+    const catVal = document.querySelector('input[name="category"]:checked');
+    if (!catVal) {
+      document.getElementById('cat-error').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('cat-error').style.display = 'none';
+    }
+  }
+
+  if (n === 4) {
+    if (!uploadedFiles.passport) {
+      UTILS.toast('يرجى رفع صورة الجواز', 'warning');
+      valid = false;
+    }
+    if (!uploadedFiles.video) {
+      UTILS.toast('يرجى رفع الفيديو التعريفي', 'warning');
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+// ─── التحقق من التكرار ──────────────────────────
+async function checkForDuplicate() {
+  const passport = document.getElementById('f-passport').value.trim();
+  const phone1   = document.getElementById('f-phone-son').value.trim();
+  const phone2   = document.getElementById('f-phone-parent').value.trim();
+
+  try {
+    UTILS.loading(true);
+    const res = await API.checkDuplicate({ passport, phone1, phone2 });
+    UTILS.loading(false);
+
+    if (!res.isDuplicate) return true;
+    if (res.isBlocked) {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'تسجيل موجود مسبقاً',
+        html: `<p>${res.message}</p>
+               <p>لمتابعة طلبك: <a href="track.html" style="color:var(--primary)">اضغط هنا</a></p>`,
+        confirmButtonText: 'حسناً',
+        confirmButtonColor: '#fbc70d',
+      });
+      return false;
+    }
+    // يمكن إعادة التسجيل
+    const confirm = await UTILS.confirm(
+      `${res.message}\nهل تريد تقديم طلب جديد؟`, 'info'
+    );
+    return confirm;
+  } catch (e) {
+    UTILS.loading(false);
+    return true; // السماح في حالة فشل الاتصال
+  }
+}
+
+// ─── رفع الملفات ────────────────────────────────
+function handleDrag(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function handleDrop(e, type) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) processFile(file, type);
+}
+
+function handleFileSelect(input, type) {
+  if (input.files[0]) processFile(input.files[0], type);
+}
+
+function processFile(file, type) {
+  const maxMB = type === 'video' ? 100 : 5;
+  if (file.size > maxMB * 1024 * 1024) {
+    UTILS.toast(`حجم الملف أكبر من ${maxMB}MB`, 'error');
+    return;
+  }
+  uploadedFiles[type] = file;
+
+  if (type === 'passport') {
+    document.getElementById('passport-name').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('passport-preview');
+      img.src = e.target.result;
+      img.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+    document.getElementById('passport-zone').style.borderColor = 'var(--primary)';
+  } else {
+    document.getElementById('video-name').textContent = file.name;
+    document.getElementById('video-zone').style.borderColor = 'var(--primary)';
+  }
+}
+
+// ─── بناء المعاينة ───────────────────────────────
+function buildPreview() {
+  const fields = [
+    ['اسم الطالب',          'f-name'],
+    ['مدينة السكن',         'f-city'],
+    ['المدرسة',              'f-school'],
+    ['الصف الدراسي',        'f-grade'],
+    ['مستوى اللغة',         'f-lang'],
+    ['جوال الابن',           'f-phone-son'],
+    ['جوال ولي الأمر',      'f-phone-parent'],
+    ['رقم الجواز',           'f-passport'],
+  ];
+  const category = document.querySelector('input[name="category"]:checked')?.value || '—';
+  let html = '';
+  fields.forEach(([label, id]) => {
+    const val = document.getElementById(id)?.value || '—';
+    html += `<div class="preview-row">
+               <span class="lbl">${label}</span>
+               <span class="val">${val}</span>
+             </div>`;
+  });
+  html += `<div class="preview-row">
+             <span class="lbl">الفئة</span>
+             <span class="val">${category}</span>
+           </div>`;
+  html += `<div class="preview-row">
+             <span class="lbl">صورة الجواز</span>
+             <span class="val">${uploadedFiles.passport ? '<i class="fa fa-check-circle text-success"></i> ' + uploadedFiles.passport.name : 'لم يُرفع'}</span>
+           </div>`;
+  html += `<div class="preview-row">
+             <span class="lbl">الفيديو التعريفي</span>
+             <span class="val">${uploadedFiles.video ? '<i class="fa fa-check-circle text-success"></i> ' + uploadedFiles.video.name : 'لم يُرفع'}</span>
+           </div>`;
+  document.getElementById('preview-content').innerHTML = html;
+}
+
+// ─── إرسال الطلب ─────────────────────────────────
+async function submitRegistration() {
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>جارٍ الإرسال...';
+  UTILS.loading(true);
+
+  try {
+    const studentName = document.getElementById('f-name').value.trim();
+    // نحتاج رقم طلب مؤقت لإنشاء مجلد Drive — سيُستبدل بالرقم الفعلي
+    const tempId = 'TEMP-' + Date.now();
+
+    // رفع الجواز أولاً
+    UTILS.loading(true);
+    let passportResult = {};
+    let videoResult    = {};
+
+    if (uploadedFiles.passport) {
+      const pr = await API.uploadFileFromInput(
+        uploadedFiles.passport, studentName, tempId, 'جواز'
+      );
+      if (pr.success) {
+        passportResult = { معرف_الجواز: pr.fileId, رابط_الجواز: pr.viewUrl, مجلد_Drive: pr.folderId };
+      }
+    }
+
+    // رفع الفيديو
+    if (uploadedFiles.video) {
+      const vr = await API.uploadFileFromInput(
+        uploadedFiles.video, studentName, tempId, 'فيديو'
+      );
+      if (vr.success) {
+        videoResult = { معرف_الفيديو: vr.fileId, رابط_الفيديو: vr.viewUrl };
+      }
+    }
+
+    // تجميع بيانات الطلب
+    const payload = {
+      اسم_الطالب:      studentName,
+      مدينة_السكن:     document.getElementById('f-city').value.trim(),
+      المدرسة:          document.getElementById('f-school').value.trim(),
+      الصف_الدراسي:    document.getElementById('f-grade').value,
+      تاريخ_الميلاد:   document.getElementById('f-dob').value,
+      العمر:            UTILS.calcAge(document.getElementById('f-dob').value),
+      الهوايات:         document.getElementById('f-hobbies').value.trim(),
+      المستوى_الدراسي: document.getElementById('f-academic').value,
+      مستوى_اللغة:     document.getElementById('f-lang').value,
+      الحالة_الصحية:   document.getElementById('f-health').value.trim(),
+      جوال_الابن:       document.getElementById('f-phone-son').value.trim(),
+      جوال_ولي_الامر:  document.getElementById('f-phone-parent').value.trim(),
+      رقم_الجواز:       document.getElementById('f-passport').value.trim(),
+      الفئة:            document.querySelector('input[name="category"]:checked')?.value || '',
+      مصدر_المعرفة:    document.getElementById('f-source').value,
+      ...passportResult,
+      ...videoResult,
+    };
+
+    const result = await API.register(payload);
+    UTILS.loading(false);
+
+    if (result.success) {
+      document.getElementById('success-id').textContent = result.requestId;
+      for (let i = 1; i <= totalSteps; i++) {
+        document.getElementById(`panel-${i}`).classList.remove('active');
+        document.getElementById(`step-ind-${i}`).classList.remove('active');
+        document.getElementById(`step-ind-${i}`).classList.add('done');
+      }
+      document.getElementById('panel-success').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      throw new Error(result.error || 'خطأ غير معروف');
+    }
+  } catch (err) {
+    UTILS.loading(false);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-paper-plane me-1"></i> إرسال الطلب';
+    Swal.fire({
+      icon: 'error',
+      title: 'حدث خطأ',
+      text: err.message || 'يرجى المحاولة مرة أخرى',
+      confirmButtonColor: '#fbc70d',
+    });
+  }
+}
+</script>
+</body>
+</html>

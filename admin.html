@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة العاملين — Live English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .sidebar {
+      width: 240px;
+      background: var(--white);
+      border-left: 1px solid var(--border-color);
+      min-height: 100vh;
+      position: fixed;
+      right: 0; top: 0;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s;
+      z-index: 100;
+    }
+    .sidebar-brand {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .sidebar-brand span { color: var(--primary); }
+    .sidebar-user {
+      padding: 14px 20px;
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px;
+    }
+    .nav-items { flex: 1; padding: 12px 0; overflow-y: auto; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .2s;
+      border-right: 3px solid transparent;
+    }
+    .nav-item:hover { background: var(--bg-light); color: var(--text-dark); }
+    .nav-item.active {
+      background: var(--primary-soft);
+      color: var(--text-dark);
+      border-right-color: var(--primary);
+      font-weight: 700;
+    }
+    .nav-item i { width: 18px; text-align: center; }
+    .main-content {
+      margin-right: 240px;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+    /* جدول الطلاب */
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .filter-bar input,
+    .filter-bar select {
+      padding: 8px 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      direction: rtl;
+      background: var(--white);
+    }
+    .filter-bar input:focus,
+    .filter-bar select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .student-row { cursor: pointer; }
+    /* بطاقة الطالب في الـ modal */
+    .modal-content {
+      direction: rtl;
+      font-family: 'Tajawal', sans-serif;
+      border-radius: var(--radius);
+      border: none;
+    }
+    .modal-header {
+      background: var(--primary-soft);
+      border-bottom: 2px solid var(--primary-light);
+    }
+    .action-btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .payment-card {
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-light);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin: 14px 0;
+    }
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+      border-bottom: 1px dashed var(--primary-light);
+    }
+    .payment-row:last-child { border-bottom: none; }
+    .payment-row .lbl { color: var(--text-muted); }
+    .payment-row .val { font-weight: 700; }
+    /* موبايل سايدبار */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 12px; right: 12px;
+      z-index: 200;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    @media (max-width:768px) {
+      .sidebar { transform: translateX(240px); }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-right: 0; padding: 14px; }
+      .sidebar-toggle { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="global-loader"><div class="spinner-le"></div></div>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+  <i class="fa fa-bars"></i>
+</button>
+
+<!-- الشريط الجانبي -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">Live <span>English</span></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="user-initials">م</div>
+    <div>
+      <div style="font-size:13px;font-weight:700;" id="user-name">...</div>
+      <div style="font-size:12px;color:var(--text-muted);" id="user-role">...</div>
+    </div>
+  </div>
+  <nav class="nav-items" id="nav-items">
+    <!-- تُملأ حسب الدور -->
+  </nav>
+  <div style="padding:14px 20px;border-top:1px solid var(--border-color);">
+    <button class="btn-le btn-outline-le btn-sm-le w-100" onclick="doLogout()">
+      <i class="fa fa-sign-out-alt me-1"></i>تسجيل الخروج
+    </button>
+  </div>
+</div>
+
+<!-- المحتوى الرئيسي -->
+<div class="main-content">
+
+  <!-- ══ لوحة الإحصائيات ══ -->
+  <div class="page-section" id="sec-stats">
+    <h4 class="mb-4"><i class="fa fa-chart-bar me-2 text-primary-custom"></i>لوحة الإحصائيات</h4>
+    <div class="row g-3 mb-4" id="kpi-row">
+      <!-- تُملأ بالكود -->
+    </div>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card-le">
+          <div class="card-header-le"><h5>الطلاب حسب المدينة</h5></div>
+          <div id="chart-cities"></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-le">
+          <div class="card-header-le"><h5>مصادر المعرفة</h5></div>
+          <div id="chart-sources"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ التسجيلات الأولية ══ -->
+  <div class="page-section" id="sec-registrations">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4><i class="fa fa-inbox me-2 text-primary-custom"></i>التسجيلات الأولية</h4>
+      <button class="btn-le btn-outline-le btn-sm-le" onclick="loadStudents('تسجيل أولي', 'tbl-reg')">
+        <i class="fa fa-sync me-1"></i>تحديث
+      </button>
+    </div>
+    <div class="card-le">
+      <div class="filter-bar">
+        <input type="text" id="reg-search" placeholder="بحث بالاسم أو الرقم..." onkeyup="filterTable('tbl-reg', this.value)">
+        <select onchange="filterTable('tbl-reg', document.getElementById('reg-search').value, this.value)">
+          <option value="">كل الفئات</option>
+          <option>شبال (10-15 سنة)</option>
+          <option>قادة (16-20 سنة)</option>
+        </select>
+      </div>
+      <div class="table-responsive">
+        <table class="table-le" id="tbl-reg">
+          <thead>
+            <tr>
+              <th>رقم الطلب</th>
+              <th>اسم الطالب</th>
+              <th>الفئة</th>
+              <th>المدينة</th>
+              <th>مستوى اللغة</th>
+              <th>تاريخ التسجيل</th>
+              <th>الحالة</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-reg-body">
+            <tr><td colspan="8" class="text-center py-4"><div class="spinner-le mx-auto"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ جميع الطلاب ══ -->
+  <div class="page-section" id="sec-students">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4><i class="fa fa-users me-2 text-primary-custom"></i>الطلاب</h4>
+      <button class="btn-le btn-outline-le btn-sm-le" onclick="loadStudents('', 'tbl-students')">
+        <i class="fa fa-sync me-1"></i>تحديث
+      </button>
+    </div>
+    <div class="card-le">
+      <div class="filter-bar">
+        <input type="text" id="stu-search" placeholder="بحث..." onkeyup="filterTable('tbl-students', this.value)">
+        <select id="stu-status-filter" onchange="loadStudents(this.value, 'tbl-students')">
+          <option value="">كل الحالات</option>
+          <option>تسجيل أولي</option>
+          <option>تحت المراجعة</option>
+          <option>مقبول مبدئياً وبانتظار السداد</option>
+          <option>سداد جزئي</option>
+          <option>مكتمل السداد</option>
+          <option>طالب نشط</option>
+          <option>مرفوض</option>
+          <option>منسحب</option>
+        </select>
+      </div>
+      <div class="table-responsive">
+        <table class="table-le" id="tbl-students">
+          <thead>
+            <tr>
+              <th>رقم الطلب</th>
+              <th>اسم الطالب</th>
+              <th>الفئة</th>
+              <th>الحالة</th>
+              <th>الباقة</th>
+              <th>المبلغ المدفوع</th>
+              <th>المتبقي</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-students-body">
+            <tr><td colspan="8" class="text-center py-4"><div class="spinner-le mx-auto"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<!-- ══ Modal بطاقة الطالب ══ -->
+<div class="modal fade" id="studentModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-student-name">—</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- يُملأ ديناميكياً -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Modal السداد ══ -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">تسجيل دفعة</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="pay-request-id">
+        <div class="form-group-le">
+          <label>المبلغ المدفوع</label>
+          <input type="number" class="form-control-le" id="pay-amount" placeholder="أدخل المبلغ">
+        </div>
+        <div class="form-group-le">
+          <label>نوع الدفعة</label>
+          <select class="form-control-le" id="pay-type">
+            <option value="كامل">سداد كامل</option>
+            <option value="جزئي">سداد جزئي</option>
+            <option value="مؤجل">تأجيل</option>
+          </select>
+        </div>
+        <div class="form-group-le">
+          <label>ملاحظة</label>
+          <input type="text" class="form-control-le" id="pay-note" placeholder="اختياري">
+        </div>
+        <button class="btn-le btn-primary-le w-100" onclick="submitPayment()">
+          <i class="fa fa-save me-2"></i>حفظ الدفعة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.5/sweetalert2.all.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script>
+// ─── Indexes للبحث السريع ────────────────────────
+let studentsIndex = new Map(); // id → student
+
+// ─── التحقق من الجلسة ───────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = AUTH.requireLogin(['مدير','مشرف','معلم']);
+  if (!user) return;
+
+  document.getElementById('user-name').textContent = user.name;
+  document.getElementById('user-role').textContent = user.role;
+  document.getElementById('user-initials').textContent = user.name.charAt(0);
+
+  buildNav(user.role);
+
+  // Phase 1: الإحصائيات فورًا
+  showSection('sec-stats');
+  loadStats();
+
+  // Phase 2: الطلاب في الخلفية
+  setTimeout(() => loadStudents('تسجيل أولي', 'tbl-reg'), 200);
+  setTimeout(() => loadStudents('', 'tbl-students'), 500);
+});
+
+// ─── بناء التنقل حسب الدور ──────────────────────
+function buildNav(role) {
+  const nav = document.getElementById('nav-items');
+  const items = [
+    { id: 'sec-stats',         icon: 'fa-chart-bar',  label: 'لوحة الإحصائيات',   roles: ['مدير','مشرف'] },
+    { id: 'sec-registrations', icon: 'fa-inbox',       label: 'التسجيلات الأولية', roles: ['مدير','مشرف'] },
+    { id: 'sec-students',      icon: 'fa-users',       label: 'الطلاب',             roles: ['مدير','مشرف','معلم'] },
+  ];
+
+  nav.innerHTML = items
+    .filter(i => i.roles.includes(role))
+    .map(i => `<div class="nav-item" data-section="${i.id}" onclick="showSection('${i.id}')">
+      <i class="fa ${i.icon}"></i>${i.label}
+    </div>`)
+    .join('');
+}
+
+function showSection(id) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  document.querySelector(`[data-section="${id}"]`)?.classList.add('active');
+  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function doLogout() {
+  AUTH.logout();
+  window.location.href = 'staff-login.html';
+}
+
+// ─── تحميل الإحصائيات ───────────────────────────
+async function loadStats() {
+  try {
+    const res = await API.getStats();
+    if (!res.success) return;
+
+    const kpis = [
+      { label: 'إجمالي المسجلين',    value: res.total,                            icon: 'fa-users',        cls: 'primary' },
+      { label: 'بانتظار المراجعة',   value: res.byStatus['تسجيل أولي'] || 0,      icon: 'fa-clock',        cls: 'warning' },
+      { label: 'مقبولون مبدئياً',   value: res.byStatus['مقبول مبدئياً وبانتظار السداد'] || 0, icon: 'fa-check-circle', cls: 'info' },
+      { label: 'مكتمل السداد',      value: res.byStatus['مكتمل السداد'] || 0,     icon: 'fa-money-bill',   cls: 'success' },
+      { label: 'طلاب نشطون',        value: res.byStatus['طالب نشط'] || 0,         icon: 'fa-user-check',   cls: 'primary' },
+      { label: 'مرفوضون',           value: res.byStatus['مرفوض'] || 0,            icon: 'fa-times-circle', cls: 'danger' },
+      { label: 'إجمالي المحصّل',    value: UTILS.formatMoney(res.financial?.totalCollected), icon: 'fa-wallet', cls: 'success' },
+      { label: 'المبلغ المتبقي',    value: UTILS.formatMoney(res.financial?.remaining),      icon: 'fa-hourglass-half', cls: 'warning' },
+    ];
+
+    document.getElementById('kpi-row').innerHTML = kpis.map(k => `
+      <div class="col-6 col-md-3">
+        <div class="kpi-card ${k.cls}">
+          <i class="fa ${k.icon} bg-icon-float"></i>
+          <div class="kpi-value">${k.value}</div>
+          <div class="kpi-label">${k.label}</div>
+        </div>
+      </div>`).join('');
+
+    // رسوم بيانية بسيطة نصية
+    renderBarChart('chart-cities',  res.byCities);
+    renderBarChart('chart-sources', res.bySources);
+  } catch (e) {
+    console.warn('Stats error:', e);
+  }
+}
+
+function renderBarChart(containerId, data) {
+  const el = document.getElementById(containerId);
+  if (!el || !data) return;
+  const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0,8);
+  const max = sorted[0]?.[1] || 1;
+  el.innerHTML = sorted.map(([label, count]) => `
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+        <span>${label}</span><span style="font-weight:700;">${count}</span>
+      </div>
+      <div style="background:var(--bg-light);border-radius:4px;height:8px;">
+        <div style="width:${(count/max*100).toFixed(0)}%;height:100%;background:var(--primary);border-radius:4px;transition:width .5s;"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ─── تحميل الطلاب ───────────────────────────────
+async function loadStudents(status, tableId) {
+  try {
+    const bodyId = tableId + '-body';
+    const res = await API.getStudents({ status, per: 100 });
+    if (!res.success) return;
+
+    // بناء الـ Index
+    res.data.forEach(s => studentsIndex.set(s['رقم_الطلب'], s));
+
+    renderStudentsTable(res.data, bodyId);
+  } catch (e) {
+    console.warn('Students load error:', e);
+  }
+}
+
+function renderStudentsTable(data, bodyId) {
+  const tbody = document.getElementById(bodyId);
+  if (!tbody) return;
+
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fa fa-inbox"></i><p>لا توجد بيانات</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.map(s => `
+    <tr class="student-row" onclick="openStudentCard('${s['رقم_الطلب']}')">
+      <td data-label="رقم الطلب"><strong dir="ltr">${s['رقم_الطلب']}</strong></td>
+      <td data-label="اسم الطالب">${s['اسم_الطالب']}</td>
+      <td data-label="الفئة">${s['الفئة'] || '—'}</td>
+      <td data-label="الحالة">${UTILS.badgeHtml(s['الحالة'])}</td>
+      <td data-label="الباقة">${s['الباقة'] || '—'}</td>
+      <td data-label="المدفوع">${UTILS.formatMoney(s['المبلغ_المدفوع'])}</td>
+      <td data-label="المتبقي">${UTILS.formatMoney(s['المبلغ_المتبقي'])}</td>
+      <td>
+        <button class="btn-le btn-outline-le btn-sm-le" onclick="event.stopPropagation();openStudentCard('${s['رقم_الطلب']}')">
+          <i class="fa fa-eye"></i>
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterTable(tableId, search) {
+  const tbody = document.getElementById(tableId + '-body');
+  if (!tbody) return;
+  const q = search.toLowerCase();
+  tbody.querySelectorAll('tr').forEach(tr => {
+    tr.style.display = !q || tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// ─── بطاقة الطالب ───────────────────────────────
+async function openStudentCard(id) {
+  UTILS.loading(true);
+  try {
+    let student = studentsIndex.get(id);
+    if (!student) {
+      const res = await API.getStudent(id);
+      if (res.success) student = res.data;
+    }
+    UTILS.loading(false);
+    if (!student) return;
+
+    document.getElementById('modal-student-name').textContent = student['اسم_الطالب'];
+    document.getElementById('modal-body').innerHTML = buildStudentCardHTML(student);
+
+    const modal = new bootstrap.Modal(document.getElementById('studentModal'));
+    modal.show();
+  } catch (e) {
+    UTILS.loading(false);
+  }
+}
+
+function buildStudentCardHTML(s) {
+  const user = AUTH.getUser();
+  const isSupervisor = ['مدير','مشرف'].includes(user?.role);
+
+  const infoRows = [
+    ['رقم الطلب',        s['رقم_الطلب'],          true],
+    ['الفئة',            s['الفئة']],
+    ['المدينة',          s['مدينة_السكن']],
+    ['المدرسة',          s['المدرسة']],
+    ['الصف',             s['الصف_الدراسي']],
+    ['مستوى اللغة',     s['مستوى_اللغة']],
+    ['جوال الابن',       s['جوال_الابن'],          true],
+    ['جوال ولي الأمر',  s['جوال_ولي_الامر'],      true],
+  ];
+
+  let html = `<div class="row g-2 mb-3">
+    ${infoRows.map(([l,v,ltr]) => `<div class="col-6">
+      <div style="background:var(--bg-light);border-radius:8px;padding:10px;">
+        <div style="font-size:11px;color:var(--text-muted);">${l}</div>
+        <div style="font-size:14px;font-weight:700;${ltr ? 'direction:ltr;text-align:right;' : ''}">${v || '—'}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+
+  // بطاقة السداد
+  if (isSupervisor) {
+    html += `<div class="payment-card">
+      <strong style="font-size:14px;">تفاصيل السداد</strong>
+      <div class="payment-row"><span class="lbl">الباقة</span><span class="val">${s['الباقة'] || '—'}</span></div>
+      <div class="payment-row"><span class="lbl">الإجمالي</span><span class="val">${UTILS.formatMoney(s['مبلغ_الباقة'])}</span></div>
+      <div class="payment-row"><span class="lbl">المدفوع</span><span class="val" style="color:green">${UTILS.formatMoney(s['المبلغ_المدفوع'])}</span></div>
+      <div class="payment-row"><span class="lbl">المتبقي</span><span class="val" style="color:red">${UTILS.formatMoney(s['المبلغ_المتبقي'])}</span></div>
+      <div class="payment-row"><span class="lbl">رقم الفاتورة</span><span class="val" dir="ltr">${s['رقم_الفاتورة'] || '—'}</span></div>
+    </div>`;
+  }
+
+  // أزرار المرفقات
+  html += `<div class="action-btn-row mb-3">`;
+  if (s['رابط_الجواز']) {
+    html += `<a href="${s['رابط_الجواز']}" target="_blank" class="btn-le btn-outline-le btn-sm-le">
+      <i class="fa fa-id-card me-1"></i>الجواز
+    </a>`;
+  }
+  if (s['رابط_الفيديو']) {
+    html += `<a href="${s['رابط_الفيديو']}" target="_blank" class="btn-le btn-outline-le btn-sm-le">
+      <i class="fa fa-video me-1"></i>الفيديو
+    </a>`;
+  }
+  html += `</div>`;
+
+  // أزرار الإجراءات (للمشرف/المدير)
+  if (isSupervisor) {
+    const status = s['الحالة'];
+    html += `<div style="border-top:1px solid var(--border-color);padding-top:14px;margin-top:4px;">
+      <strong style="font-size:13px;color:var(--text-muted);">إجراءات</strong>
+      <div class="action-btn-row mt-2">`;
+
+    if (status === 'تسجيل أولي' || status === 'تحت المراجعة') {
+      html += `<button class="btn-le btn-success-le btn-sm-le"
+                        onclick="doAction('${s['رقم_الطلب']}','مقبول مبدئياً وبانتظار السداد','قبول أولي')">
+                 <i class="fa fa-check me-1"></i>قبول أولي
+               </button>
+               <button class="btn-le btn-danger-le btn-sm-le"
+                        onclick="doAction('${s['رقم_الطلب']}','مرفوض','رفض الطلب')">
+                 <i class="fa fa-times me-1"></i>رفض
+               </button>`;
+    }
+
+    if (status === 'مقبول مبدئياً وبانتظار السداد' ||
+        status === 'سداد جزئي' || status === 'مؤجل السداد') {
+      html += `<button class="btn-le btn-primary-le btn-sm-le"
+                        onclick="openPaymentModal('${s['رقم_الطلب']}')">
+                 <i class="fa fa-money-bill me-1"></i>تسجيل دفعة
+               </button>`;
+    }
+
+    if (status === 'مكتمل السداد') {
+      html += `<button class="btn-le btn-success-le btn-sm-le"
+                        onclick="doAction('${s['رقم_الطلب']}','طالب نشط','تفعيل كطالب نشط')">
+                 <i class="fa fa-user-check me-1"></i>تفعيل
+               </button>`;
+    }
+
+    // واتساب
+    const phone = s['جوال_ولي_الامر'] || '';
+    if (phone) {
+      html += `<button class="btn-le btn-outline-le btn-sm-le"
+                        onclick="openWhatsApp('${phone}','${s['اسم_الطالب']}')">
+                 <i class="fa-brands fa-whatsapp me-1" style="color:green"></i>واتساب
+               </button>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  return html;
+}
+
+async function doAction(id, newStatus, label) {
+  const ok = await UTILS.confirm(`هل تريد تغيير الحالة إلى: ${newStatus}؟`);
+  if (!ok) return;
+
+  UTILS.loading(true);
+  try {
+    const note = await Swal.fire({
+      title: 'ملاحظة (اختياري)',
+      input: 'text',
+      inputPlaceholder: 'أضف ملاحظة...',
+      confirmButtonText: 'تأكيد',
+      cancelButtonText: 'إلغاء',
+      showCancelButton: true,
+      confirmButtonColor: '#fbc70d',
+    });
+
+    const res = await API.updateStatus({
+      requestId: id,
+      newStatus,
+      note: note.value || '',
+    });
+
+    // إنشاء فاتورة تلقائية عند القبول
+    if (newStatus === 'مقبول مبدئياً وبانتظار السداد' && res.success) {
+      await API.createInvoice(id);
+    }
+
+    UTILS.loading(false);
+    if (res.success) {
+      UTILS.toast('تم التحديث بنجاح', 'success');
+      bootstrap.Modal.getInstance(document.getElementById('studentModal'))?.hide();
+      // تحديث الـ index
+      const s = studentsIndex.get(id);
+      if (s) s['الحالة'] = newStatus;
+      loadStudents('', 'tbl-students');
+    }
+  } catch (e) {
+    UTILS.loading(false);
+    UTILS.toast('حدث خطأ', 'error');
+  }
+}
+
+function openPaymentModal(id) {
+  document.getElementById('pay-request-id').value = id;
+  document.getElementById('pay-amount').value = '';
+  document.getElementById('pay-note').value = '';
+  const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+  modal.show();
+}
+
+async function submitPayment() {
+  const id     = document.getElementById('pay-request-id').value;
+  const amount = document.getElementById('pay-amount').value;
+  const type   = document.getElementById('pay-type').value;
+  const note   = document.getElementById('pay-note').value;
+  if (!amount || amount <= 0) { UTILS.toast('أدخل مبلغاً صحيحاً', 'warning'); return; }
+
+  UTILS.loading(true);
+  const res = await API.addPayment({ requestId: id, amount: parseFloat(amount), paymentType: type, note });
+  UTILS.loading(false);
+
+  if (res.success) {
+    UTILS.toast(`تم تسجيل الدفعة — الحالة: ${res.newStatus}`, 'success');
+    bootstrap.Modal.getInstance(document.getElementById('paymentModal'))?.hide();
+    loadStudents('', 'tbl-students');
+  } else {
+    UTILS.toast(res.error || 'خطأ', 'error');
+  }
+}
+
+async function openWhatsApp(phone, name) {
+  const init = await API.getInitData();
+  const template = init.settings?.['قالب_رسالة_قبول'] || 'مرحباً {اسم_الطالب}';
+  const msg = UTILS.fillTemplate(template, { اسم_الطالب: name });
+  window.open(UTILS.whatsappUrl(phone, msg), '_blank');
+}
+</script>
+</body>
+</html>
