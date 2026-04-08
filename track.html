@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متابعة الطلب | Live English</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="assets/css/styles.css" rel="stylesheet">
+
+  <style>
+    .track-page{
+      padding-top:120px;
+      padding-bottom:70px;
+      min-height:100vh;
+    }
+
+    .track-shell{
+      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.95));
+      border:1px solid rgba(251,199,13,.22);
+      border-radius:34px;
+      box-shadow:0 24px 60px rgba(88,89,91,.12);
+      padding:28px;
+      margin-bottom:24px;
+    }
+
+    .track-title{
+      font-size:2rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:10px;
+    }
+
+    .track-desc{
+      color:#6f7075;
+      line-height:1.95;
+      margin:0;
+    }
+
+    .search-panel{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:28px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);
+      padding:24px;
+      margin-bottom:24px;
+    }
+
+    .result-card{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:28px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);
+      padding:24px;
+      height:100%;
+    }
+
+    .result-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:start;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .result-name{
+      font-size:1.35rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:6px;
+    }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.95rem;
+    }
+
+    .status-amber{
+      background:rgba(251,199,13,.16);
+      color:#8a6900;
+    }
+
+    .status-dark{
+      background:rgba(88,89,91,.10);
+      color:#58595b;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .info-box{
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
+      border:1px solid #efe7cf;
+      border-radius:22px;
+      padding:16px;
+    }
+
+    .info-label{
+      color:#7b7c80;
+      font-weight:700;
+      margin-bottom:6px;
+      font-size:.95rem;
+    }
+
+    .info-value{
+      color:#58595b;
+      font-weight:900;
+      line-height:1.8;
+    }
+
+    .timeline-card{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:28px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);
+      padding:24px;
+      height:100%;
+    }
+
+    .timeline-track{
+      position:relative;
+      padding-right:28px;
+    }
+
+    .timeline-track::before{
+      content:"";
+      position:absolute;
+      top:8px;
+      right:8px;
+      width:2px;
+      height:calc(100% - 16px);
+      background:linear-gradient(to bottom, rgba(251,199,13,.7), rgba(251,199,13,.06));
+    }
+
+    .timeline-event{
+      position:relative;
+      margin-bottom:24px;
+    }
+
+    .timeline-event:last-child{
+      margin-bottom:0;
+    }
+
+    .timeline-event::before{
+      content:"";
+      position:absolute;
+      right:-1px;
+      top:6px;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:#fbc70d;
+      border:4px solid #fff;
+      box-shadow:0 0 0 1px rgba(251,199,13,.28);
+    }
+
+    .timeline-event-title{
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:5px;
+    }
+
+    .timeline-event-meta{
+      color:#8b8c90;
+      font-size:.92rem;
+      margin-bottom:6px;
+    }
+
+    .timeline-event-text{
+      color:#6f7075;
+      line-height:1.9;
+    }
+
+    .attachment-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .attachment-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
+      border:1px solid #efe7cf;
+      border-radius:18px;
+      padding:14px 16px;
+    }
+
+    .attachment-name{
+      font-weight:800;
+      color:#58595b;
+    }
+
+    .attachment-type{
+      color:#7b7c80;
+      font-size:.94rem;
+      margin-top:4px;
+    }
+
+    @media (max-width:767.98px){
+      .info-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="brand-badge"><i class="fa-solid fa-language"></i></span>
+        <span>Live English</span>
+      </a>
+
+      <div class="ms-auto d-flex gap-2">
+        <a href="index.html" class="btn btn-le-outline">
+          <i class="fa-solid fa-house"></i>
+          الرئيسية
+        </a>
+        <a href="register.html" class="btn btn-le">
+          <i class="fa-solid fa-pen-to-square"></i>
+          التسجيل
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="track-page">
+    <div class="container">
+      <div class="track-shell">
+        <h1 class="track-title">متابعة الطلب</h1>
+        <p class="track-desc">أدخل هوية الطالب أو هوية ولي الأمر للاطلاع على حالة الطلب والخط الزمني والملاحظات.</p>
+      </div>
+
+      <div class="search-panel">
+        <div class="row g-3 align-items-end">
+          <div class="col-lg-9">
+            <label class="form-label">هوية الطالب أو هوية ولي الأمر</label>
+            <input type="text" id="trackQuery" class="form-control" placeholder="أدخل رقم الهوية">
+          </div>
+          <div class="col-lg-3">
+            <button id="trackBtn" class="btn btn-le w-100">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              بحث
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="resultArea">
+        <div class="empty-box">أدخل رقم الهوية ثم اضغط بحث.</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="assets/js/config.js"></script>
+  <script>
+    const API_URL = window.APP_CONFIG.API_URL;
+    const trackQuery = document.getElementById('trackQuery');
+    const trackBtn = document.getElementById('trackBtn');
+    const resultArea = document.getElementById('resultArea');
+
+    trackBtn.addEventListener('click', searchTrack);
+    trackQuery.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        searchTrack();
+      }
+    });
+
+    async function searchTrack() {
+      const query = trackQuery.value.trim();
+      if (!query) {
+        fireWarn('أدخل رقم الهوية أولًا');
+        trackQuery.focus();
+        return;
+      }
+
+      try {
+        trackBtn.disabled = true;
+        trackBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري البحث...';
+
+        const res = await fetch(`${API_URL}?action=trackStudent&query=${encodeURIComponent(query)}`);
+        const json = await res.json();
+
+        if (!json.ok) {
+          resultArea.innerHTML = '<div class="empty-box">لم يتم العثور على نتيجة مطابقة.</div>';
+          return;
+        }
+
+        renderResult(json);
+      } catch (e) {
+        console.error(e);
+        resultArea.innerHTML = '<div class="empty-box">تعذر إتمام البحث حاليًا.</div>';
+      } finally {
+        trackBtn.disabled = false;
+        trackBtn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> بحث';
+      }
+    }
+
+    function renderResult(payload) {
+      const student = payload.student || {};
+      const timeline = payload.timeline || [];
+      const attachments = payload.attachments || [];
+
+      resultArea.innerHTML = `
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="result-card">
+              <div class="result-head">
+                <div>
+                  <div class="result-name">${escapeHtml(student.name || '')}</div>
+                  <div class="text-muted fw-bold">رقم الطلب: ${escapeHtml(student.applicationNo || '')}</div>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                  <span class="status-pill status-amber">
+                    <i class="fa-solid fa-layer-group"></i>
+                    ${escapeHtml(student.applicationStatus || '—')}
+                  </span>
+                  <span class="status-pill status-dark">
+                    <i class="fa-solid fa-wallet"></i>
+                    ${escapeHtml(student.paymentStatus || '—')}
+                  </span>
+                </div>
+              </div>
+
+              <div class="info-grid">
+                <div class="info-box">
+                  <div class="info-label">الفئة</div>
+                  <div class="info-value">${escapeHtml(student.category || '—')}</div>
+                </div>
+                <div class="info-box">
+                  <div class="info-label">الباقة</div>
+                  <div class="info-value">${escapeHtml(student.packageName || '—')}</div>
+                </div>
+                <div class="info-box">
+                  <div class="info-label">رقم الفاتورة</div>
+                  <div class="info-value">${escapeHtml(student.invoiceNo || '—')}</div>
+                </div>
+                <div class="info-box">
+                  <div class="info-label">موعد المقابلة / الاختبار</div>
+                  <div class="info-value">${escapeHtml(student.interviewDate || '—')}</div>
+                </div>
+                <div class="info-box" style="grid-column:1/-1">
+                  <div class="info-label">ملاحظات عامة</div>
+                  <div class="info-value">${escapeHtml(student.notes || '—')}</div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h3 class="card-title-le mb-3">المرفقات</h3>
+                ${
+                  attachments.length
+                    ? `<div class="attachment-list">
+                        ${attachments.map(item => `
+                          <div class="attachment-item">
+                            <div>
+                              <div class="attachment-name">${escapeHtml(item.name || 'ملف')}</div>
+                              <div class="attachment-type">${escapeHtml(item.type || '')}</div>
+                            </div>
+                            <a href="${item.url || '#'}" target="_blank" class="btn btn-le-outline">
+                              <i class="fa-solid fa-up-right-from-square"></i>
+                              فتح
+                            </a>
+                          </div>
+                        `).join('')}
+                      </div>`
+                    : `<div class="empty-box">لا توجد مرفقات ظاهرة حاليًا.</div>`
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="timeline-card">
+              <h3 class="card-title-le mb-3">الخط الزمني</h3>
+              ${
+                timeline.length
+                  ? `<div class="timeline-track">
+                      ${timeline.map(item => `
+                        <div class="timeline-event">
+                          <div class="timeline-event-title">${escapeHtml(item.status || '')}</div>
+                          <div class="timeline-event-meta">${escapeHtml(item.date || '')}</div>
+                          <div class="timeline-event-text">${escapeHtml(item.description || '—')}</div>
+                        </div>
+                      `).join('')}
+                    </div>`
+                  : `<div class="empty-box">لا يوجد خط زمني متاح بعد.</div>`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function fireWarn(message) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'تنبيه',
+        text: message,
+        confirmButtonColor: '#fbc70d',
+        confirmButtonText: 'حسنًا'
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
