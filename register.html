@@ -165,29 +165,39 @@
           </div>
 
           <div class="form-step" data-step="3">
-  <div class="row g-4">
-    <div class="col-md-6">
-      <label class="form-label">الفئة المختارة</label>
-      <select class="form-select" name="الفئة" id="categorySelect" required>
-        <option value="">اختر الفئة</option>
-        <option value="شبال">شبال</option>
-        <option value="قادة">قادة</option>
-      </select>
-      <div class="form-hint">شبال: من 10 إلى 15 سنة — قادة: من 16 إلى 20 سنة</div>
-    </div>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label">الفئة المختارة</label>
+                <select class="form-select" name="الفئة" id="categorySelect" required>
+                  <option value="">اختر الفئة</option>
+                  <option value="شبال">شبال</option>
+                  <option value="قادة">قادة</option>
+                </select>
+                <div class="form-hint">شبال: من 10 إلى 15 سنة — قادة: من 16 إلى 20 سنة</div>
+              </div>
 
-    <!-- تم حذف حقلي "الباقة" و "مبلغ الباقة" من هنا -->
+              <div class="col-md-6">
+                <label class="form-label">الباقة</label>
+                <select class="form-select" name="الباقة" id="packageSelect" required>
+                  <option value="">اختر الباقة</option>
+                </select>
+              </div>
 
-    <div class="col-12">
-      <div class="info-card">
-        <h3 class="card-title-le mb-2">تنبيه مهم</h3>
-        <p class="card-text-le mb-0">
-          سيتم التحقق من بيانات الطالب قبل اعتماد التسجيل، ولن يسمح النظام بتكرار تسجيل فعال لنفس الطالب.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
+              <div class="col-md-6">
+                <label class="form-label">مبلغ الباقة</label>
+                <input type="number" class="form-control" name="مبلغ_الباقة" id="packageAmount" readonly>
+              </div>
+
+              <div class="col-12">
+                <div class="info-card">
+                  <h3 class="card-title-le mb-2">تنبيه مهم</h3>
+                  <p class="card-text-le mb-0">
+                    سيتم التحقق من بيانات الطالب قبل اعتماد التسجيل، ولن يسمح النظام بتكرار تسجيل فعال لنفس الطالب.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="form-step" data-step="4">
             <div class="row g-4">
