@@ -5,7 +5,7 @@
 
 const CONFIG = {
   // ← ضع هنا رابط Apps Script بعد النشر
-  SCRIPT_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzWMoY5OuNvinGEL9Xqk0y6Ly2rxR7yPQGifXXrf0wqyd39OggvCzAfILpncOYX6O6Oww/exec',
 
   APP_NAME: 'Live English',
   YEAR: 2026,
