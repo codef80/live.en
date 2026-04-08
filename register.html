@@ -13,6 +13,203 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <link href="assets/css/styles.css" rel="stylesheet">
+
+  <style>
+    .register-page{
+      padding-top:118px;
+      padding-bottom:70px;
+    }
+
+    .page-hero-mini{
+      background:linear-gradient(135deg, rgba(251,199,13,.18), rgba(250,235,180,.35));
+      border:1px solid rgba(251,199,13,.22);
+      border-radius:30px;
+      padding:26px;
+      box-shadow:var(--le-shadow-sm);
+      margin-bottom:24px;
+    }
+
+    .stepper-wrap{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .step-pill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(88,89,91,.12);
+      color:var(--le-muted);
+      font-weight:800;
+      transition:var(--le-transition);
+    }
+
+    .step-pill .num{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      background:#f3f4f6;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.9rem;
+      color:var(--le-dark);
+    }
+
+    .step-pill.active{
+      background:linear-gradient(135deg,var(--le-primary),#ffe176);
+      color:var(--le-dark);
+      border-color:transparent;
+      box-shadow:0 10px 24px rgba(251,199,13,.24);
+    }
+
+    .step-pill.active .num{
+      background:rgba(255,255,255,.72);
+    }
+
+    .form-shell{
+      background:rgba(255,255,255,.97);
+      border:1px solid var(--le-border);
+      border-radius:30px;
+      padding:26px;
+      box-shadow:var(--le-shadow-md);
+    }
+
+    .form-step{ display:none; }
+    .form-step.active{ display:block; }
+
+    .upload-box{
+      border:2px dashed rgba(251,199,13,.5);
+      background:linear-gradient(180deg,rgba(255,250,236,.95),rgba(255,255,255,.98));
+      border-radius:24px;
+      padding:22px;
+      text-align:center;
+      transition:var(--le-transition);
+      height:100%;
+    }
+
+    .upload-box:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--le-shadow-sm);
+    }
+
+    .upload-icon{
+      width:70px;
+      height:70px;
+      border-radius:22px;
+      margin:0 auto 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(251,199,13,.18);
+      color:var(--le-dark);
+      font-size:1.7rem;
+    }
+
+    .summary-card{
+      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,224,.95));
+      border:1px solid var(--le-border);
+      border-radius:24px;
+      padding:18px;
+      height:100%;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      padding:11px 0;
+      border-bottom:1px dashed rgba(88,89,91,.12);
+    }
+
+    .summary-item:last-child{ border-bottom:0; }
+    .summary-key{ color:var(--le-muted); font-weight:700; }
+    .summary-value{ color:var(--le-dark); font-weight:800; text-align:left; }
+
+    .sticky-actions{
+      position:sticky;
+      bottom:16px;
+      z-index:20;
+      margin-top:20px;
+    }
+
+    .action-bar{
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(239,231,207,.9);
+      box-shadow:var(--le-shadow-md);
+      border-radius:24px;
+      padding:14px;
+    }
+
+    .category-select-cards{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:6px;
+    }
+
+    .category-choice{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:24px;
+      padding:20px;
+      box-shadow:0 10px 24px rgba(88,89,91,.06);
+      cursor:pointer;
+      transition:.25s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .category-choice:hover{
+      transform:translateY(-5px);
+      box-shadow:0 18px 36px rgba(88,89,91,.12);
+    }
+
+    .category-choice.active{
+      border-color:rgba(251,199,13,.55);
+      box-shadow:0 16px 34px rgba(251,199,13,.18);
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.92));
+    }
+
+    .category-choice-title{
+      font-size:1.15rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:8px;
+    }
+
+    .category-choice-text{
+      color:#6f7075;
+      line-height:1.85;
+      margin:0;
+    }
+
+    .category-choice-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(251,199,13,.14);
+      color:#8a6900;
+      font-weight:800;
+      font-size:.9rem;
+      margin-bottom:12px;
+    }
+
+    @media (max-width:767.98px){
+      .stepper-wrap{ gap:8px; }
+      .step-pill{ width:100%; justify-content:flex-start; }
+      .category-select-cards{ grid-template-columns:1fr; }
+      .summary-item{ flex-direction:column; align-items:flex-start; }
+    }
+  </style>
 </head>
 <body>
 
@@ -43,11 +240,11 @@
           <div class="col-lg-8">
             <span class="hero-chip mb-3">
               <i class="fa-solid fa-feather-pointed"></i>
-              بوابة التسجيل والقبول
+              بوابة التسجيل
             </span>
             <h1 class="section-title mb-2">ابدأ تسجيلك في Live English</h1>
             <p class="section-subtitle mb-0">
-              نموذج متعدد الخطوات، سهل على الجوال، مع مراجعة أخيرة قبل الإرسال ورفع منظم للمرفقات.
+              نموذج تسجيل متعدد الخطوات، سهل على الجوال، مع مراجعة أخيرة قبل الإرسال ورفع منظم للمرفقات.
             </p>
           </div>
           <div class="col-lg-4">
@@ -72,7 +269,7 @@
       <div class="stepper-wrap" id="stepperWrap">
         <div class="step-pill active" data-step-pill="1"><span class="num">1</span> بيانات الطالب</div>
         <div class="step-pill" data-step-pill="2"><span class="num">2</span> التواصل</div>
-        <div class="step-pill" data-step-pill="3"><span class="num">3</span> الفئة والمعلومات</div>
+        <div class="step-pill" data-step-pill="3"><span class="num">3</span> الفئة</div>
         <div class="step-pill" data-step-pill="4"><span class="num">4</span> المرفقات</div>
         <div class="step-pill" data-step-pill="5"><span class="num">5</span> المراجعة والإرسال</div>
       </div>
@@ -166,17 +363,34 @@
 
           <div class="form-step" data-step="3">
             <div class="row g-4">
-              <div class="col-md-6">
-                <label class="form-label">الفئة المختارة</label>
-                <select class="form-select" name="الفئة" id="categorySelect" required>
-                  <option value="">اختر الفئة</option>
-                  <option value="أشبال">أشبال</option>
-                  <option value="قادة">قادة</option>
-                </select>
-                <div class="form-hint">أشبال: من 10 إلى 15 سنة — قادة: من 16 إلى 20 سنة</div>
+              <div class="col-12">
+                <label class="form-label d-block mb-3">اختر الفئة</label>
+                <input type="hidden" name="الفئة" id="categoryInput" required>
+
+                <div class="category-select-cards">
+                  <div class="category-choice" data-category="أشبال">
+                    <div class="category-choice-badge">
+                      <i class="fa-solid fa-child-reaching"></i>
+                      الفئة الأولى
+                    </div>
+                    <div class="category-choice-title">أشبال</div>
+                    <p class="category-choice-text">
+                      مناسبة للأعمار من 10 إلى 15 سنة.
+                    </p>
+                  </div>
+
+                  <div class="category-choice" data-category="قادة">
+                    <div class="category-choice-badge">
+                      <i class="fa-solid fa-user-graduate"></i>
+                      الفئة الثانية
+                    </div>
+                    <div class="category-choice-title">قادة</div>
+                    <p class="category-choice-text">
+                      مناسبة للأعمار من 16 إلى 20 سنة.
+                    </p>
+                  </div>
+                </div>
               </div>
-
-
 
               <div class="col-12">
                 <div class="info-card">
@@ -195,7 +409,7 @@
                 <div class="upload-box">
                   <div class="upload-icon"><i class="fa-solid fa-passport"></i></div>
                   <h3 class="card-title-le">صورة الجواز</h3>
-                  <p class="card-text-le mb-3">ارفع صورة واضحة للجواز بصيغة JPG أو PNG أو PDF إن أردت لاحقًا دعمه.</p>
+                  <p class="card-text-le mb-3">ارفع صورة واضحة للجواز بصيغة JPG أو PNG.</p>
                   <input type="file" class="form-control" id="passportFile" accept="image/*" required>
                   <div class="form-hint" id="passportFileName">لم يتم اختيار ملف بعد</div>
                 </div>
@@ -272,6 +486,339 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="assets/js/config.js"></script>
-  <script src="assets/js/register.js"></script>
+  <script>
+    const API_URL = window.APP_CONFIG.API_URL;
+
+    let currentStep = 1;
+    const totalSteps = 5;
+    let initDataCache = { lookups: {} };
+
+    const form = document.getElementById('registrationForm');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const reviewContainer = document.getElementById('reviewContainer');
+
+    const englishLevelSelect = document.getElementById('englishLevelSelect');
+
+    const passportFile = document.getElementById('passportFile');
+    const introVideoFile = document.getElementById('introVideoFile');
+    const passportFileName = document.getElementById('passportFileName');
+    const videoFileName = document.getElementById('videoFileName');
+
+    const categoryInput = document.getElementById('categoryInput');
+    const categoryChoices = document.querySelectorAll('.category-choice');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      bindEvents();
+      updateStepUI();
+      await loadInitData();
+      applyCategoryFromQuery();
+    });
+
+    function bindEvents() {
+      prevBtn.addEventListener('click', goPrev);
+      nextBtn.addEventListener('click', goNext);
+
+      passportFile.addEventListener('change', () => {
+        passportFileName.textContent = passportFile.files[0]?.name || 'لم يتم اختيار ملف بعد';
+      });
+
+      introVideoFile.addEventListener('change', () => {
+        videoFileName.textContent = introVideoFile.files[0]?.name || 'لم يتم اختيار ملف بعد';
+      });
+
+      categoryChoices.forEach(card => {
+        card.addEventListener('click', () => {
+          const category = card.dataset.category;
+          categoryInput.value = category;
+          categoryChoices.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+        });
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!(await validateStep(currentStep))) return;
+
+        const confirmed = document.getElementById('confirmDataCheck').checked;
+        if (!confirmed) {
+          showWarn('يجب تأكيد صحة البيانات قبل الإرسال');
+          return;
+        }
+
+        await submitRegistration();
+      });
+    }
+
+    async function loadInitData() {
+      try {
+        const res = await fetch(`${API_URL}?action=initData`);
+        const json = await res.json();
+        initDataCache = json?.data || { lookups: {} };
+        fillLookups();
+      } catch (error) {
+        console.error(error);
+        showError('تعذر تحميل البيانات الأساسية من النظام');
+      }
+    }
+
+    function fillLookups() {
+      const levels = initDataCache?.lookups?.['مستوى_اللغة_الإنجليزية'] || [];
+      englishLevelSelect.innerHTML = '<option value="">اختر المستوى</option>' +
+        levels.map(item => `<option value="${escapeHtml(item.value)}">${escapeHtml(item.value)}</option>`).join('');
+    }
+
+    function applyCategoryFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const category = params.get('category');
+      if (!category) return;
+
+      const target = [...categoryChoices].find(c => c.dataset.category === category);
+      if (target) {
+        target.click();
+      }
+    }
+
+    function goNext() {
+      validateStep(currentStep).then(ok => {
+        if (!ok) return;
+
+        if (currentStep < totalSteps) {
+          currentStep++;
+          if (currentStep === 5) buildReview();
+          updateStepUI();
+        }
+      });
+    }
+
+    function goPrev() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStepUI();
+      }
+    }
+
+    function updateStepUI() {
+      document.querySelectorAll('.form-step').forEach(el => {
+        el.classList.toggle('active', Number(el.dataset.step) === currentStep);
+      });
+
+      document.querySelectorAll('[data-step-pill]').forEach(el => {
+        el.classList.toggle('active', Number(el.dataset.stepPill) === currentStep);
+      });
+
+      stepIndicator.textContent = `الخطوة ${currentStep} من ${totalSteps}`;
+      prevBtn.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+      nextBtn.classList.toggle('d-none', currentStep === totalSteps);
+      submitBtn.classList.toggle('d-none', currentStep !== totalSteps);
+    }
+
+    async function validateStep(step) {
+      const fields = [...document.querySelectorAll(`.form-step[data-step="${step}"] input, .form-step[data-step="${step}"] select, .form-step[data-step="${step}"] textarea`)];
+      for (const field of fields) {
+        if (field.hasAttribute('required') && !String(field.value || '').trim()) {
+          showWarn(`يرجى تعبئة حقل: ${getFieldLabel(field)}`);
+          field.focus();
+          return false;
+        }
+      }
+
+      if (step === 3) {
+        const age = Number(form.elements['العمر_بالميلادي'].value || 0);
+        const category = form.elements['الفئة'].value;
+
+        if (category === 'أشبال' && (age < 10 || age > 15)) {
+          showWarn('فئة أشبال يجب أن يكون العمر فيها من 10 إلى 15 سنة');
+          return false;
+        }
+
+        if (category === 'قادة' && (age < 16 || age > 20)) {
+          showWarn('فئة قادة يجب أن يكون العمر فيها من 16 إلى 20 سنة');
+          return false;
+        }
+      }
+
+      if (step === 4) {
+        if (!passportFile.files.length) {
+          showWarn('يرجى رفع صورة الجواز');
+          return false;
+        }
+
+        if (!introVideoFile.files.length) {
+          showWarn('يرجى رفع الفيديو التعريفي');
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function buildReview() {
+      const data = collectFormData();
+      const items = [
+        ['اسم الطالب', data['اسم_الطالب_الثلاثي']],
+        ['هوية الطالب', data['هوية_الطالب']],
+        ['رقم الجواز', data['رقم_الجواز']],
+        ['مدينة السكن', data['مدينة_السكن']],
+        ['المدرسة', data['المدرسة']],
+        ['الصف الدراسي', data['الصف_الدراسي']],
+        ['العمر', data['العمر_بالميلادي']],
+        ['مستوى اللغة', data['مستوى_اللغة_الإنجليزية']],
+        ['جوال الابن', data['جوال_الابن']],
+        ['جوال ولي الأمر', data['جوال_ولي_الأمر']],
+        ['هوية ولي الأمر', data['هوية_ولي_الأمر']],
+        ['الفئة', data['الفئة']],
+        ['صورة الجواز', passportFile.files[0]?.name || '—'],
+        ['الفيديو التعريفي', introVideoFile.files[0]?.name || '—']
+      ];
+
+      reviewContainer.innerHTML = items.map(([key, value]) => `
+        <div class="summary-item">
+          <div class="summary-key">${escapeHtml(key)}</div>
+          <div class="summary-value">${escapeHtml(value || '—')}</div>
+        </div>
+      `).join('');
+    }
+
+    function collectFormData() {
+      return {
+        'اسم_الطالب_الثلاثي': form.elements['اسم_الطالب_الثلاثي'].value.trim(),
+        'هوية_الطالب': form.elements['هوية_الطالب'].value.trim(),
+        'رقم_الجواز': form.elements['رقم_الجواز'].value.trim(),
+        'مدينة_السكن': form.elements['مدينة_السكن'].value.trim(),
+        'المدرسة': form.elements['المدرسة'].value.trim(),
+        'الصف_الدراسي': form.elements['الصف_الدراسي'].value.trim(),
+        'العمر_بالميلادي': form.elements['العمر_بالميلادي'].value.trim(),
+        'الهوايات': form.elements['الهوايات'].value.trim(),
+        'المستوى_الدراسي': form.elements['المستوى_الدراسي'].value.trim(),
+        'مستوى_اللغة_الإنجليزية': form.elements['مستوى_اللغة_الإنجليزية'].value,
+        'الحالة_الصحية': form.elements['الحالة_الصحية'].value.trim(),
+        'جوال_الابن': form.elements['جوال_الابن'].value.trim(),
+        'جوال_ولي_الأمر': form.elements['جوال_ولي_الأمر'].value.trim(),
+        'هوية_ولي_الأمر': form.elements['هوية_ولي_الأمر'].value.trim(),
+        'الفئة': form.elements['الفئة'].value,
+        'كيف_عرفت_عن_البرنامج': form.elements['كيف_عرفت_عن_البرنامج'].value.trim()
+      };
+    }
+
+    async function submitRegistration() {
+      try {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
+
+        const data = collectFormData();
+        data['صورة_الجواز'] = await fileToBase64Object(passportFile.files[0]);
+        data['فيديو_تعريفي'] = await fileToBase64Object(introVideoFile.files[0]);
+
+        const payload = {
+          action: 'submitRegistration',
+          data
+        };
+
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+
+        if (json.status !== 'ok') {
+          showError(json.message || 'تعذر إرسال الطلب');
+          return;
+        }
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'تم إرسال الطلب بنجاح',
+          html: `
+            <div style="line-height:2">
+              <div>رقم الطلب:</div>
+              <div style="font-size:1.4rem;font-weight:900;color:#58595b">${escapeHtml(json.applicationNo || '')}</div>
+              <div style="margin-top:10px">احتفظ برقم الطلب للمتابعة لاحقًا.</div>
+            </div>
+          `,
+          confirmButtonText: 'رائع',
+          confirmButtonColor: '#fbc70d'
+        });
+
+        form.reset();
+        passportFileName.textContent = 'لم يتم اختيار ملف بعد';
+        videoFileName.textContent = 'لم يتم اختيار ملف بعد';
+        categoryInput.value = '';
+        categoryChoices.forEach(c => c.classList.remove('active'));
+        currentStep = 1;
+        reviewContainer.innerHTML = '';
+        document.getElementById('confirmDataCheck').checked = false;
+        updateStepUI();
+      } catch (error) {
+        console.error(error);
+        showError('حدث خطأ أثناء إرسال الطلب');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال الطلب';
+      }
+    }
+
+    function fileToBase64Object(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return reject(new Error('No file'));
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const result = reader.result || '';
+          const base64 = String(result).split(',')[1] || '';
+          const extension = (file.name.split('.').pop() || '').toLowerCase();
+
+          resolve({
+            base64,
+            mimeType: file.type || 'application/octet-stream',
+            extension
+          });
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function getFieldLabel(field) {
+      if (field.id === 'categoryInput') return 'الفئة';
+      const wrapper = field.closest('.col-md-6, .col-lg-6, .col-12, .col-lg-7, .col-lg-5');
+      const label = wrapper?.querySelector('.form-label');
+      return label ? label.textContent.trim() : 'الحقل المطلوب';
+    }
+
+    function showWarn(message) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'تنبيه',
+        text: message,
+        confirmButtonText: 'حسنًا',
+        confirmButtonColor: '#fbc70d'
+      });
+    }
+
+    function showError(message) {
+      Swal.fire({
+        icon: 'error',
+        title: 'خطأ',
+        text: message,
+        confirmButtonText: 'إغلاق',
+        confirmButtonColor: '#58595b'
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
 </body>
 </html>
