@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة العاملين | Live English</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="assets/css/styles.css" rel="stylesheet">
+
+  <style>
+    .admin-page{
+      padding-top:110px;
+      padding-bottom:60px;
+      min-height:100vh;
+    }
+
+    .admin-head{
+      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.96));
+      border:1px solid rgba(251,199,13,.22);
+      border-radius:32px;
+      box-shadow:0 22px 48px rgba(88,89,91,.10);
+      padding:24px;
+      margin-bottom:22px;
+    }
+
+    .admin-head-title{
+      font-size:1.9rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:8px;
+    }
+
+    .admin-head-text{
+      color:#707176;
+      margin:0;
+      line-height:1.9;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:24px;
+      box-shadow:0 12px 28px rgba(88,89,91,.08);
+      padding:20px;
+      height:100%;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .stat-card::after{
+      content:"";
+      position:absolute;
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      left:-28px;
+      bottom:-28px;
+      background:rgba(251,199,13,.12);
+    }
+
+    .stat-label{
+      color:#77787d;
+      font-weight:700;
+      margin-bottom:10px;
+      position:relative;
+      z-index:1;
+    }
+
+    .stat-value{
+      color:#58595b;
+      font-size:2rem;
+      font-weight:900;
+      line-height:1.1;
+      position:relative;
+      z-index:1;
+    }
+
+    .admin-panel{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:28px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);
+      padding:22px;
+      margin-bottom:22px;
+    }
+
+    .panel-title{
+      font-size:1.2rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:16px;
+    }
+
+    .filters-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr 1fr auto;
+      gap:14px;
+      align-items:end;
+    }
+
+    .table-shell{
+      overflow:auto;
+      border-radius:22px;
+      border:1px solid #f0ead7;
+    }
+
+    .table-admin{
+      margin:0;
+      min-width:1100px;
+      vertical-align:middle;
+    }
+
+    .table-admin thead th{
+      background:#fff7da;
+      color:#58595b;
+      font-weight:900;
+      border-bottom:1px solid #eadca9;
+      white-space:nowrap;
+    }
+
+    .table-admin td{
+      color:#5d5e62;
+      white-space:nowrap;
+    }
+
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.9rem;
+    }
+
+    .status-pending{ background:rgba(251,199,13,.16); color:#8a6900; }
+    .status-progress{ background:rgba(88,89,91,.10); color:#58595b; }
+    .status-success{ background:rgba(25,135,84,.12); color:#198754; }
+    .status-danger{ background:rgba(220,53,69,.10); color:#dc3545; }
+
+    .actions-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      border:0;
+      border-radius:12px;
+      padding:8px 12px;
+      font-weight:800;
+      transition:.25s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .mini-btn:hover{ transform:translateY(-2px); }
+    .mini-btn-view{ background:#fff4c7; color:#6f5600; }
+    .mini-btn-accept{ background:#e8f7ee; color:#198754; }
+    .mini-btn-reject{ background:#fdebec; color:#dc3545; }
+    .mini-btn-pay{ background:#eef3ff; color:#3153a5; }
+
+    .profile-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .profile-item{
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
+      border:1px solid #efe7cf;
+      border-radius:18px;
+      padding:14px 16px;
+    }
+
+    .profile-item.full{ grid-column:1/-1; }
+
+    .profile-key{
+      color:#7b7c80;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .profile-value{
+      color:#58595b;
+      font-weight:900;
+      line-height:1.8;
+    }
+
+    .modal-box-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .timeline-box{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:18px;
+      padding:14px 16px;
+    }
+
+    .timeline-box-title{
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:5px;
+    }
+
+    .timeline-box-meta{
+      color:#8a8b90;
+      font-size:.92rem;
+      margin-bottom:6px;
+    }
+
+    .timeline-box-text{
+      color:#6f7075;
+      line-height:1.8;
+    }
+
+    @media (max-width: 991.98px){
+      .filters-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width: 767.98px){
+      .filters-grid,
+      .profile-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="brand-badge"><i class="fa-solid fa-language"></i></span>
+        <span>Live English</span>
+      </a>
+
+      <div class="ms-auto d-flex gap-2">
+        <a href="index.html" class="btn btn-le-outline">
+          <i class="fa-solid fa-house"></i>
+          الرئيسية
+        </a>
+        <button id="logoutBtn" class="btn btn-le-dark">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          خروج
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="admin-page">
+    <div class="container">
+      <div class="admin-head">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+          <div>
+            <div class="admin-head-title">لوحة العاملين</div>
+            <p class="admin-head-text" id="welcomeText">جاري تحميل بيانات المستخدم...</p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-le" id="refreshDashboardBtn">
+              <i class="fa-solid fa-rotate"></i>
+              تحديث البيانات
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-label">إجمالي الطلبات</div>
+            <div class="stat-value" id="statTotal">0</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-label">تحت المراجعة</div>
+            <div class="stat-value" id="statReview">0</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-label">بانتظار السداد</div>
+            <div class="stat-value" id="statPending">0</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-label">مكتمل السداد</div>
+            <div class="stat-value" id="statPaid">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="panel-title">الطلبات</div>
+
+        <div class="filters-grid mb-4">
+          <div>
+            <label class="form-label">بحث</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="اسم الطالب أو الهوية أو رقم الطلب">
+          </div>
+          <div>
+            <label class="form-label">الحالة</label>
+            <select id="statusFilter" class="form-select">
+              <option value="">الكل</option>
+              <option value="تسجيل أولي">تسجيل أولي</option>
+              <option value="تحت المراجعة">تحت المراجعة</option>
+              <option value="مقبول مبدئيًا وبانتظار السداد">مقبول مبدئيًا وبانتظار السداد</option>
+              <option value="سداد جزئي">سداد جزئي</option>
+              <option value="مؤجل السداد">مؤجل السداد</option>
+              <option value="مكتمل السداد">مكتمل السداد</option>
+              <option value="طالب نشط">طالب نشط</option>
+              <option value="مرفوض">مرفوض</option>
+              <option value="منسحب">منسحب</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">حالة السداد</label>
+            <select id="paymentFilter" class="form-select">
+              <option value="">الكل</option>
+              <option value="بانتظار السداد">بانتظار السداد</option>
+              <option value="سداد جزئي">سداد جزئي</option>
+              <option value="مؤجل">مؤجل</option>
+              <option value="مكتمل السداد">مكتمل السداد</option>
+              <option value="مرفوض">مرفوض</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">الفئة</label>
+            <select id="categoryFilter" class="form-select">
+              <option value="">الكل</option>
+              <option value="شبال">شبال</option>
+              <option value="قادة">قادة</option>
+            </select>
+          </div>
+          <div class="d-grid">
+            <button id="applyFiltersBtn" class="btn btn-le">
+              <i class="fa-solid fa-filter"></i>
+              تطبيق
+            </button>
+          </div>
+        </div>
+
+        <div class="table-shell">
+          <table class="table table-admin">
+            <thead>
+              <tr>
+                <th>رقم الطلب</th>
+                <th>الاسم</th>
+                <th>الفئة</th>
+                <th>حالة الطلب</th>
+                <th>السداد</th>
+                <th>المبلغ</th>
+                <th>المدفوع</th>
+                <th>المتبقي</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="applicationsTableBody">
+              <tr>
+                <td colspan="9" class="text-center py-4">جاري تحميل البيانات...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content border-0" style="border-radius:28px;overflow:hidden;">
+        <div class="modal-header" style="background:#fff7da;border-bottom:1px solid #eadca9;">
+          <h5 class="modal-title fw-bold" id="profileModalTitle">بطاقة الطالب</h5>
+          <button type="button" class="btn-close m-0 ms-auto shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-white">
+          <div id="profileModalBody">جاري التحميل...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="assets/js/config.js"></script>
+  <script>
+    const API_URL = window.APP_CONFIG.API_URL;
+    const profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
+    let currentUser = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      guardAuth();
+      bindEvents();
+      await loadDashboard();
+      await loadApplications();
+    });
+
+    function guardAuth() {
+      const raw = localStorage.getItem('liveEnglishStaffUser');
+      if (!raw) {
+        window.location.href = 'staff-login.html';
+        return;
+      }
+
+      try {
+        currentUser = JSON.parse(raw);
+      } catch {
+        localStorage.removeItem('liveEnglishStaffUser');
+        window.location.href = 'staff-login.html';
+        return;
+      }
+
+      document.getElementById('welcomeText').textContent = `مرحبًا ${currentUser.name || ''} — ${currentUser.role || ''}`;
+    }
+
+    function bindEvents() {
+      document.getElementById('refreshDashboardBtn').addEventListener('click', async () => {
+        await loadDashboard();
+        await loadApplications();
+      });
+
+      document.getElementById('applyFiltersBtn').addEventListener('click', loadApplications);
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+      document.getElementById('searchInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') loadApplications();
+      });
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(`${API_URL}?action=dashboardStats`);
+        const json = await res.json();
+        const data = json?.data || {};
+        const counts = data.statusCounts || {};
+
+        document.getElementById('statTotal').textContent = toNum(data.totalApplications);
+        document.getElementById('statReview').textContent = toNum(counts['تحت المراجعة'] || counts['تسجيل أولي']);
+        document.getElementById('statPending').textContent = toNum(counts['مقبول مبدئيًا وبانتظار السداد']);
+        document.getElementById('statPaid').textContent = toNum(counts['مكتمل السداد']);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadApplications() {
+      const tbody = document.getElementById('applicationsTableBody');
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">جاري تحميل البيانات...</td></tr>';
+
+      const params = new URLSearchParams({
+        action: 'getApplications',
+        search: document.getElementById('searchInput').value.trim(),
+        status: document.getElementById('statusFilter').value,
+        paymentStatus: document.getElementById('paymentFilter').value,
+        category: document.getElementById('categoryFilter').value,
+        includeRejected: 'true',
+        sortDir: 'desc'
+      });
+
+      try {
+        const res = await fetch(`${API_URL}?${params.toString()}`);
+        const json = await res.json();
+        const items = json?.data || [];
+
+        if (!items.length) {
+          tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">لا توجد نتائج مطابقة.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = items.map(item => `
+          <tr>
+            <td>${escapeHtml(item.applicationNo || '')}</td>
+            <td>
+              <div class="fw-bold">${escapeHtml(item.name || '')}</div>
+              <div class="text-muted small">${escapeHtml(item.studentIdentity || '')}</div>
+            </td>
+            <td>${escapeHtml(item.category || '')}</td>
+            <td>${renderStatus(item.applicationStatus)}</td>
+            <td>${renderPaymentStatus(item.paymentStatus)}</td>
+            <td>${formatMoney(item.packageAmount)}</td>
+            <td>${formatMoney(item.paidAmount)}</td>
+            <td>${formatMoney(item.remainingAmount)}</td>
+            <td>
+              <div class="actions-row">
+                <button class="mini-btn mini-btn-view" onclick="openProfile('${escapeJs(item.applicationNo)}')">
+                  <i class="fa-solid fa-eye"></i> عرض
+                </button>
+                <button class="mini-btn mini-btn-accept" onclick="quickSetStatus('${escapeJs(item.applicationNo)}','تحت المراجعة')">
+                  <i class="fa-solid fa-check"></i> مراجعة
+                </button>
+                <button class="mini-btn mini-btn-reject" onclick="quickReject('${escapeJs(item.applicationNo)}')">
+                  <i class="fa-solid fa-xmark"></i> رفض
+                </button>
+                <button class="mini-btn mini-btn-pay" onclick="openPaymentAction('${escapeJs(item.applicationNo)}')">
+                  <i class="fa-solid fa-wallet"></i> سداد
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">تعذر تحميل البيانات.</td></tr>';
+      }
+    }
+
+    function renderStatus(status) {
+      const s = String(status || '');
+      let cls = 'status-progress';
+      if (s.includes('مرفوض')) cls = 'status-danger';
+      else if (s.includes('مكتمل') || s.includes('نشط')) cls = 'status-success';
+      else if (s.includes('بانتظار') || s.includes('أولي') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-amber';
+      return `<span class="status-badge ${cls}">${escapeHtml(s || '—')}</span>`;
+    }
+
+    function renderPaymentStatus(status) {
+      const s = String(status || '');
+      let cls = 'status-progress';
+      if (s.includes('مرفوض')) cls = 'status-danger';
+      else if (s.includes('مكتمل')) cls = 'status-success';
+      else if (s.includes('بانتظار') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-amber';
+      return `<span class="status-badge ${cls}">${escapeHtml(s || '—')}</span>`;
+    }
+
+    async function openProfile(applicationNo) {
+      document.getElementById('profileModalTitle').textContent = `بطاقة الطالب — ${applicationNo}`;
+      document.getElementById('profileModalBody').innerHTML = 'جاري التحميل...';
+      profileModal.show();
+
+      try {
+        const res = await fetch(`${API_URL}?action=getStudentProfile&applicationNo=${encodeURIComponent(applicationNo)}`);
+        const json = await res.json();
+
+        if (!json.ok) {
+          document.getElementById('profileModalBody').innerHTML = '<div class="empty-box">تعذر تحميل بطاقة الطالب.</div>';
+          return;
+        }
+
+        const data = json.data || {};
+        const app = data.application || {};
+        const student = data.student || {};
+        const attachments = data.attachments || [];
+        const timeline = data.timeline || [];
+        const payments = data.payments || [];
+        const reports = data.reports || [];
+
+        document.getElementById('profileModalBody').innerHTML = `
+          <div class="row g-4">
+            <div class="col-lg-7">
+              <div class="profile-grid">
+                <div class="profile-item"><div class="profile-key">اسم الطالب</div><div class="profile-value">${escapeHtml(app['اسم_الطالب_الثلاثي'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">رقم الطلب</div><div class="profile-value">${escapeHtml(app['رقم_الطلب'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">هوية الطالب</div><div class="profile-value">${escapeHtml(student['هوية_الطالب'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">رقم الجواز</div><div class="profile-value">${escapeHtml(student['رقم_الجواز'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">الفئة</div><div class="profile-value">${escapeHtml(app['الفئة'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">الباقة</div><div class="profile-value">${escapeHtml(app['الباقة'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">حالة الطلب</div><div class="profile-value">${escapeHtml(app['حالة_الطلب'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">حالة السداد</div><div class="profile-value">${escapeHtml(app['حالة_السداد'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">جوال الابن</div><div class="profile-value">${escapeHtml(student['جوال_الابن'] || '')}</div></div>
+                <div class="profile-item"><div class="profile-key">جوال ولي الأمر</div><div class="profile-value">${escapeHtml(student['جوال_ولي_الأمر'] || '')}</div></div>
+                <div class="profile-item full"><div class="profile-key">ملاحظات عامة</div><div class="profile-value">${escapeHtml(app['ملاحظات_عامة'] || '—')}</div></div>
+              </div>
+
+              <div class="mt-4">
+                <div class="panel-title">المرفقات</div>
+                ${
+                  attachments.length
+                    ? `<div class="modal-box-list">
+                        ${attachments.map(item => `
+                          <div class="timeline-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+                            <div>
+                              <div class="timeline-box-title">${escapeHtml(item['اسم_الملف'] || '')}</div>
+                              <div class="timeline-box-meta">${escapeHtml(item['نوع_المرفق'] || '')}</div>
+                            </div>
+                            <a href="${item['رابط_الملف'] || '#'}" target="_blank" class="btn btn-le-outline">
+                              <i class="fa-solid fa-up-right-from-square"></i>
+                              فتح
+                            </a>
+                          </div>
+                        `).join('')}
+                      </div>`
+                    : `<div class="empty-box">لا توجد مرفقات.</div>`
+                }
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <div class="panel-title">الخط الزمني</div>
+              ${
+                timeline.length
+                  ? `<div class="modal-box-list mb-4">
+                      ${timeline.map(item => `
+                        <div class="timeline-box">
+                          <div class="timeline-box-title">${escapeHtml(item['الحالة'] || '')}</div>
+                          <div class="timeline-box-meta">${escapeHtml(item['التاريخ'] || '')}</div>
+                          <div class="timeline-box-text">${escapeHtml(item['الوصف'] || '—')}</div>
+                        </div>
+                      `).join('')}
+                    </div>`
+                  : `<div class="empty-box mb-4">لا يوجد خط زمني.</div>`
+              }
+
+              <div class="panel-title">السداد</div>
+              ${
+                payments.length
+                  ? `<div class="modal-box-list mb-4">
+                      ${payments.map(item => `
+                        <div class="timeline-box">
+                          <div class="timeline-box-title">${escapeHtml(item['حالة_السداد'] || '')}</div>
+                          <div class="timeline-box-meta">${escapeHtml(item['تاريخ_العملية'] || '')}</div>
+                          <div class="timeline-box-text">المدفوع: ${formatMoney(item['المدفوع'])} — المتبقي: ${formatMoney(item['المتبقي'])}</div>
+                        </div>
+                      `).join('')}
+                    </div>`
+                  : `<div class="empty-box mb-4">لا توجد سجلات سداد.</div>`
+              }
+
+              <div class="panel-title">التقارير التعليمية</div>
+              ${
+                reports.length
+                  ? `<div class="modal-box-list">
+                      ${reports.map(item => `
+                        <div class="timeline-box">
+                          <div class="timeline-box-title">${escapeHtml(item['المعلم'] || '')}</div>
+                          <div class="timeline-box-meta">${escapeHtml(item['تاريخ_الإنشاء'] || '')}</div>
+                          <div class="timeline-box-text">${escapeHtml(item['ملاحظات'] || item['التوصيات'] || '—')}</div>
+                        </div>
+                      `).join('')}
+                    </div>`
+                  : `<div class="empty-box">لا توجد تقارير تعليمية.</div>`
+              }
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        console.error(e);
+        document.getElementById('profileModalBody').innerHTML = '<div class="empty-box">تعذر تحميل بطاقة الطالب.</div>';
+      }
+    }
+
+    async function quickSetStatus(applicationNo, status) {
+      const result = await Swal.fire({
+        title: 'تحديث حالة الطلب',
+        input: 'textarea',
+        inputLabel: 'ملاحظات',
+        inputPlaceholder: 'اكتب ملاحظة مختصرة...',
+        showCancelButton: true,
+        confirmButtonText: 'حفظ',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#fbc70d'
+      });
+
+      if (!result.isConfirmed) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'updateApplicationStatus',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data: {
+              'رقم_الطلب': applicationNo,
+              'حالة_الطلب': status,
+              'ملاحظات_عامة': result.value || '',
+              'وصف_الحركة': `تم تحديث حالة الطلب إلى ${status}`
+            }
+          })
+        });
+
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التحديث');
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'تم الحفظ',
+          text: 'تم تحديث الحالة بنجاح',
+          confirmButtonColor: '#fbc70d'
+        });
+
+        await loadDashboard();
+        await loadApplications();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({
+          icon: 'error',
+          title: 'تعذر الحفظ',
+          text: e.message || 'حدث خطأ',
+          confirmButtonColor: '#58595b'
+        });
+      }
+    }
+
+    async function quickReject(applicationNo) {
+      const result = await Swal.fire({
+        title: 'رفض الطلب',
+        input: 'textarea',
+        inputLabel: 'سبب الرفض',
+        inputPlaceholder: 'اكتب سبب الرفض...',
+        inputValidator: value => !value ? 'سبب الرفض مطلوب' : null,
+        showCancelButton: true,
+        confirmButtonText: 'تأكيد الرفض',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#dc3545'
+      });
+
+      if (!result.isConfirmed) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'updateApplicationStatus',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data: {
+              'رقم_الطلب': applicationNo,
+              'حالة_الطلب': 'مرفوض',
+              'سبب_الرفض': result.value,
+              'ملاحظات_عامة': result.value,
+              'وصف_الحركة': 'تم رفض الطلب'
+            }
+          })
+        });
+
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التحديث');
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'تم رفض الطلب',
+          confirmButtonColor: '#fbc70d'
+        });
+
+        await loadDashboard();
+        await loadApplications();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({
+          icon: 'error',
+          title: 'تعذر التنفيذ',
+          text: e.message || 'حدث خطأ',
+          confirmButtonColor: '#58595b'
+        });
+      }
+    }
+
+    async function openPaymentAction(applicationNo) {
+      const { value: formValues } = await Swal.fire({
+        title: 'إجراء سداد',
+        html: `
+          <div class="text-end">
+            <label class="form-label">الإجراء</label>
+            <select id="swalPayAction" class="form-select mb-3">
+              <option value="بانتظار السداد">بانتظار السداد</option>
+              <option value="دفع جزئي">دفع جزئي</option>
+              <option value="مكتمل السداد">مكتمل السداد</option>
+              <option value="مؤجل">مؤجل</option>
+            </select>
+
+            <label class="form-label">المبلغ المدفوع الآن</label>
+            <input id="swalPaidNow" type="number" class="form-control mb-3" value="0">
+
+            <label class="form-label">رقم الفاتورة</label>
+            <input id="swalInvoiceNo" type="text" class="form-control mb-3">
+
+            <label class="form-label">رابط الفاتورة</label>
+            <input id="swalInvoiceUrl" type="text" class="form-control mb-3">
+
+            <label class="form-label">ملاحظات</label>
+            <textarea id="swalPayNote" class="form-control" rows="3"></textarea>
+          </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'حفظ',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#fbc70d',
+        preConfirm: () => ({
+          actionType: document.getElementById('swalPayAction').value,
+          paidNow: document.getElementById('swalPaidNow').value,
+          invoiceNo: document.getElementById('swalInvoiceNo').value,
+          invoiceUrl: document.getElementById('swalInvoiceUrl').value,
+          note: document.getElementById('swalPayNote').value
+        })
+      });
+
+      if (!formValues) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'savePaymentAction',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data: {
+              'رقم_الطلب': applicationNo,
+              'الإجراء': formValues.actionType,
+              'المدفوع_الآن': Number(formValues.paidNow || 0),
+              'رقم_الفاتورة': formValues.invoiceNo || '',
+              'رابط_الفاتورة': formValues.invoiceUrl || '',
+              'ملاحظات': formValues.note || ''
+            }
+          })
+        });
+
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'تم حفظ إجراء السداد',
+          confirmButtonColor: '#fbc70d'
+        });
+
+        await loadDashboard();
+        await loadApplications();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({
+          icon: 'error',
+          title: 'تعذر حفظ السداد',
+          text: e.message || 'حدث خطأ',
+          confirmButtonColor: '#58595b'
+        });
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('liveEnglishStaffUser');
+      window.location.href = 'staff-login.html';
+    }
+
+    function formatMoney(value) {
+      return `${toNum(value).toLocaleString('en-US')} ر.س`;
+    }
+
+    function toNum(v) {
+      const n = Number(v || 0);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeJs(value) {
+      return String(value ?? '').replace(/'/g, "\\'");
+    }
+  </script>
+</body>
+</html>
