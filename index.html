@@ -16,9 +16,9 @@
 
   <style>
     .home-hero{
-      padding: 120px 0 72px;
-      position: relative;
-      overflow: hidden;
+      padding:120px 0 72px;
+      position:relative;
+      overflow:hidden;
     }
     .home-hero::before{
       content:"";
@@ -32,13 +32,13 @@
     .home-wrap{ position:relative; z-index:1; }
 
     .hero-panel{
-      background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.96));
-      border: 1px solid rgba(251,199,13,.22);
-      border-radius: 34px;
-      box-shadow: 0 24px 60px rgba(88,89,91,.14);
-      padding: 34px;
-      overflow: hidden;
-      position: relative;
+      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.96));
+      border:1px solid rgba(251,199,13,.22);
+      border-radius:34px;
+      box-shadow:0 24px 60px rgba(88,89,91,.14);
+      padding:34px;
+      overflow:hidden;
+      position:relative;
     }
     .hero-panel::after{
       content:"";
@@ -48,7 +48,7 @@
       border-radius:50%;
       left:-70px;
       bottom:-70px;
-      background: rgba(251,199,13,.12);
+      background:rgba(251,199,13,.12);
     }
 
     .home-badge{
@@ -57,7 +57,7 @@
       gap:8px;
       padding:10px 16px;
       border-radius:999px;
-      background: rgba(251,199,13,.12);
+      background:rgba(251,199,13,.12);
       border:1px solid rgba(251,199,13,.22);
       color:#7b5f00;
       font-weight:800;
@@ -65,7 +65,7 @@
     }
 
     .home-title{
-      font-size: clamp(2.2rem, 4vw, 4.2rem);
+      font-size:clamp(2.2rem, 4vw, 4.2rem);
       line-height:1.15;
       font-weight:900;
       color:#58595b;
@@ -84,7 +84,7 @@
       display:flex;
       flex-wrap:wrap;
       gap:12px;
-      margin-bottom:24px;
+      margin-bottom:0;
     }
 
     .hero-media-box{
@@ -144,7 +144,81 @@
       margin:0;
     }
 
-    .package-card-home,
+    .category-card{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:30px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);
+      height:100%;
+      padding:28px;
+      transition:.28s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .category-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 24px 48px rgba(88,89,91,.14);
+    }
+
+    .category-card::after{
+      content:"";
+      position:absolute;
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      left:-45px;
+      bottom:-45px;
+      background:rgba(251,199,13,.12);
+    }
+
+    .category-icon{
+      width:72px;
+      height:72px;
+      border-radius:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(251,199,13,.18), rgba(251,199,13,.34));
+      color:#58595b;
+      font-size:1.7rem;
+      margin-bottom:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .category-title{
+      font-size:1.4rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:10px;
+      position:relative;
+      z-index:1;
+    }
+
+    .category-text{
+      color:#6f7075;
+      line-height:1.95;
+      margin-bottom:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .category-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(251,199,13,.14);
+      color:#8a6900;
+      font-weight:800;
+      font-size:.92rem;
+      position:relative;
+      z-index:1;
+      margin-bottom:18px;
+    }
+
     .year-card-home{
       background:rgba(255,255,255,.98);
       border:1px solid #efe7cf;
@@ -155,26 +229,15 @@
       transition:.28s ease;
     }
 
-    .package-card-home:hover,
     .year-card-home:hover{
       transform:translateY(-8px);
       box-shadow:0 22px 42px rgba(88,89,91,.14);
     }
 
-    .package-cover{
-      width:100%;
-      aspect-ratio: 16/11;
-      object-fit:cover;
-      background:#f7f1df;
-      display:block;
-    }
-
-    .package-body-home,
     .year-body-home{
       padding:22px;
     }
 
-    .package-title-home,
     .year-title-home{
       font-size:1.18rem;
       font-weight:900;
@@ -182,17 +245,10 @@
       margin-bottom:10px;
     }
 
-    .package-desc-home,
     .year-desc-home{
       color:#6f7075;
       line-height:1.9;
       margin-bottom:16px;
-    }
-
-    .package-price-home{
-      font-size:1.4rem;
-      font-weight:900;
-      color:#58595b;
     }
 
     .year-topline{
@@ -294,7 +350,7 @@
       transform:translateY(-3px);
     }
 
-    @media (max-width: 991.98px){
+    @media (max-width:991.98px){
       .home-hero{ padding-top:105px; }
       .quick-links-grid{ grid-template-columns:1fr; }
     }
@@ -315,7 +371,7 @@
 
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto mb-3 mb-lg-0 align-items-lg-center gap-lg-2">
-          <li class="nav-item"><a class="nav-link" href="#packagesSection">الباقات</a></li>
+          <li class="nav-item"><a class="nav-link" href="#categoriesSection">الفئات</a></li>
           <li class="nav-item"><a class="nav-link" href="#yearsSection">عبر السنوات</a></li>
           <li class="nav-item"><a class="nav-link" href="track.html">متابعة الطلب</a></li>
           <li class="nav-item"><a class="nav-link" href="staff-login.html">دخول العاملين</a></li>
@@ -344,7 +400,7 @@
             <h1 class="home-title">Live English</h1>
 
             <p class="home-desc">
-              برنامج صيفي لتعلّم اللغة الإنجليزية، في بريطانيا.
+              برنامج صيفي لتعلّم اللغة الإنجليزية، بتجربة تسجيل منظمة، متابعة واضحة، واستعراض أنيق لمحتوى البرنامج عبر السنوات.
             </p>
 
             <div class="home-actions">
@@ -371,8 +427,8 @@
                 <div style="font-size:3rem;color:#fbc70d;margin-bottom:12px;">
                   <i class="fa-solid fa-book-open-reader"></i>
                 </div>
-                <div> لاحقًا سيتم استبدال هذه المساحة</div>
-                <div>بصورة رئيسية أو فيديو تعريفي للبرنامج</div>
+                <div>يمكنك لاحقًا وضع صورة رئيسية</div>
+                <div>أو فيديو تعريفي خاص بالبرنامج</div>
               </div>
             </div>
           </div>
@@ -381,22 +437,54 @@
     </div>
   </section>
 
-  <section id="packagesSection" class="section-padding">
+  <section id="categoriesSection" class="section-padding">
     <div class="container">
       <div class="section-head">
         <div>
-          <h2 class="section-title-home">الباقات</h2>
-          <p class="section-note-home">اختر الباقة المناسبة وابدأ التسجيل مباشرة.</p>
+          <h2 class="section-title-home">الفئات</h2>
+          <p class="section-note-home">اختر الفئة المناسبة ثم انتقل مباشرة إلى التسجيل.</p>
         </div>
-        <a href="register.html" class="btn btn-le-outline">
-          <i class="fa-solid fa-arrow-left-long"></i>
-          الانتقال إلى التسجيل
-        </a>
       </div>
 
-      <div class="row g-4" id="packagesContainer">
-        <div class="col-12">
-          <div class="empty-box">جاري تحميل الباقات...</div>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fa-solid fa-child-reaching"></i>
+            </div>
+            <div class="category-badge">
+              <i class="fa-solid fa-users"></i>
+              الفئة الأولى
+            </div>
+            <div class="category-title">أشبال</div>
+            <div class="category-text">
+              مخصصة للفئة العمرية من 10 إلى 15 سنة، ضمن تجربة تعليمية مناسبة للمرحلة العمرية والمهارية.
+            </div>
+            <a href="register.html?category=أشبال" class="btn btn-le">
+              <i class="fa-solid fa-arrow-left-long"></i>
+              التسجيل في أشبال
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div class="category-badge">
+              <i class="fa-solid fa-users"></i>
+              الفئة الثانية
+            </div>
+            <div class="category-title">قادة</div>
+            <div class="category-text">
+              مخصصة للفئة العمرية من 16 إلى 20 سنة، ضمن تجربة أكثر نضجًا من حيث المحتوى والتفاعل والمهارات.
+            </div>
+            <a href="register.html?category=قادة" class="btn btn-le-dark">
+              <i class="fa-solid fa-arrow-left-long"></i>
+              التسجيل في قادة
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -445,7 +533,7 @@
         <div class="quick-link-card">
           <div class="quick-link-icon"><i class="fa-solid fa-user-lock"></i></div>
           <div class="quick-link-title">دخول العاملين</div>
-          <div class="quick-link-text">دخول مخصص للعاملين للوصول.</div>
+          <div class="quick-link-text">دخول مخصص للعاملين للوصول إلى لوحة الإدارة ومراجعة الطلبات والمتابعة الداخلية.</div>
           <a href="staff-login.html" class="btn btn-le-outline">
             <i class="fa-solid fa-right-to-bracket"></i>
             دخول العاملين
@@ -483,45 +571,11 @@
         const res = await fetch(`${window.APP_CONFIG.API_URL}?action=initData`);
         const json = await res.json();
         const data = json?.data || {};
-        renderPackages(data.packages || []);
         renderYears(data.years || []);
       } catch (e) {
         console.error(e);
-        document.getElementById('packagesContainer').innerHTML = '<div class="col-12"><div class="empty-box">تعذر تحميل الباقات.</div></div>';
         document.getElementById('yearsContainer').innerHTML = '<div class="col-12"><div class="empty-box">تعذر تحميل السنوات.</div></div>';
       }
-    }
-
-    function safeImg(url, text) {
-      return url || `https://placehold.co/900x620/f8f1db/58595b?text=${encodeURIComponent(text || 'Live English')}`;
-    }
-
-    function renderPackages(items) {
-      const container = document.getElementById('packagesContainer');
-
-      if (!items.length) {
-        container.innerHTML = '<div class="col-12"><div class="empty-box">لا توجد باقات مفعلة حاليًا.</div></div>';
-        return;
-      }
-
-      container.innerHTML = items.map(item => `
-        <div class="col-md-6 col-xl-4">
-          <div class="package-card-home">
-            <img class="package-cover" src="${safeImg(item.imageUrl, item.title)}" alt="${escapeHtml(item.title || '')}">
-            <div class="package-body-home">
-              <div class="package-title-home">${escapeHtml(item.title || '')}</div>
-              <div class="package-desc-home">${escapeHtml(item.description || '')}</div>
-              <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-                <div class="package-price-home">${Number(item.price || 0).toLocaleString('en-US')} ر.س</div>
-                <a href="register.html" class="btn btn-le ${item.registerEnabled ? '' : 'disabled'}">
-                  <i class="fa-solid fa-arrow-left-long"></i>
-                  التسجيل
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('');
     }
 
     function renderYears(items) {
