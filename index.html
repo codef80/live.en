@@ -15,6 +15,14 @@
   <link href="assets/css/styles.css" rel="stylesheet">
 
   <style>
+    .brand-logo-img{
+      width:34px;
+      height:34px;
+      object-fit:contain;
+      display:block;
+      border-radius:10px;
+    }
+
     .home-hero{
       padding:120px 0 72px;
       position:relative;
@@ -85,42 +93,6 @@
       flex-wrap:wrap;
       gap:12px;
       margin-bottom:0;
-    }
-
-    .hero-media-box{
-      background:#fff;
-      border:1px solid rgba(239,231,207,.95);
-      border-radius:28px;
-      min-height:420px;
-      box-shadow:0 18px 36px rgba(88,89,91,.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .hero-media-box::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(251,199,13,.06), rgba(255,255,255,.02));
-      pointer-events:none;
-    }
-
-    .hero-media-inner{
-      position:relative;
-      z-index:1;
-      width:100%;
-      height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color:#7a7b7f;
-      font-weight:700;
-      line-height:2;
     }
 
     .section-head{
@@ -321,6 +293,27 @@
       margin-bottom:18px;
     }
 
+    .loading-box{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:24px;
+      padding:28px;
+      text-align:center;
+      box-shadow:0 10px 24px rgba(88,89,91,.06);
+    }
+
+    .loading-spinner{
+      width:2.2rem;
+      height:2.2rem;
+      color:#fbc70d;
+    }
+
+    .loading-text{
+      margin-top:12px;
+      color:#6f7075;
+      font-weight:800;
+    }
+
     .footer-clean{
       background:linear-gradient(135deg, #58595b, #4a4b4e);
       color:#fff;
@@ -363,20 +356,37 @@
 
     .made-by-link{
       display:inline-flex;
+      flex-direction:column;
       align-items:center;
-      gap:8px;
+      gap:4px;
       color:#fff;
       text-decoration:none;
-      font-weight:800;
+      font-weight:700;
+      font-size:.88rem;
+      line-height:1;
     }
 
     .made-by-link:hover{
       color:#fbc70d;
     }
 
+    .made-by-line{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      justify-content:center;
+    }
+
+    .made-by-underline{
+      width:100%;
+      height:1px;
+      background:rgba(255,255,255,.45);
+      border-radius:999px;
+    }
+
     .made-by-logo{
-      width:20px;
-      height:20px;
+      width:16px;
+      height:16px;
       object-fit:contain;
       display:block;
     }
@@ -392,7 +402,7 @@
   <nav class="navbar navbar-expand-lg fixed-top glass-nav">
     <div class="container">
       <a class="navbar-brand" href="index.html">
-        <span class="brand-badge"><i class="fa-solid fa-language"></i></span>
+        <img src="https://i.ibb.co/2QNwJCd/image.png" alt="Live English" class="brand-logo-img">
         <span>Live English</span>
       </a>
 
@@ -421,7 +431,7 @@
   <section class="home-hero">
     <div class="container home-wrap">
       <div class="row g-4 align-items-center">
-        <div class="col-lg-7">
+        <div class="col-lg-12">
           <div class="hero-panel">
             <div class="home-badge">
               <i class="fa-solid fa-star"></i>
@@ -450,20 +460,6 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-5">
-          <div class="hero-media-box">
-            <div class="hero-media-inner">
-              <div>
-                <div style="font-size:3rem;color:#fbc70d;margin-bottom:12px;">
-                  <i class="fa-solid fa-book-open-reader"></i>
-                </div>
-                <div>منصة حديثة لتنظيم التسجيل</div>
-                <div>وعرض البرنامج بصريًا بشكل أنيق</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -479,7 +475,10 @@
 
       <div class="row g-4" id="categoriesContainer">
         <div class="col-12">
-          <div class="empty-box">جاري تحميل الفئات...</div>
+          <div class="loading-box">
+            <div class="spinner-border loading-spinner" role="status"></div>
+            <div class="loading-text">جاري التحميل...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -496,7 +495,10 @@
 
       <div class="row g-4" id="yearsContainer">
         <div class="col-12">
-          <div class="empty-box">جاري تحميل السنوات...</div>
+          <div class="loading-box">
+            <div class="spinner-border loading-spinner" role="status"></div>
+            <div class="loading-text">جاري التحميل...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -546,8 +548,11 @@
           <div class="text-white-50 mb-2">جميع الحقوق محفوظة</div>
           <div class="made-by-wrap">
             <a class="made-by-link" href="https://codefyd.github.io/CODEF1/" target="_blank" rel="noopener noreferrer">
-              <span>صنع بواسطة codef</span>
-              <img src="https://i.ibb.co/VyGwJgs/1561.png" alt="codef" class="made-by-logo">
+              <span class="made-by-line">
+                <span>صنع بواسطة codef</span>
+                <img src="https://i.ibb.co/VyGwJgs/1561.png" alt="codef" class="made-by-logo">
+              </span>
+              <span class="made-by-underline"></span>
             </a>
           </div>
         </div>
@@ -579,7 +584,14 @@
 
     async function loadCategories() {
       const container = document.getElementById('categoriesContainer');
-      container.innerHTML = '<div class="col-12"><div class="empty-box">جاري تحميل الفئات...</div></div>';
+      container.innerHTML = `
+        <div class="col-12">
+          <div class="loading-box">
+            <div class="spinner-border loading-spinner" role="status"></div>
+            <div class="loading-text">جاري التحميل...</div>
+          </div>
+        </div>
+      `;
 
       try {
         const res = await fetch(`${API_URL}?action=getPackages`);
@@ -623,7 +635,14 @@
 
     async function loadYears() {
       const container = document.getElementById('yearsContainer');
-      container.innerHTML = '<div class="col-12"><div class="empty-box">جاري تحميل السنوات...</div></div>';
+      container.innerHTML = `
+        <div class="col-12">
+          <div class="loading-box">
+            <div class="spinner-border loading-spinner" role="status"></div>
+            <div class="loading-text">جاري التحميل...</div>
+          </div>
+        </div>
+      `;
 
       try {
         const res = await fetch(`${API_URL}?action=getYears`);
