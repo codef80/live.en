@@ -315,7 +315,11 @@
         });
 
         // غيّر الوجهة لاحقًا إلى الصفحة الإدارية الفعلية
-        window.location.href = 'admin.html';
+        if (String(user.role || '') === 'معلم') {
+          window.location.href = 'teacher.html';
+        } else { 
+          window.location.href = 'admin.html';
+        }
       } catch (error) {
         console.error(error);
         Swal.fire({
