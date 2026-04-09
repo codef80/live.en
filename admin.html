@@ -3,296 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة العاملين | Live English</title>
+  <title>لوحة المشرف | Live English</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <link href="assets/css/styles.css" rel="stylesheet">
 
   <style>
-    .admin-page{
-      padding-top:110px;
-      padding-bottom:60px;
-      min-height:100vh;
-    }
-
+    .admin-page{padding-top:110px;padding-bottom:60px;min-height:100vh}
     .admin-head{
-      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.96));
+      background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(255,248,223,.96));
       border:1px solid rgba(251,199,13,.22);
-      border-radius:32px;
-      box-shadow:0 22px 48px rgba(88,89,91,.10);
-      padding:24px;
-      margin-bottom:22px;
+      border-radius:32px;box-shadow:0 22px 48px rgba(88,89,91,.10);
+      padding:24px;margin-bottom:22px
     }
-
-    .admin-head-title{
-      font-size:1.9rem;
-      font-weight:900;
-      color:#58595b;
-      margin-bottom:8px;
-    }
-
-    .admin-head-text{
-      color:#707176;
-      margin:0;
-      line-height:1.9;
-    }
-
-    .quick-admin-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:16px;
-      margin-bottom:22px;
-    }
-
-    .quick-admin-card{
-      background:#fff;
-      border:1px solid #efe7cf;
-      border-radius:24px;
-      box-shadow:0 12px 28px rgba(88,89,91,.08);
-      padding:20px;
-      transition:.25s ease;
-      height:100%;
-    }
-
-    .quick-admin-card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 20px 40px rgba(88,89,91,.14);
-    }
-
-    .quick-admin-icon{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg, rgba(251,199,13,.18), rgba(251,199,13,.34));
-      color:#58595b;
-      font-size:1.35rem;
-      margin-bottom:14px;
-    }
-
-    .quick-admin-title{
-      font-size:1.08rem;
-      font-weight:900;
-      color:#58595b;
-      margin-bottom:8px;
-    }
-
-    .quick-admin-text{
-      color:#6f7075;
-      line-height:1.8;
-      margin-bottom:14px;
-      font-size:.96rem;
-    }
+    .admin-head-title{font-size:1.9rem;font-weight:900;color:#58595b;margin-bottom:8px}
+    .admin-head-text{color:#707176;margin:0;line-height:1.9}
 
     .stat-card{
-      background:#fff;
-      border:1px solid #efe7cf;
-      border-radius:24px;
-      box-shadow:0 12px 28px rgba(88,89,91,.08);
-      padding:20px;
-      height:100%;
-      position:relative;
-      overflow:hidden;
+      background:#fff;border:1px solid #efe7cf;border-radius:24px;
+      box-shadow:0 12px 28px rgba(88,89,91,.08);padding:20px;height:100%;
+      position:relative;overflow:hidden
     }
-
     .stat-card::after{
-      content:"";
-      position:absolute;
-      width:110px;
-      height:110px;
-      border-radius:50%;
-      left:-28px;
-      bottom:-28px;
-      background:rgba(251,199,13,.12);
+      content:"";position:absolute;width:110px;height:110px;border-radius:50%;
+      left:-28px;bottom:-28px;background:rgba(251,199,13,.12)
     }
+    .stat-label{color:#77787d;font-weight:700;margin-bottom:10px;position:relative;z-index:1}
+    .stat-value{color:#58595b;font-size:2rem;font-weight:900;line-height:1.1;position:relative;z-index:1}
 
-    .stat-label{
-      color:#77787d;
-      font-weight:700;
-      margin-bottom:10px;
-      position:relative;
-      z-index:1;
+    .stage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:22px 0}
+    .stage-card{
+      background:#fff;border:1px solid #efe7cf;border-radius:28px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);padding:22px;cursor:pointer;
+      transition:.25s ease;height:100%
     }
-
-    .stat-value{
-      color:#58595b;
-      font-size:2rem;
-      font-weight:900;
-      line-height:1.1;
-      position:relative;
-      z-index:1;
+    .stage-card:hover{transform:translateY(-6px);box-shadow:0 22px 42px rgba(88,89,91,.12)}
+    .stage-card.active{
+      border-color:rgba(251,199,13,.55);
+      box-shadow:0 18px 36px rgba(251,199,13,.16);
+      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,249,229,.94))
     }
+    .stage-icon{
+      width:62px;height:62px;border-radius:20px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,rgba(251,199,13,.18),rgba(251,199,13,.34));
+      color:#58595b;font-size:1.45rem;margin-bottom:14px
+    }
+    .stage-title{font-size:1.15rem;font-weight:900;color:#58595b;margin-bottom:8px}
+    .stage-text{color:#6f7075;line-height:1.85;margin-bottom:10px}
+    .stage-count{font-weight:900;color:#8a6900}
 
     .admin-panel{
-      background:#fff;
-      border:1px solid #efe7cf;
-      border-radius:28px;
-      box-shadow:0 16px 36px rgba(88,89,91,.08);
-      padding:22px;
-      margin-bottom:22px;
+      background:#fff;border:1px solid #efe7cf;border-radius:28px;
+      box-shadow:0 16px 36px rgba(88,89,91,.08);padding:22px;margin-bottom:22px
     }
-
-    .panel-title{
-      font-size:1.2rem;
-      font-weight:900;
-      color:#58595b;
-      margin-bottom:16px;
-    }
+    .panel-title{font-size:1.2rem;font-weight:900;color:#58595b;margin-bottom:16px}
 
     .filters-grid{
-      display:grid;
-      grid-template-columns:2fr 1fr 1fr 1fr auto;
-      gap:14px;
-      align-items:end;
+      display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:14px;align-items:end
     }
 
-    .table-shell{
-      overflow:auto;
-      border-radius:22px;
-      border:1px solid #f0ead7;
-    }
-
-    .table-admin{
-      margin:0;
-      min-width:1100px;
-      vertical-align:middle;
-    }
-
+    .table-shell{overflow:auto;border-radius:22px;border:1px solid #f0ead7}
+    .table-admin{margin:0;min-width:1200px;vertical-align:middle}
     .table-admin thead th{
-      background:#fff7da;
-      color:#58595b;
-      font-weight:900;
-      border-bottom:1px solid #eadca9;
-      white-space:nowrap;
+      background:#fff7da;color:#58595b;font-weight:900;border-bottom:1px solid #eadca9;white-space:nowrap
     }
-
-    .table-admin td{
-      color:#5d5e62;
-      white-space:nowrap;
-    }
+    .table-admin td{color:#5d5e62;white-space:nowrap}
 
     .status-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:.9rem;
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      font-weight:800;font-size:.9rem
     }
+    .status-pending{background:rgba(251,199,13,.16);color:#8a6900}
+    .status-progress{background:rgba(88,89,91,.10);color:#58595b}
+    .status-success{background:rgba(25,135,84,.12);color:#198754}
+    .status-danger{background:rgba(220,53,69,.10);color:#dc3545}
 
-    .status-pending{ background:rgba(251,199,13,.16); color:#8a6900; }
-    .status-progress{ background:rgba(88,89,91,.10); color:#58595b; }
-    .status-success{ background:rgba(25,135,84,.12); color:#198754; }
-    .status-danger{ background:rgba(220,53,69,.10); color:#dc3545; }
-
-    .actions-row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
+    .actions-row{display:flex;gap:8px;flex-wrap:wrap}
     .mini-btn{
-      border:0;
-      border-radius:12px;
-      padding:8px 12px;
-      font-weight:800;
-      transition:.25s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      border:0;border-radius:12px;padding:8px 12px;font-weight:800;transition:.25s ease;
+      display:inline-flex;align-items:center;gap:8px
     }
+    .mini-btn:hover{transform:translateY(-2px)}
+    .mini-btn-view{background:#fff4c7;color:#6f5600}
+    .mini-btn-accept{background:#e8f7ee;color:#198754}
+    .mini-btn-reject{background:#fdebec;color:#dc3545}
+    .mini-btn-pay{background:#eef3ff;color:#3153a5}
+    .mini-btn-wa{background:#e7f9ef;color:#128c7e}
+    .mini-btn-edit{background:#f7f0ff;color:#6c3fa1}
 
-    .mini-btn:hover{ transform:translateY(-2px); }
-    .mini-btn-view{ background:#fff4c7; color:#6f5600; }
-    .mini-btn-accept{ background:#e8f7ee; color:#198754; }
-    .mini-btn-reject{ background:#fdebec; color:#dc3545; }
-    .mini-btn-pay{ background:#eef3ff; color:#3153a5; }
-
-    .profile-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-    }
-
+    .profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
     .profile-item{
-      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
-      border:1px solid #efe7cf;
-      border-radius:18px;
-      padding:14px 16px;
+      background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,249,229,.90));
+      border:1px solid #efe7cf;border-radius:18px;padding:14px 16px
     }
+    .profile-item.full{grid-column:1/-1}
+    .profile-key{color:#7b7c80;font-weight:700;margin-bottom:6px}
+    .profile-value{color:#58595b;font-weight:900;line-height:1.8}
+    .modal-box-list{display:flex;flex-direction:column;gap:12px}
+    .timeline-box{background:#fff;border:1px solid #efe7cf;border-radius:18px;padding:14px 16px}
+    .timeline-box-title{font-weight:900;color:#58595b;margin-bottom:5px}
+    .timeline-box-meta{color:#8a8b90;font-size:.92rem;margin-bottom:6px}
+    .timeline-box-text{color:#6f7075;line-height:1.8}
 
-    .profile-item.full{ grid-column:1/-1; }
-
-    .profile-key{
-      color:#7b7c80;
-      font-weight:700;
-      margin-bottom:6px;
-    }
-
-    .profile-value{
-      color:#58595b;
-      font-weight:900;
-      line-height:1.8;
-    }
-
-    .modal-box-list{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .timeline-box{
-      background:#fff;
-      border:1px solid #efe7cf;
-      border-radius:18px;
-      padding:14px 16px;
-    }
-
-    .timeline-box-title{
-      font-weight:900;
-      color:#58595b;
-      margin-bottom:5px;
-    }
-
-    .timeline-box-meta{
-      color:#8a8b90;
-      font-size:.92rem;
-      margin-bottom:6px;
-    }
-
-    .timeline-box-text{
-      color:#6f7075;
-      line-height:1.8;
-    }
-
-    @media (max-width: 1199.98px){
-      .quick-admin-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
-    }
-
-    @media (max-width: 991.98px){
-      .filters-grid{
-        grid-template-columns:1fr 1fr;
-      }
-    }
-
-    @media (max-width: 767.98px){
-      .quick-admin-grid,
-      .filters-grid,
-      .profile-grid{
-        grid-template-columns:1fr;
-      }
-    }
+    @media (max-width:1199.98px){.stage-grid{grid-template-columns:1fr}}
+    @media (max-width:991.98px){.filters-grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:767.98px){.filters-grid,.profile-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -322,7 +142,7 @@
       <div class="admin-head">
         <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
           <div>
-            <div class="admin-head-title">لوحة العاملين</div>
+            <div class="admin-head-title">لوحة المشرف</div>
             <p class="admin-head-text" id="welcomeText">جاري تحميل بيانات المستخدم...</p>
           </div>
           <div class="d-flex gap-2 flex-wrap">
@@ -334,49 +154,7 @@
         </div>
       </div>
 
-      <div class="quick-admin-grid">
-        <a href="settings.html" class="quick-admin-card">
-          <div class="quick-admin-icon"><i class="fa-solid fa-gear"></i></div>
-          <div class="quick-admin-title">الإعدادات</div>
-          <div class="quick-admin-text">عرض الإعدادات العامة، الروابط، القوالب، وروابط Google Drive.</div>
-          <span class="btn btn-le-outline w-100">
-            <i class="fa-solid fa-arrow-left-long"></i>
-            فتح
-          </span>
-        </a>
-
-        <a href="admin-packages.html" class="quick-admin-card">
-          <div class="quick-admin-icon"><i class="fa-solid fa-layer-group"></i></div>
-          <div class="quick-admin-title">إدارة الفئات</div>
-          <div class="quick-admin-text">إدارة فئتي أشبال وقادة من حيث النصوص والصور والتفعيل.</div>
-          <span class="btn btn-le-outline w-100">
-            <i class="fa-solid fa-arrow-left-long"></i>
-            فتح
-          </span>
-        </a>
-
-        <a href="admin-years.html" class="quick-admin-card">
-          <div class="quick-admin-icon"><i class="fa-solid fa-calendar-days"></i></div>
-          <div class="quick-admin-title">إدارة السنوات</div>
-          <div class="quick-admin-text">إدارة السنوات، الصور، الفيديوهات، والوسائط المرتبطة بكل سنة.</div>
-          <span class="btn btn-le-outline w-100">
-            <i class="fa-solid fa-arrow-left-long"></i>
-            فتح
-          </span>
-        </a>
-
-        <a href="admin-users.html" class="quick-admin-card">
-          <div class="quick-admin-icon"><i class="fa-solid fa-users-gear"></i></div>
-          <div class="quick-admin-title">إدارة المستخدمين</div>
-          <div class="quick-admin-text">إضافة وتعديل وتفعيل وتعطيل مستخدمي النظام وأدوارهم.</div>
-          <span class="btn btn-le-outline w-100">
-            <i class="fa-solid fa-arrow-left-long"></i>
-            فتح
-          </span>
-        </a>
-      </div>
-
-      <div class="row g-4 mb-4">
+      <div class="row g-4 mb-2">
         <div class="col-md-6 col-xl-3">
           <div class="stat-card">
             <div class="stat-label">إجمالي الطلبات</div>
@@ -385,57 +163,56 @@
         </div>
         <div class="col-md-6 col-xl-3">
           <div class="stat-card">
-            <div class="stat-label">تحت المراجعة</div>
-            <div class="stat-value" id="statReview">0</div>
+            <div class="stat-label">التسجيلات الجديدة</div>
+            <div class="stat-value" id="statRegistration">0</div>
           </div>
         </div>
         <div class="col-md-6 col-xl-3">
           <div class="stat-card">
-            <div class="stat-label">بانتظار السداد</div>
-            <div class="stat-value" id="statPending">0</div>
+            <div class="stat-label">مرحلة السداد</div>
+            <div class="stat-value" id="statPayment">0</div>
           </div>
         </div>
         <div class="col-md-6 col-xl-3">
           <div class="stat-card">
-            <div class="stat-label">مكتمل السداد</div>
-            <div class="stat-value" id="statPaid">0</div>
+            <div class="stat-label">الطلاب</div>
+            <div class="stat-value" id="statStudents">0</div>
           </div>
         </div>
       </div>
 
-      <div class="admin-panel">
-        <div class="panel-title">الطلبات</div>
+      <div class="stage-grid">
+        <div class="stage-card active" data-stage="registration">
+          <div class="stage-icon"><i class="fa-solid fa-user-plus"></i></div>
+          <div class="stage-title">التسجيل</div>
+          <div class="stage-text">الطلاب الذين طلبوا التسجيل ويحتاجون قرارًا أوليًا.</div>
+          <div class="stage-count" id="registrationCount">0 طلب</div>
+        </div>
 
-        <div class="filters-grid mb-4">
+        <div class="stage-card" data-stage="payment">
+          <div class="stage-icon"><i class="fa-solid fa-wallet"></i></div>
+          <div class="stage-title">مرحلة السداد</div>
+          <div class="stage-text">الطلاب المقبولون مبدئيًا بانتظار السداد أو السداد الجزئي.</div>
+          <div class="stage-count" id="paymentCount">0 طالب</div>
+        </div>
+
+        <div class="stage-card" data-stage="students">
+          <div class="stage-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="stage-title">الطلاب</div>
+          <div class="stage-text">الطلاب المقبولون النهائيون مع التعديل والتسكين وتقارير المعلمين.</div>
+          <div class="stage-count" id="studentsCount">0 طالب</div>
+        </div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+          <div class="panel-title mb-0" id="tableTitle">طلبات التسجيل</div>
+        </div>
+
+        <div class="filters-grid my-4">
           <div>
             <label class="form-label">بحث</label>
             <input type="text" id="searchInput" class="form-control" placeholder="اسم الطالب أو الهوية أو رقم الطلب">
-          </div>
-          <div>
-            <label class="form-label">الحالة</label>
-            <select id="statusFilter" class="form-select">
-              <option value="">الكل</option>
-              <option value="تسجيل أولي">تسجيل أولي</option>
-              <option value="تحت المراجعة">تحت المراجعة</option>
-              <option value="مقبول مبدئيًا وبانتظار السداد">مقبول مبدئيًا وبانتظار السداد</option>
-              <option value="سداد جزئي">سداد جزئي</option>
-              <option value="مؤجل السداد">مؤجل السداد</option>
-              <option value="مكتمل السداد">مكتمل السداد</option>
-              <option value="طالب نشط">طالب نشط</option>
-              <option value="مرفوض">مرفوض</option>
-              <option value="منسحب">منسحب</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">حالة السداد</label>
-            <select id="paymentFilter" class="form-select">
-              <option value="">الكل</option>
-              <option value="بانتظار السداد">بانتظار السداد</option>
-              <option value="سداد جزئي">سداد جزئي</option>
-              <option value="مؤجل">مؤجل</option>
-              <option value="مكتمل السداد">مكتمل السداد</option>
-              <option value="مرفوض">مرفوض</option>
-            </select>
           </div>
           <div>
             <label class="form-label">الفئة</label>
@@ -443,6 +220,12 @@
               <option value="">الكل</option>
               <option value="أشبال">أشبال</option>
               <option value="قادة">قادة</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">الحالة</label>
+            <select id="statusFilter" class="form-select">
+              <option value="">الكل</option>
             </select>
           </div>
           <div class="d-grid">
@@ -455,22 +238,10 @@
 
         <div class="table-shell">
           <table class="table table-admin">
-            <thead>
-              <tr>
-                <th>رقم الطلب</th>
-                <th>الاسم</th>
-                <th>الفئة</th>
-                <th>حالة الطلب</th>
-                <th>السداد</th>
-                <th>المبلغ</th>
-                <th>المدفوع</th>
-                <th>المتبقي</th>
-                <th>الإجراءات</th>
-              </tr>
-            </thead>
+            <thead id="tableHead"></thead>
             <tbody id="applicationsTableBody">
               <tr>
-                <td colspan="9" class="text-center py-4">جاري تحميل البيانات...</td>
+                <td colspan="10" class="text-center py-4">جاري تحميل البيانات...</td>
               </tr>
             </tbody>
           </table>
@@ -500,12 +271,36 @@
     const API_URL = window.APP_CONFIG.API_URL;
     const profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
     let currentUser = null;
+    let activeStage = 'registration';
+    let currentRows = [];
+
+    const stageConfig = {
+      registration: {
+        title: 'طلبات التسجيل',
+        statuses: ['', 'تسجيل أولي', 'تحت المراجعة'],
+        getUrl: (params) => `${API_URL}?action=getRegistrationApplications&${params.toString()}`,
+        columns: ['رقم الطلب','الاسم','الفئة','الحالة','ولي الأمر','الإجراءات']
+      },
+      payment: {
+        title: 'مرحلة السداد',
+        statuses: ['', 'مقبول مبدئيًا وبانتظار السداد', 'سداد جزئي', 'مؤجل السداد'],
+        getUrl: (params) => `${API_URL}?action=getPaymentStageApplications&${params.toString()}`,
+        columns: ['رقم الطلب','الاسم','الفئة','حالة الطلب','السداد','ولي الأمر','الإجراءات']
+      },
+      students: {
+        title: 'الطلاب',
+        statuses: ['', 'مكتمل السداد', 'طالب نشط'],
+        getUrl: (params) => `${API_URL}?action=getActiveStudents&${params.toString()}`,
+        columns: ['رقم الطلب','الاسم','الفئة','الحالة','المعلم','ولي الأمر','الإجراءات']
+      }
+    };
 
     document.addEventListener('DOMContentLoaded', async () => {
       guardAuth();
       bindEvents();
+      renderStageHeader();
       await loadDashboard();
-      await loadApplications();
+      await loadStageData();
     });
 
     function guardAuth() {
@@ -529,14 +324,35 @@
     function bindEvents() {
       document.getElementById('refreshDashboardBtn').addEventListener('click', async () => {
         await loadDashboard();
-        await loadApplications();
+        await loadStageData();
       });
 
-      document.getElementById('applyFiltersBtn').addEventListener('click', loadApplications);
+      document.getElementById('applyFiltersBtn').addEventListener('click', loadStageData);
       document.getElementById('logoutBtn').addEventListener('click', logout);
       document.getElementById('searchInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') loadApplications();
+        if (e.key === 'Enter') loadStageData();
       });
+
+      document.querySelectorAll('.stage-card').forEach(card => {
+        card.addEventListener('click', async () => {
+          activeStage = card.dataset.stage;
+          document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          renderStageHeader();
+          await loadStageData();
+        });
+      });
+    }
+
+    function renderStageHeader() {
+      const conf = stageConfig[activeStage];
+      document.getElementById('tableTitle').textContent = conf.title;
+
+      const statusFilter = document.getElementById('statusFilter');
+      statusFilter.innerHTML = conf.statuses.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s || 'الكل')}</option>`).join('');
+
+      const head = document.getElementById('tableHead');
+      head.innerHTML = `<tr>${conf.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
     }
 
     async function loadDashboard() {
@@ -546,82 +362,162 @@
         const data = json?.data || {};
         const counts = data.statusCounts || {};
 
+        const registrationCount = toNum(counts['تسجيل أولي']) + toNum(counts['تحت المراجعة']);
+        const paymentCount =
+          toNum(counts['مقبول مبدئيًا وبانتظار السداد']) +
+          toNum(counts['سداد جزئي']) +
+          toNum(counts['مؤجل السداد']);
+        const studentsCount =
+          toNum(counts['مكتمل السداد']) +
+          toNum(counts['طالب نشط']);
+
         document.getElementById('statTotal').textContent = toNum(data.totalApplications);
-        document.getElementById('statReview').textContent = toNum(counts['تحت المراجعة'] || counts['تسجيل أولي']);
-        document.getElementById('statPending').textContent = toNum(counts['مقبول مبدئيًا وبانتظار السداد']);
-        document.getElementById('statPaid').textContent = toNum(counts['مكتمل السداد']);
+        document.getElementById('statRegistration').textContent = registrationCount;
+        document.getElementById('statPayment').textContent = paymentCount;
+        document.getElementById('statStudents').textContent = studentsCount;
+
+        document.getElementById('registrationCount').textContent = `${registrationCount} طلب`;
+        document.getElementById('paymentCount').textContent = `${paymentCount} طالب`;
+        document.getElementById('studentsCount').textContent = `${studentsCount} طالب`;
       } catch (e) {
         console.error(e);
       }
     }
 
-    async function loadApplications() {
+    async function loadStageData() {
       const tbody = document.getElementById('applicationsTableBody');
-      tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">جاري تحميل البيانات...</td></tr>';
+      tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4">جاري تحميل البيانات...</td></tr>`;
 
       const params = new URLSearchParams({
-        action: 'getApplications',
         search: document.getElementById('searchInput').value.trim(),
-        status: document.getElementById('statusFilter').value,
-        paymentStatus: document.getElementById('paymentFilter').value,
         category: document.getElementById('categoryFilter').value,
-        includeRejected: 'true',
-        sortDir: 'desc'
+        status: document.getElementById('statusFilter').value
       });
 
       try {
-        const res = await fetch(`${API_URL}?${params.toString()}`);
+        const res = await fetch(stageConfig[activeStage].getUrl(params));
         const json = await res.json();
-        const items = json?.data || [];
+        currentRows = json?.data || [];
 
-        if (!items.length) {
-          tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">لا توجد نتائج مطابقة.</td></tr>';
+        if (!currentRows.length) {
+          tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4">لا توجد نتائج مطابقة.</td></tr>`;
           return;
         }
 
-        tbody.innerHTML = items.map(item => `
-          <tr>
-            <td>${escapeHtml(item.applicationNo || '')}</td>
-            <td>
-              <div class="fw-bold">${escapeHtml(item.name || '')}</div>
-              <div class="text-muted small">${escapeHtml(item.studentIdentity || '')}</div>
-            </td>
-            <td>${escapeHtml(item.category || '')}</td>
-            <td>${renderStatus(item.applicationStatus)}</td>
-            <td>${renderPaymentStatus(item.paymentStatus)}</td>
-            <td>${formatMoney(item.packageAmount)}</td>
-            <td>${formatMoney(item.paidAmount)}</td>
-            <td>${formatMoney(item.remainingAmount)}</td>
-            <td>
-              <div class="actions-row">
-                <button class="mini-btn mini-btn-view" onclick="openProfile('${escapeJs(item.applicationNo)}')">
-                  <i class="fa-solid fa-eye"></i> عرض
-                </button>
-                <button class="mini-btn mini-btn-accept" onclick="quickSetStatus('${escapeJs(item.applicationNo)}','تحت المراجعة')">
-                  <i class="fa-solid fa-check"></i> مراجعة
-                </button>
-                <button class="mini-btn mini-btn-reject" onclick="quickReject('${escapeJs(item.applicationNo)}')">
-                  <i class="fa-solid fa-xmark"></i> رفض
-                </button>
-                <button class="mini-btn mini-btn-pay" onclick="openPaymentAction('${escapeJs(item.applicationNo)}')">
-                  <i class="fa-solid fa-wallet"></i> سداد
-                </button>
-              </div>
-            </td>
-          </tr>
-        `).join('');
+        if (activeStage === 'registration') {
+          tbody.innerHTML = currentRows.map(renderRegistrationRow).join('');
+        } else if (activeStage === 'payment') {
+          tbody.innerHTML = currentRows.map(renderPaymentRow).join('');
+        } else {
+          tbody.innerHTML = currentRows.map(renderStudentsRow).join('');
+        }
       } catch (e) {
         console.error(e);
-        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">تعذر تحميل البيانات.</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4">تعذر تحميل البيانات.</td></tr>`;
       }
+    }
+
+    function renderRegistrationRow(item) {
+      return `
+        <tr>
+          <td>${escapeHtml(item.applicationNo || '')}</td>
+          <td>
+            <div class="fw-bold">${escapeHtml(item.name || '')}</div>
+            <div class="text-muted small">${escapeHtml(item.studentIdentity || '')}</div>
+          </td>
+          <td>${escapeHtml(item.category || '')}</td>
+          <td>${renderStatus(item.applicationStatus)}</td>
+          <td>${escapeHtml(item.guardianPhone || '—')}</td>
+          <td>
+            <div class="actions-row">
+              <button class="mini-btn mini-btn-view" onclick="openProfile('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-eye"></i> عرض
+              </button>
+              <button class="mini-btn mini-btn-accept" onclick="acceptRegistration('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-check"></i> مقبول
+              </button>
+              <button class="mini-btn mini-btn-reject" onclick="rejectRegistration('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-xmark"></i> مرفوض
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderPaymentRow(item) {
+      return `
+        <tr>
+          <td>${escapeHtml(item.applicationNo || '')}</td>
+          <td>
+            <div class="fw-bold">${escapeHtml(item.name || '')}</div>
+            <div class="text-muted small">${escapeHtml(item.studentIdentity || '')}</div>
+          </td>
+          <td>${escapeHtml(item.category || '')}</td>
+          <td>${renderStatus(item.applicationStatus)}</td>
+          <td>${renderPaymentStatus(item.paymentStatus)}</td>
+          <td>${escapeHtml(item.guardianPhone || '—')}</td>
+          <td>
+            <div class="actions-row">
+              <button class="mini-btn mini-btn-view" onclick="openProfile('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-eye"></i> عرض
+              </button>
+              <button class="mini-btn mini-btn-pay" onclick="openPaymentAction('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-wallet"></i> السداد الحالي
+              </button>
+              <button class="mini-btn mini-btn-wa" onclick="openReminderWhatsapp('${escapeJs(item.applicationNo)}')">
+                <i class="fa-brands fa-whatsapp"></i> تذكير بالسداد
+              </button>
+              <button class="mini-btn mini-btn-reject" onclick="cancelApplication('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-ban"></i> ملغى
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderStudentsRow(item) {
+      return `
+        <tr>
+          <td>${escapeHtml(item.applicationNo || '')}</td>
+          <td>
+            <div class="fw-bold">${escapeHtml(item.name || '')}</div>
+            <div class="text-muted small">${escapeHtml(item.studentIdentity || '')}</div>
+          </td>
+          <td>${escapeHtml(item.category || '')}</td>
+          <td>${renderStatus(item.applicationStatus)}</td>
+          <td>${escapeHtml(item.teacherName || 'غير مسكن')}</td>
+          <td>${escapeHtml(item.guardianPhone || '—')}</td>
+          <td>
+            <div class="actions-row">
+              <button class="mini-btn mini-btn-view" onclick="openProfile('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-eye"></i> عرض
+              </button>
+              <button class="mini-btn mini-btn-edit" onclick="editStudentData('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-pen"></i> تعديل
+              </button>
+              <button class="mini-btn mini-btn-pay" onclick="assignTeacher('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-user-plus"></i> تسكين
+              </button>
+              <button class="mini-btn mini-btn-wa" onclick="openGuardianWhatsapp('${escapeJs(item.applicationNo)}')">
+                <i class="fa-brands fa-whatsapp"></i> ولي الأمر
+              </button>
+              <button class="mini-btn mini-btn-view" onclick="openTeacherReports('${escapeJs(item.applicationNo)}')">
+                <i class="fa-solid fa-file-lines"></i> التقارير
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
     }
 
     function renderStatus(status) {
       const s = String(status || '');
       let cls = 'status-progress';
-      if (s.includes('مرفوض')) cls = 'status-danger';
+      if (s.includes('مرفوض') || s.includes('منسحب')) cls = 'status-danger';
       else if (s.includes('مكتمل') || s.includes('نشط')) cls = 'status-success';
-      else if (s.includes('بانتظار') || s.includes('أولي') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-pending';
+      else if (s.includes('بانتظار') || s.includes('جزئي') || s.includes('مؤجل') || s.includes('أولي')) cls = 'status-pending';
       return `<span class="status-badge ${cls}">${escapeHtml(s || '—')}</span>`;
     }
 
@@ -632,6 +528,284 @@
       else if (s.includes('مكتمل')) cls = 'status-success';
       else if (s.includes('بانتظار') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-pending';
       return `<span class="status-badge ${cls}">${escapeHtml(s || '—')}</span>`;
+    }
+
+    async function acceptRegistration(applicationNo) {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'acceptRegistrationAndPrepareWhatsapp',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data: { 'رقم_الطلب': applicationNo }
+          })
+        });
+
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'تم القبول الأولي',
+          text: 'سيتم فتح واتساب ولي الأمر',
+          confirmButtonColor: '#fbc70d'
+        });
+
+        if (json.data?.whatsappUrl) {
+          window.open(json.data.whatsappUrl, '_blank');
+        }
+
+        await loadDashboard();
+        await loadStageData();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر التنفيذ', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function rejectRegistration(applicationNo) {
+      const result = await Swal.fire({
+        title: 'رفض الطلب',
+        input: 'textarea',
+        inputLabel: 'سبب الرفض',
+        inputValidator: v => !v ? 'سبب الرفض مطلوب' : null,
+        showCancelButton: true,
+        confirmButtonText: 'رفض',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#dc3545'
+      });
+
+      if (!result.isConfirmed) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action:'updateApplicationStatus',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data:{
+              'رقم_الطلب': applicationNo,
+              'حالة_الطلب':'مرفوض',
+              'سبب_الرفض': result.value,
+              'ملاحظات_عامة': result.value,
+              'وصف_الحركة':'تم رفض الطلب'
+            }
+          })
+        });
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
+
+        await loadDashboard();
+        await loadStageData();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر التنفيذ', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function openReminderWhatsapp(applicationNo) {
+      try {
+        const res = await fetch(`${API_URL}?action=getWhatsappMessage&applicationNo=${encodeURIComponent(applicationNo)}&type=reminder`);
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'تعذر تجهيز الرسالة');
+
+        if (json.data?.whatsappUrl) window.open(json.data.whatsappUrl, '_blank');
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر فتح واتساب', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function cancelApplication(applicationNo) {
+      const result = await Swal.fire({
+        title: 'إلغاء الطالب',
+        input: 'textarea',
+        inputLabel: 'سبب الإلغاء',
+        showCancelButton: true,
+        confirmButtonText: 'تأكيد',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#dc3545'
+      });
+
+      if (!result.isConfirmed) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action:'cancelApplication',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data:{
+              'رقم_الطلب': applicationNo,
+              'سبب': result.value || ''
+            }
+          })
+        });
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
+
+        await loadDashboard();
+        await loadStageData();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر التنفيذ', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function editStudentData(applicationNo) {
+      const row = currentRows.find(r => String(r.applicationNo) === String(applicationNo));
+      if (!row) return;
+
+      const { value: formValues } = await Swal.fire({
+        title: 'تعديل بيانات الطالب',
+        width: 720,
+        html: `
+          <div class="text-end">
+            <label class="form-label">اسم الطالب</label>
+            <input id="swalStudentName" class="form-control mb-3" value="${escapeAttr(row.name || '')}">
+            <label class="form-label">جوال ولي الأمر</label>
+            <input id="swalGuardianPhone" class="form-control mb-3" value="${escapeAttr(row.guardianPhone || '')}">
+            <label class="form-label">الفئة</label>
+            <select id="swalCategory" class="form-select mb-3">
+              <option value="أشبال" ${row.category === 'أشبال' ? 'selected' : ''}>أشبال</option>
+              <option value="قادة" ${row.category === 'قادة' ? 'selected' : ''}>قادة</option>
+            </select>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'حفظ',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#fbc70d',
+        preConfirm: () => ({
+          name: document.getElementById('swalStudentName').value.trim(),
+          guardianPhone: document.getElementById('swalGuardianPhone').value.trim(),
+          category: document.getElementById('swalCategory').value
+        })
+      });
+
+      if (!formValues) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action:'updateStudentProfile',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data:{
+              'رقم_الطلب': applicationNo,
+              'اسم_الطالب_الثلاثي': formValues.name,
+              'جوال_ولي_الأمر': formValues.guardianPhone,
+              'الفئة': formValues.category
+            }
+          })
+        });
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل الحفظ');
+
+        await loadStageData();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر الحفظ', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function assignTeacher(applicationNo) {
+      const usersRes = await fetch(`${API_URL}?action=getUsers&role=معلم&status=نشط`);
+      const usersJson = await usersRes.json();
+      const teachers = usersJson?.data || [];
+
+      if (!teachers.length) {
+        Swal.fire({ icon:'warning', title:'لا يوجد معلمون نشطون', confirmButtonColor:'#fbc70d' });
+        return;
+      }
+
+      const options = {};
+      teachers.forEach(t => { options[t.id] = `${t.name} (${t.username})`; });
+
+      const { value: teacherId } = await Swal.fire({
+        title: 'تسكين الطالب لمعلم',
+        input: 'select',
+        inputOptions: options,
+        inputPlaceholder: 'اختر المعلم',
+        showCancelButton: true,
+        confirmButtonText: 'حفظ',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#fbc70d'
+      });
+
+      if (!teacherId) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action:'assignStudentToTeacher',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data:{
+              'رقم_الطلب': applicationNo,
+              'معرف_المعلم': teacherId
+            }
+          })
+        });
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
+
+        await loadStageData();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر التسكين', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function openGuardianWhatsapp(applicationNo) {
+      try {
+        const res = await fetch(`${API_URL}?action=getStudentProfile&applicationNo=${encodeURIComponent(applicationNo)}`);
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'تعذر تحميل البيانات');
+
+        const app = json.data?.application || {};
+        const msg = `السلام عليكم، بخصوص الطالب ${app['اسم_الطالب_الثلاثي'] || ''}`;
+        const phone = String(app['جوال_ولي_الأمر'] || '').replace(/^0/, '966');
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر فتح واتساب', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
+    async function openTeacherReports(applicationNo) {
+      try {
+        const res = await fetch(`${API_URL}?action=getStudentProfile&applicationNo=${encodeURIComponent(applicationNo)}`);
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'تعذر تحميل التقارير');
+
+        const reports = json.data?.reports || [];
+        await Swal.fire({
+          title: 'تقارير المعلمين',
+          width: 820,
+          html: reports.length
+            ? `<div class="text-end" style="display:flex;flex-direction:column;gap:12px">
+                ${reports.map(r => `
+                  <div style="border:1px solid #efe7cf;border-radius:18px;padding:14px 16px;background:#fffaf0">
+                    <div style="font-weight:900;color:#58595b;margin-bottom:6px">${escapeHtml(r['المعلم'] || '')}</div>
+                    <div style="color:#8a8b90;font-size:.92rem;margin-bottom:6px">${escapeHtml(r['تاريخ_الإنشاء'] || '')}</div>
+                    <div style="color:#6f7075;line-height:1.9">${escapeHtml(r['ملاحظات'] || r['التوصيات'] || '—')}</div>
+                  </div>
+                `).join('')}
+              </div>`
+            : '<div class="empty-box">لا توجد تقارير تعليمية.</div>',
+          confirmButtonColor: '#fbc70d',
+          confirmButtonText: 'إغلاق'
+        });
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر عرض التقارير', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
     }
 
     async function openProfile(applicationNo) {
@@ -748,195 +922,6 @@
       }
     }
 
-    async function quickSetStatus(applicationNo, status) {
-      const result = await Swal.fire({
-        title: 'تحديث حالة الطلب',
-        input: 'textarea',
-        inputLabel: 'ملاحظات',
-        inputPlaceholder: 'اكتب ملاحظة مختصرة...',
-        showCancelButton: true,
-        confirmButtonText: 'حفظ',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#fbc70d'
-      });
-
-      if (!result.isConfirmed) return;
-
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'updateApplicationStatus',
-            actor: currentUser?.name || 'مستخدم النظام',
-            data: {
-              'رقم_الطلب': applicationNo,
-              'حالة_الطلب': status,
-              'ملاحظات_عامة': result.value || '',
-              'وصف_الحركة': `تم تحديث حالة الطلب إلى ${status}`
-            }
-          })
-        });
-
-        const json = await res.json();
-        if (!json.ok) throw new Error(json.message || 'فشل التحديث');
-
-        await Swal.fire({
-          icon: 'success',
-          title: 'تم الحفظ',
-          text: 'تم تحديث الحالة بنجاح',
-          confirmButtonColor: '#fbc70d'
-        });
-
-        await loadDashboard();
-        await loadApplications();
-      } catch (e) {
-        console.error(e);
-        Swal.fire({
-          icon: 'error',
-          title: 'تعذر الحفظ',
-          text: e.message || 'حدث خطأ',
-          confirmButtonColor: '#58595b'
-        });
-      }
-    }
-
-    async function quickReject(applicationNo) {
-      const result = await Swal.fire({
-        title: 'رفض الطلب',
-        input: 'textarea',
-        inputLabel: 'سبب الرفض',
-        inputPlaceholder: 'اكتب سبب الرفض...',
-        inputValidator: value => !value ? 'سبب الرفض مطلوب' : null,
-        showCancelButton: true,
-        confirmButtonText: 'تأكيد الرفض',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#dc3545'
-      });
-
-      if (!result.isConfirmed) return;
-
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'updateApplicationStatus',
-            actor: currentUser?.name || 'مستخدم النظام',
-            data: {
-              'رقم_الطلب': applicationNo,
-              'حالة_الطلب': 'مرفوض',
-              'سبب_الرفض': result.value,
-              'ملاحظات_عامة': result.value,
-              'وصف_الحركة': 'تم رفض الطلب'
-            }
-          })
-        });
-
-        const json = await res.json();
-        if (!json.ok) throw new Error(json.message || 'فشل التحديث');
-
-        await Swal.fire({
-          icon: 'success',
-          title: 'تم رفض الطلب',
-          confirmButtonColor: '#fbc70d'
-        });
-
-        await loadDashboard();
-        await loadApplications();
-      } catch (e) {
-        console.error(e);
-        Swal.fire({
-          icon: 'error',
-          title: 'تعذر التنفيذ',
-          text: e.message || 'حدث خطأ',
-          confirmButtonColor: '#58595b'
-        });
-      }
-    }
-
-    async function openPaymentAction(applicationNo) {
-      const { value: formValues } = await Swal.fire({
-        title: 'إجراء سداد',
-        html: `
-          <div class="text-end">
-            <label class="form-label">الإجراء</label>
-            <select id="swalPayAction" class="form-select mb-3">
-              <option value="بانتظار السداد">بانتظار السداد</option>
-              <option value="دفع جزئي">دفع جزئي</option>
-              <option value="مكتمل السداد">مكتمل السداد</option>
-              <option value="مؤجل">مؤجل</option>
-            </select>
-
-            <label class="form-label">المبلغ المدفوع الآن</label>
-            <input id="swalPaidNow" type="number" class="form-control mb-3" value="0">
-
-            <label class="form-label">رقم الفاتورة</label>
-            <input id="swalInvoiceNo" type="text" class="form-control mb-3">
-
-            <label class="form-label">رابط الفاتورة</label>
-            <input id="swalInvoiceUrl" type="text" class="form-control mb-3">
-
-            <label class="form-label">ملاحظات</label>
-            <textarea id="swalPayNote" class="form-control" rows="3"></textarea>
-          </div>
-        `,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonText: 'حفظ',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#fbc70d',
-        preConfirm: () => ({
-          actionType: document.getElementById('swalPayAction').value,
-          paidNow: document.getElementById('swalPaidNow').value,
-          invoiceNo: document.getElementById('swalInvoiceNo').value,
-          invoiceUrl: document.getElementById('swalInvoiceUrl').value,
-          note: document.getElementById('swalPayNote').value
-        })
-      });
-
-      if (!formValues) return;
-
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'savePaymentAction',
-            actor: currentUser?.name || 'مستخدم النظام',
-            data: {
-              'رقم_الطلب': applicationNo,
-              'الإجراء': formValues.actionType,
-              'المدفوع_الآن': Number(formValues.paidNow || 0),
-              'رقم_الفاتورة': formValues.invoiceNo || '',
-              'رابط_الفاتورة': formValues.invoiceUrl || '',
-              'ملاحظات': formValues.note || ''
-            }
-          })
-        });
-
-        const json = await res.json();
-        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
-
-        await Swal.fire({
-          icon: 'success',
-          title: 'تم حفظ إجراء السداد',
-          confirmButtonColor: '#fbc70d'
-        });
-
-        await loadDashboard();
-        await loadApplications();
-      } catch (e) {
-        console.error(e);
-        Swal.fire({
-          icon: 'error',
-          title: 'تعذر حفظ السداد',
-          text: e.message || 'حدث خطأ',
-          confirmButtonColor: '#58595b'
-        });
-      }
-    }
-
     function logout() {
       localStorage.removeItem('liveEnglishStaffUser');
       window.location.href = 'staff-login.html';
@@ -958,6 +943,14 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    }
+
+    function escapeAttr(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
     }
 
     function escapeJs(value) {
