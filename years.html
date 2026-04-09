@@ -428,7 +428,7 @@
                   ? `<div class="gallery-grid">
                       ${imageItems.map(img => `
                         <div class="gallery-item" onclick="openPreview('${escapeJs(img.url || '')}','${escapeJs(img.title || '')}')">
-                          <img src="${escapeAttr(img.url || '')}" alt="${escapeAttr(img.title || '')}">
+                          <img src="${escapeAttr(normalizeDriveImageUrl(img.url || ''))}" alt="${escapeAttr(img.title || '')}">
                           <div class="gallery-caption">${escapeHtml(img.title || 'صورة')}</div>
                         </div>
                       `).join('')}
@@ -514,10 +514,10 @@
     }
 
     function openPreview(src, title) {
-      document.getElementById('imagePreviewEl').src = src || '';
-      document.getElementById('imagePreviewTitle').textContent = title || 'معاينة الصورة';
-      previewModal.show();
-    }
+  document.getElementById('imagePreviewEl').src = normalizeDriveImageUrl(src || '');
+  document.getElementById('imagePreviewTitle').textContent = title || 'معاينة الصورة';
+  previewModal.show();
+}
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -539,6 +539,40 @@
     function escapeJs(value) {
       return String(value ?? '').replace(/'/g, "\\'");
     }
+
+
+    function normalizeDriveImageUrl(url) {
+  url = String(url || '').trim();
+  if (!url) return '';
+
+  const fileId = extractGoogleDriveFileId(url);
+  if (fileId) {
+    return `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1600`;
+  }
+
+  return url;
+}
+
+function extractGoogleDriveFileId(url) {
+  url = String(url || '').trim();
+  if (!url) return '';
+
+  const patterns = [
+    /[?&]id=([^&]+)/,
+    /\/file\/d\/([^/]+)/,
+    /\/thumbnail\?id=([^&]+)/,
+    /\/uc\?(?:export=[^&]+&)?id=([^&]+)/
+  ];
+
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m && m[1]) return m[1];
+  }
+
+  return '';
+}
+
+    
   </script>
 </body>
 </html>
