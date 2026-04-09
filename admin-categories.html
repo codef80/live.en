@@ -74,6 +74,7 @@
       background:#f8f2df;
       display:block;
       margin-bottom:16px;
+      cursor:pointer;
     }
     .cat-title{
       font-size:1.2rem;
@@ -105,17 +106,20 @@
     .pill-on{ background:rgba(25,135,84,.12); color:#198754; }
     .pill-off{ background:rgba(220,53,69,.10); color:#dc3545; }
     .pill-order{ background:rgba(251,199,13,.14); color:#8a6900; }
+
     .cat-actions{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
     }
+
     .preview-img{
       width:100%;
       border-radius:18px;
       background:#f8f2df;
       display:block;
     }
+
     @media (max-width:767.98px){
       .categories-grid{
         grid-template-columns:1fr;
@@ -135,7 +139,7 @@
       <div class="ms-auto d-flex gap-2">
         <a href="admin.html" class="btn btn-le-outline">
           <i class="fa-solid fa-table-columns"></i>
-          لوحة العاملين
+          لوحة المشرف
         </a>
         <button id="logoutBtn" class="btn btn-le-dark">
           <i class="fa-solid fa-right-from-bracket"></i>
@@ -195,6 +199,7 @@
   <script>
     const API_URL = window.APP_CONFIG.API_URL;
     const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+
     let currentUser = null;
     let currentItems = [];
 
@@ -241,7 +246,12 @@
 
         grid.innerHTML = currentItems.map(item => `
           <div class="cat-card">
-            <img class="cat-cover" src="${safeImg(item.imageUrl, item.title)}" alt="${escapeHtml(item.title || '')}" onclick="openPreview('${escapeJs(safeImg(item.imageUrl, item.title))}','${escapeJs(item.title || '')}')">
+            <img
+              class="cat-cover"
+              src="${escapeAttr(normalizeDriveImageUrl(item.imageUrl || '')) || placeholderImg(item.title)}"
+              alt="${escapeAttr(item.title || '')}"
+              onclick="openPreview('${escapeJs(item.imageUrl || '')}','${escapeJs(item.title || '')}')"
+            >
 
             <div class="cat-title">${escapeHtml(item.title || '')}</div>
             <div class="cat-desc">${escapeHtml(item.description || '')}</div>
@@ -283,7 +293,7 @@
     async function openCategoryForm(id = '') {
       const item = currentItems.find(x => String(x.id) === String(id)) || null;
 
-      const { value: formValues } = await Swal.fire({
+      const result = await Swal.fire({
         title: item ? 'تعديل الفئة' : 'إضافة فئة',
         width: 720,
         html: `
@@ -292,13 +302,13 @@
             <input id="swalTitle" class="form-control mb-3" value="${escapeAttr(item?.title || '')}" placeholder="مثل: أشبال">
 
             <label class="form-label">الوصف</label>
-            <textarea id="swalDesc" class="form-control mb-3" rows="4" placeholder="وصف مختصر للفئة">${escapeHtml(item?.description || '')}</textarea>
+            <textarea id="swalDesc" class="form-control mb-3" rows="4" placeholder="وصف مختصر">${escapeHtml(item?.description || '')}</textarea>
 
             <label class="form-label">الترتيب</label>
             <input id="swalOrder" type="number" class="form-control mb-3" value="${toNum(item?.order || 1)}">
 
             <label class="form-label">رابط الصورة</label>
-            <input id="swalImage" class="form-control mb-3" value="${escapeAttr(item?.imageUrl || '')}" placeholder="رابط صورة الفئة">
+            <input id="swalImage" class="form-control mb-3" value="${escapeAttr(item?.imageUrl || '')}" placeholder="رابط صورة مباشر أو رابط Google Drive">
 
             <div class="form-check mb-2">
               <input class="form-check-input" type="checkbox" id="swalEnabled" ${item ? (item.enabled ? 'checked' : '') : 'checked'}>
@@ -315,6 +325,10 @@
         confirmButtonText: 'حفظ',
         cancelButtonText: 'إلغاء',
         confirmButtonColor: '#fbc70d',
+        didOpen: () => {
+          const el = document.getElementById('swalTitle');
+          if (el) setTimeout(() => el.focus(), 50);
+        },
         preConfirm: () => {
           const title = document.getElementById('swalTitle').value.trim();
           if (!title) {
@@ -334,7 +348,8 @@
         }
       });
 
-      if (!formValues) return;
+      if (!result.isConfirmed || !result.value) return;
+      const formValues = result.value;
 
       try {
         const res = await fetch(API_URL, {
@@ -351,7 +366,7 @@
               'ترتيب_الظهور': Number(formValues.order || 0),
               'مفعل': formValues.enabled,
               'زر_التسجيل_مفعل': formValues.registerEnabled,
-              'معرف_ملف_الصورة': '',
+              'معرف_ملف_الصورة': extractGoogleDriveFileId(formValues.imageUrl) || '',
               'رابط_الصورة': formValues.imageUrl
             }
           })
@@ -397,7 +412,7 @@
               'ترتيب_الظهور': Number(item.order || 0),
               'مفعل': !item.enabled,
               'زر_التسجيل_مفعل': item.registerEnabled,
-              'معرف_ملف_الصورة': item.imageFileId || '',
+              'معرف_ملف_الصورة': item.imageFileId || extractGoogleDriveFileId(item.imageUrl || '') || '',
               'رابط_الصورة': item.imageUrl || ''
             }
           })
@@ -463,19 +478,50 @@
       }
     }
 
+    function normalizeDriveImageUrl(url) {
+      url = String(url || '').trim();
+      if (!url) return '';
+
+      const fileId = extractGoogleDriveFileId(url);
+      if (fileId) {
+        return `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1600`;
+      }
+
+      return url;
+    }
+
+    function extractGoogleDriveFileId(url) {
+      url = String(url || '').trim();
+      if (!url) return '';
+
+      const patterns = [
+        /[?&]id=([^&]+)/,
+        /\/file\/d\/([^/]+)/,
+        /\/thumbnail\?id=([^&]+)/,
+        /\/uc\?(?:export=[^&]+&)?id=([^&]+)/
+      ];
+
+      for (const p of patterns) {
+        const m = url.match(p);
+        if (m && m[1]) return m[1];
+      }
+
+      return '';
+    }
+
     function openPreview(src, title) {
-      document.getElementById('previewImage').src = src;
+      document.getElementById('previewImage').src = normalizeDriveImageUrl(src || '') || placeholderImg(title || 'Live English');
       document.getElementById('previewTitle').textContent = title || 'معاينة الصورة';
       previewModal.show();
+    }
+
+    function placeholderImg(text) {
+      return `https://placehold.co/900x620/f8f1db/58595b?text=${encodeURIComponent(text || 'Live English')}`;
     }
 
     function logout() {
       localStorage.removeItem('liveEnglishStaffUser');
       window.location.href = 'staff-login.html';
-    }
-
-    function safeImg(url, text) {
-      return url || `https://placehold.co/900x620/f8f1db/58595b?text=${encodeURIComponent(text || 'Live English')}`;
     }
 
     function toNum(v) {
