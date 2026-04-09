@@ -65,7 +65,7 @@
       gap:18px;
     }
 
-    .year-admin-card{
+    .year-card{
       background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
       border:1px solid #efe7cf;
       border-radius:24px;
@@ -74,30 +74,30 @@
       height:100%;
     }
 
-    .year-admin-top{
+    .year-top{
       display:flex;
       justify-content:space-between;
       align-items:start;
-      gap:10px;
-      margin-bottom:12px;
+      gap:12px;
       flex-wrap:wrap;
+      margin-bottom:12px;
     }
 
-    .year-admin-title{
+    .year-title{
       font-size:1.2rem;
       font-weight:900;
       color:#58595b;
       margin-bottom:6px;
     }
 
-    .year-admin-desc{
+    .year-desc{
       color:#6f7075;
       line-height:1.9;
       margin-bottom:14px;
       min-height:54px;
     }
 
-    .year-admin-meta{
+    .year-meta{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
@@ -118,27 +118,27 @@
     .pill-off{ background:rgba(220,53,69,.10); color:#dc3545; }
     .pill-order{ background:rgba(251,199,13,.14); color:#8a6900; }
 
-    .media-summary{
+    .summary-grid{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:12px;
       margin-bottom:16px;
     }
 
-    .media-summary-box{
+    .summary-box{
       background:#fff;
       border:1px solid #efe7cf;
       border-radius:18px;
       padding:14px;
     }
 
-    .media-summary-label{
+    .summary-label{
       color:#7b7c80;
       font-weight:700;
       margin-bottom:6px;
     }
 
-    .media-summary-value{
+    .summary-value{
       color:#58595b;
       font-weight:900;
     }
@@ -183,7 +183,7 @@
 
     @media (max-width:767.98px){
       .years-grid,
-      .media-summary{
+      .summary-grid{
         grid-template-columns:1fr;
       }
     }
@@ -201,7 +201,7 @@
       <div class="ms-auto d-flex gap-2">
         <a href="admin.html" class="btn btn-le-outline">
           <i class="fa-solid fa-table-columns"></i>
-          لوحة العاملين
+          لوحة المشرف
         </a>
         <button id="logoutBtn" class="btn btn-le-dark">
           <i class="fa-solid fa-right-from-bracket"></i>
@@ -217,7 +217,7 @@
         <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
           <div>
             <div class="head-title">إدارة السنوات</div>
-            <p class="head-text">إدارة السنوات، الوصف، عدد المشاركين، الأنشطة، وروابط فيديوهات يوتيوب والوسائط المرتبطة.</p>
+            <p class="head-text">إدارة السنوات، الصور، روابط الوسائط، وروابط يوتيوب المرتبطة بكل سنة.</p>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             <button id="refreshBtn" class="btn btn-le-outline">
@@ -276,6 +276,7 @@
     const API_URL = window.APP_CONFIG.API_URL;
     const mediaModal = new bootstrap.Modal(document.getElementById('mediaModal'));
     const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+
     let currentUser = null;
     let currentYears = [];
 
@@ -321,20 +322,22 @@
         }
 
         grid.innerHTML = currentYears.map(item => {
-          const imagesCount = (item.media || []).filter(m => String(m.type || '') === 'صورة').length;
-          const videosCount = (item.youtubeLinks || []).filter(Boolean).length;
+          const imagesCount = (item.media || []).filter(m => normalizeMediaType(m.type) === 'image').length;
+          const linksCount = (item.media || []).filter(m => normalizeMediaType(m.type) !== 'image').length;
+          const videosCount = Array.isArray(item.youtubeLinks) ? item.youtubeLinks.filter(Boolean).length : 0;
+
           return `
-            <div class="year-admin-card">
-              <div class="year-admin-top">
+            <div class="year-card">
+              <div class="year-top">
                 <div>
-                  <div class="year-admin-title">${escapeHtml(item.title || ('Live English ' + item.year))}</div>
+                  <div class="year-title">${escapeHtml(item.title || ('Live English ' + item.year))}</div>
                   <div class="text-muted fw-bold">${escapeHtml(item.year || '')}</div>
                 </div>
               </div>
 
-              <div class="year-admin-desc">${escapeHtml(item.description || '')}</div>
+              <div class="year-desc">${escapeHtml(item.description || '')}</div>
 
-              <div class="year-admin-meta">
+              <div class="year-meta">
                 <span class="pill pill-order"><i class="fa-solid fa-sort"></i> الترتيب: ${toNum(item.order)}</span>
                 <span class="pill ${item.enabled ? 'pill-on' : 'pill-off'}">
                   <i class="fa-solid ${item.enabled ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
@@ -342,22 +345,22 @@
                 </span>
               </div>
 
-              <div class="media-summary">
-                <div class="media-summary-box">
-                  <div class="media-summary-label">عدد المشاركين</div>
-                  <div class="media-summary-value">${escapeHtml(item.participants || '—')}</div>
+              <div class="summary-grid">
+                <div class="summary-box">
+                  <div class="summary-label">عدد المشاركين</div>
+                  <div class="summary-value">${escapeHtml(item.participants || '—')}</div>
                 </div>
-                <div class="media-summary-box">
-                  <div class="media-summary-label">الصور</div>
-                  <div class="media-summary-value">${imagesCount}</div>
+                <div class="summary-box">
+                  <div class="summary-label">الصور</div>
+                  <div class="summary-value">${imagesCount}</div>
                 </div>
-                <div class="media-summary-box">
-                  <div class="media-summary-label">فيديوهات يوتيوب</div>
-                  <div class="media-summary-value">${videosCount}</div>
+                <div class="summary-box">
+                  <div class="summary-label">فيديوهات يوتيوب</div>
+                  <div class="summary-value">${videosCount}</div>
                 </div>
-                <div class="media-summary-box">
-                  <div class="media-summary-label">الأنشطة</div>
-                  <div class="media-summary-value">${escapeHtml(item.activities || '—')}</div>
+                <div class="summary-box">
+                  <div class="summary-label">وسائط إضافية</div>
+                  <div class="summary-value">${linksCount}</div>
                 </div>
               </div>
 
@@ -405,7 +408,7 @@
             <input id="swalParticipants" class="form-control mb-3" value="${escapeAttr(item?.participants || '')}" placeholder="مثال: 120">
 
             <label class="form-label">أبرز الأنشطة</label>
-            <input id="swalActivities" class="form-control mb-3" value="${escapeAttr(item?.activities || '')}" placeholder="مثال: رحلات - ورش - مسابقات">
+            <input id="swalActivities" class="form-control mb-3" value="${escapeAttr(item?.activities || '')}" placeholder="مثال: ورش - مسابقات - رحلات">
 
             <label class="form-label">الترتيب</label>
             <input id="swalOrder" type="number" class="form-control mb-3" value="${toNum(item?.order || 1)}">
@@ -426,6 +429,7 @@
         preConfirm: () => {
           const year = document.getElementById('swalYear').value.trim();
           const title = document.getElementById('swalTitle').value.trim();
+
           if (!year || !title) {
             Swal.showValidationMessage('السنة والعنوان مطلوبان');
             return false;
@@ -550,7 +554,7 @@
           </button>
           <button class="btn btn-le-dark" onclick="addMedia('${escapeJs(item.id)}','رابط')">
             <i class="fa-solid fa-link"></i>
-            إضافة وسيط/رابط
+            إضافة رابط/وسيط
           </button>
         </div>
 
@@ -561,18 +565,18 @@
                   <div class="media-item">
                     <div class="media-item-title">${escapeHtml(m.title || 'وسيط')}</div>
                     <div class="media-item-meta">
-                      النوع: ${escapeHtml(m.type || '—')} — الترتيب: ${toNum(m.order)}
+                      النوع: ${escapeHtml(m.type || '—')} — الترتيب: ${toNum(m.order)} — ${m.enabled ? 'مفعل' : 'مخفي'}
                     </div>
                     <div class="mb-3 text-muted">${escapeHtml(m.description || '')}</div>
                     <div class="d-flex flex-wrap gap-2">
-                      ${String(m.type || '') === 'صورة'
-                        ? `<button class="btn btn-le-outline" onclick="openPreview('${escapeJs(safeImg(m.url, m.title))}','${escapeJs(m.title || '')}')">
+                      ${normalizeMediaType(m.type) === 'image'
+                        ? `<button class="btn btn-le-outline" onclick="openPreview('${escapeJs(m.url || '')}','${escapeJs(m.title || '')}')">
                             <i class="fa-solid fa-eye"></i>
                             معاينة
                           </button>`
                         : ''
                       }
-                      <a href="${m.url || '#'}" target="_blank" class="btn btn-le-outline">
+                      <a href="${escapeAttr(m.url || '#')}" target="_blank" class="btn btn-le-outline">
                         <i class="fa-solid fa-up-right-from-square"></i>
                         فتح
                       </a>
@@ -596,7 +600,7 @@
       if (!yearItem) return;
 
       const { value: formValues } = await Swal.fire({
-        title: mediaType === 'صورة' ? 'إضافة صورة' : 'إضافة وسيط/رابط',
+        title: mediaType === 'صورة' ? 'إضافة صورة' : 'إضافة رابط/وسيط',
         width: 700,
         html: `
           <div class="text-end">
@@ -607,7 +611,7 @@
             <textarea id="swalMediaDesc" class="form-control mb-3" rows="3" placeholder="وصف مختصر"></textarea>
 
             <label class="form-label">الرابط</label>
-            <input id="swalMediaUrl" class="form-control mb-3" placeholder="رابط الصورة أو الوسيط">
+            <input id="swalMediaUrl" class="form-control mb-3" placeholder="${mediaType === 'صورة' ? 'رابط صورة مباشر' : 'رابط الوسيط'}">
 
             <label class="form-label">الترتيب</label>
             <input id="swalMediaOrder" type="number" class="form-control mb-3" value="1">
@@ -625,6 +629,7 @@
         preConfirm: () => {
           const title = document.getElementById('swalMediaTitle').value.trim();
           const url = document.getElementById('swalMediaUrl').value.trim();
+
           if (!title || !url) {
             Swal.showValidationMessage('العنوان والرابط مطلوبان');
             return false;
@@ -715,6 +720,7 @@
         preConfirm: () => {
           const title = document.getElementById('swalMediaTitle').value.trim();
           const url = document.getElementById('swalMediaUrl').value.trim();
+
           if (!title || !url) {
             Swal.showValidationMessage('العنوان والرابط مطلوبان');
             return false;
@@ -772,18 +778,20 @@
     }
 
     function openPreview(src, title) {
-      document.getElementById('previewImage').src = safeImg(src, title || 'Live English');
+      document.getElementById('previewImage').src = src || '';
       document.getElementById('previewTitle').textContent = title || 'معاينة الصورة';
       previewModal.show();
+    }
+
+    function normalizeMediaType(type) {
+      const t = String(type || '').trim().toLowerCase();
+      if (t === 'صورة' || t === 'image' || t === 'img') return 'image';
+      return 'link';
     }
 
     function logout() {
       localStorage.removeItem('liveEnglishStaffUser');
       window.location.href = 'staff-login.html';
-    }
-
-    function safeImg(url, text) {
-      return url || `https://placehold.co/1000x700/f8f1db/58595b?text=${encodeURIComponent(text || 'Live English')}`;
     }
 
     function toNum(v) {
