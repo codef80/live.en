@@ -43,6 +43,55 @@
       line-height:1.9;
     }
 
+    .quick-admin-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+      margin-bottom:22px;
+    }
+
+    .quick-admin-card{
+      background:#fff;
+      border:1px solid #efe7cf;
+      border-radius:24px;
+      box-shadow:0 12px 28px rgba(88,89,91,.08);
+      padding:20px;
+      transition:.25s ease;
+      height:100%;
+    }
+
+    .quick-admin-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 20px 40px rgba(88,89,91,.14);
+    }
+
+    .quick-admin-icon{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(251,199,13,.18), rgba(251,199,13,.34));
+      color:#58595b;
+      font-size:1.35rem;
+      margin-bottom:14px;
+    }
+
+    .quick-admin-title{
+      font-size:1.08rem;
+      font-weight:900;
+      color:#58595b;
+      margin-bottom:8px;
+    }
+
+    .quick-admin-text{
+      color:#6f7075;
+      line-height:1.8;
+      margin-bottom:14px;
+      font-size:.96rem;
+    }
+
     .stat-card{
       background:#fff;
       border:1px solid #efe7cf;
@@ -225,6 +274,12 @@
       line-height:1.8;
     }
 
+    @media (max-width: 1199.98px){
+      .quick-admin-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
     @media (max-width: 991.98px){
       .filters-grid{
         grid-template-columns:1fr 1fr;
@@ -232,6 +287,7 @@
     }
 
     @media (max-width: 767.98px){
+      .quick-admin-grid,
       .filters-grid,
       .profile-grid{
         grid-template-columns:1fr;
@@ -276,6 +332,48 @@
             </button>
           </div>
         </div>
+      </div>
+
+      <div class="quick-admin-grid">
+        <a href="settings.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-gear"></i></div>
+          <div class="quick-admin-title">الإعدادات</div>
+          <div class="quick-admin-text">عرض الإعدادات العامة، الروابط، القوالب، وروابط Google Drive.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+
+        <a href="admin-packages.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="quick-admin-title">إدارة الفئات</div>
+          <div class="quick-admin-text">إدارة فئتي أشبال وقادة من حيث النصوص والصور والتفعيل.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+
+        <a href="admin-years.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-calendar-days"></i></div>
+          <div class="quick-admin-title">إدارة السنوات</div>
+          <div class="quick-admin-text">إدارة السنوات، الصور، الفيديوهات، والوسائط المرتبطة بكل سنة.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+
+        <a href="admin-users.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="quick-admin-title">إدارة المستخدمين</div>
+          <div class="quick-admin-text">إضافة وتعديل وتفعيل وتعطيل مستخدمي النظام وأدوارهم.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
       </div>
 
       <div class="row g-4 mb-4">
@@ -343,7 +441,7 @@
             <label class="form-label">الفئة</label>
             <select id="categoryFilter" class="form-select">
               <option value="">الكل</option>
-              <option value="شبال">شبال</option>
+              <option value="أشبال">أشبال</option>
               <option value="قادة">قادة</option>
             </select>
           </div>
@@ -523,7 +621,7 @@
       let cls = 'status-progress';
       if (s.includes('مرفوض')) cls = 'status-danger';
       else if (s.includes('مكتمل') || s.includes('نشط')) cls = 'status-success';
-      else if (s.includes('بانتظار') || s.includes('أولي') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-amber';
+      else if (s.includes('بانتظار') || s.includes('أولي') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-pending';
       return `<span class="status-badge ${cls}">${escapeHtml(s || '—')}</span>`;
     }
 
@@ -532,7 +630,7 @@
       let cls = 'status-progress';
       if (s.includes('مرفوض')) cls = 'status-danger';
       else if (s.includes('مكتمل')) cls = 'status-success';
-      else if (s.includes('بانتظار') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-amber';
+      else if (s.includes('بانتظار') || s.includes('جزئي') || s.includes('مؤجل')) cls = 'status-pending';
       return `<span class="status-badge ${cls}">${escapeHtml(s || '—')}</span>`;
     }
 
@@ -567,10 +665,8 @@
                 <div class="profile-item"><div class="profile-key">هوية الطالب</div><div class="profile-value">${escapeHtml(student['هوية_الطالب'] || '')}</div></div>
                 <div class="profile-item"><div class="profile-key">رقم الجواز</div><div class="profile-value">${escapeHtml(student['رقم_الجواز'] || '')}</div></div>
                 <div class="profile-item"><div class="profile-key">الفئة</div><div class="profile-value">${escapeHtml(app['الفئة'] || '')}</div></div>
-                <div class="profile-item"><div class="profile-key">الباقة</div><div class="profile-value">${escapeHtml(app['الباقة'] || '')}</div></div>
                 <div class="profile-item"><div class="profile-key">حالة الطلب</div><div class="profile-value">${escapeHtml(app['حالة_الطلب'] || '')}</div></div>
                 <div class="profile-item"><div class="profile-key">حالة السداد</div><div class="profile-value">${escapeHtml(app['حالة_السداد'] || '')}</div></div>
-                <div class="profile-item"><div class="profile-key">جوال الابن</div><div class="profile-value">${escapeHtml(student['جوال_الابن'] || '')}</div></div>
                 <div class="profile-item"><div class="profile-key">جوال ولي الأمر</div><div class="profile-value">${escapeHtml(student['جوال_ولي_الأمر'] || '')}</div></div>
                 <div class="profile-item full"><div class="profile-key">ملاحظات عامة</div><div class="profile-value">${escapeHtml(app['ملاحظات_عامة'] || '—')}</div></div>
               </div>
