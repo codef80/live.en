@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
@@ -23,6 +24,22 @@
     }
     .admin-head-title{font-size:1.9rem;font-weight:900;color:#58595b;margin-bottom:8px}
     .admin-head-text{color:#707176;margin:0;line-height:1.9}
+
+    .quick-admin-grid{
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px
+    }
+    .quick-admin-card{
+      background:#fff;border:1px solid #efe7cf;border-radius:24px;
+      box-shadow:0 12px 28px rgba(88,89,91,.08);padding:20px;transition:.25s ease;height:100%
+    }
+    .quick-admin-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(88,89,91,.14)}
+    .quick-admin-icon{
+      width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,rgba(251,199,13,.18),rgba(251,199,13,.34));
+      color:#58595b;font-size:1.35rem;margin-bottom:14px
+    }
+    .quick-admin-title{font-size:1.08rem;font-weight:900;color:#58595b;margin-bottom:8px}
+    .quick-admin-text{color:#6f7075;line-height:1.8;margin-bottom:14px;font-size:.96rem}
 
     .stat-card{
       background:#fff;border:1px solid #efe7cf;border-radius:24px;
@@ -68,7 +85,7 @@
     }
 
     .table-shell{overflow:auto;border-radius:22px;border:1px solid #f0ead7}
-    .table-admin{margin:0;min-width:1200px;vertical-align:middle}
+    .table-admin{margin:0;min-width:1280px;vertical-align:middle}
     .table-admin thead th{
       background:#fff7da;color:#58595b;font-weight:900;border-bottom:1px solid #eadca9;white-space:nowrap
     }
@@ -110,9 +127,16 @@
     .timeline-box-meta{color:#8a8b90;font-size:.92rem;margin-bottom:6px}
     .timeline-box-text{color:#6f7075;line-height:1.8}
 
-    @media (max-width:1199.98px){.stage-grid{grid-template-columns:1fr}}
-    @media (max-width:991.98px){.filters-grid{grid-template-columns:1fr 1fr}}
-    @media (max-width:767.98px){.filters-grid,.profile-grid{grid-template-columns:1fr}}
+    @media (max-width:1199.98px){
+      .quick-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .stage-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:991.98px){
+      .filters-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:767.98px){
+      .quick-admin-grid,.filters-grid,.profile-grid{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
@@ -154,6 +178,48 @@
         </div>
       </div>
 
+      <div class="quick-admin-grid">
+        <a href="settings.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-gear"></i></div>
+          <div class="quick-admin-title">الإعدادات</div>
+          <div class="quick-admin-text">عرض الإعدادات العامة، الروابط، القوالب، وروابط Google Drive.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+
+        <a href="admin-categories.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="quick-admin-title">إدارة الفئات</div>
+          <div class="quick-admin-text">إدارة فئتي أشبال وقادة من حيث النصوص والصور والتفعيل.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+
+        <a href="admin-years.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-calendar-days"></i></div>
+          <div class="quick-admin-title">إدارة السنوات</div>
+          <div class="quick-admin-text">إدارة السنوات والوسائط والصور والفيديوهات المرتبطة بكل سنة.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+
+        <a href="admin-users.html" class="quick-admin-card">
+          <div class="quick-admin-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="quick-admin-title">إدارة المستخدمين</div>
+          <div class="quick-admin-text">إضافة وتعديل وتفعيل وتعطيل مستخدمي النظام وأدوارهم.</div>
+          <span class="btn btn-le-outline w-100">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            فتح
+          </span>
+        </a>
+      </div>
+
       <div class="row g-4 mb-2">
         <div class="col-md-6 col-xl-3">
           <div class="stat-card">
@@ -192,14 +258,14 @@
         <div class="stage-card" data-stage="payment">
           <div class="stage-icon"><i class="fa-solid fa-wallet"></i></div>
           <div class="stage-title">مرحلة السداد</div>
-          <div class="stage-text">الطلاب المقبولون مبدئيًا بانتظار السداد أو السداد الجزئي.</div>
+          <div class="stage-text">استعراض المقبولين مبدئيًا مع السداد الحالي والتذكير بالسداد والإلغاء.</div>
           <div class="stage-count" id="paymentCount">0 طالب</div>
         </div>
 
         <div class="stage-card" data-stage="students">
           <div class="stage-icon"><i class="fa-solid fa-users"></i></div>
           <div class="stage-title">الطلاب</div>
-          <div class="stage-text">الطلاب المقبولون النهائيون مع التعديل والتسكين وتقارير المعلمين.</div>
+          <div class="stage-text">يشمل من هم في مرحلة السداد والمكتمل سدادهم والطلاب النشطين.</div>
           <div class="stage-count" id="studentsCount">0 طالب</div>
         </div>
       </div>
@@ -289,7 +355,7 @@
       },
       students: {
         title: 'الطلاب',
-        statuses: ['', 'مكتمل السداد', 'طالب نشط'],
+        statuses: ['', 'مقبول مبدئيًا وبانتظار السداد', 'سداد جزئي', 'مؤجل السداد', 'مكتمل السداد', 'طالب نشط'],
         getUrl: (params) => `${API_URL}?action=getActiveStudents&${params.toString()}`,
         columns: ['رقم الطلب','الاسم','الفئة','الحالة','المعلم','ولي الأمر','الإجراءات']
       }
@@ -368,6 +434,7 @@
           toNum(counts['سداد جزئي']) +
           toNum(counts['مؤجل السداد']);
         const studentsCount =
+          paymentCount +
           toNum(counts['مكتمل السداد']) +
           toNum(counts['طالب نشط']);
 
@@ -655,6 +722,83 @@
       }
     }
 
+    async function openPaymentAction(applicationNo) {
+      const { value: formValues } = await Swal.fire({
+        title: 'السداد الحالي',
+        html: `
+          <div class="text-end">
+            <label class="form-label">الإجراء</label>
+            <select id="swalPayAction" class="form-select mb-3">
+              <option value="بانتظار السداد">بانتظار السداد</option>
+              <option value="دفع جزئي">دفع جزئي</option>
+              <option value="مكتمل السداد">مكتمل السداد</option>
+              <option value="مؤجل">مؤجل</option>
+            </select>
+
+            <label class="form-label">المبلغ المدفوع الآن</label>
+            <input id="swalPaidNow" type="number" class="form-control mb-3" value="0">
+
+            <label class="form-label">رقم الفاتورة</label>
+            <input id="swalInvoiceNo" type="text" class="form-control mb-3">
+
+            <label class="form-label">رابط الفاتورة</label>
+            <input id="swalInvoiceUrl" type="text" class="form-control mb-3">
+
+            <label class="form-label">ملاحظات</label>
+            <textarea id="swalPayNote" class="form-control" rows="3"></textarea>
+          </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'حفظ',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#fbc70d',
+        preConfirm: () => ({
+          actionType: document.getElementById('swalPayAction').value,
+          paidNow: document.getElementById('swalPaidNow').value,
+          invoiceNo: document.getElementById('swalInvoiceNo').value,
+          invoiceUrl: document.getElementById('swalInvoiceUrl').value,
+          note: document.getElementById('swalPayNote').value
+        })
+      });
+
+      if (!formValues) return;
+
+      try {
+        const res = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action:'savePaymentAction',
+            actor: currentUser?.name || 'مستخدم النظام',
+            data:{
+              'رقم_الطلب': applicationNo,
+              'الإجراء': formValues.actionType,
+              'المدفوع_الآن': Number(formValues.paidNow || 0),
+              'رقم_الفاتورة': formValues.invoiceNo || '',
+              'رابط_الفاتورة': formValues.invoiceUrl || '',
+              'ملاحظات': formValues.note || ''
+            }
+          })
+        });
+
+        const json = await res.json();
+        if (!json.ok) throw new Error(json.message || 'فشل التنفيذ');
+
+        await Swal.fire({
+          icon:'success',
+          title:'تم حفظ السداد',
+          confirmButtonColor:'#fbc70d'
+        });
+
+        await loadDashboard();
+        await loadStageData();
+      } catch (e) {
+        console.error(e);
+        Swal.fire({ icon:'error', title:'تعذر حفظ السداد', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
+      }
+    }
+
     async function editStudentData(applicationNo) {
       const row = currentRows.find(r => String(r.applicationNo) === String(applicationNo));
       if (!row) return;
@@ -769,9 +913,12 @@
         if (!json.ok) throw new Error(json.message || 'تعذر تحميل البيانات');
 
         const app = json.data?.application || {};
-        const msg = `السلام عليكم، بخصوص الطالب ${app['اسم_الطالب_الثلاثي'] || ''}`;
-        const phone = String(app['جوال_ولي_الأمر'] || '').replace(/^0/, '966');
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        const studentName = app['اسم_الطالب_الثلاثي'] || '';
+        const guardianPhone = String(app['جوال_ولي_الأمر'] || '').replace(/^0/, '966');
+        const msg = `السلام عليكم، بخصوص الطالب ${studentName}`;
+
+        if (!guardianPhone) throw new Error('رقم ولي الأمر غير متوفر');
+        window.open(`https://wa.me/${guardianPhone}?text=${encodeURIComponent(msg)}`, '_blank');
       } catch (e) {
         console.error(e);
         Swal.fire({ icon:'error', title:'تعذر فتح واتساب', text:e.message || 'حدث خطأ', confirmButtonColor:'#58595b' });
