@@ -576,7 +576,7 @@
                           </button>`
                         : ''
                       }
-                      <a href="${escapeAttr(m.url || '#')}" target="_blank" class="btn btn-le-outline">
+                      <a href="${escapeAttr(normalizeMediaType(m.type) === 'image' ? normalizeDriveImageUrl(m.url || '') : (m.url || '#'))}" target="_blank" class="btn btn-le-outline">
                         <i class="fa-solid fa-up-right-from-square"></i>
                         فتح
                       </a>
@@ -596,198 +596,235 @@
     }
 
     async function addMedia(yearId, mediaType) {
-      const yearItem = currentYears.find(x => String(x.id) === String(yearId));
-      if (!yearItem) return;
+  const yearItem = currentYears.find(x => String(x.id) === String(yearId));
+  if (!yearItem) return;
 
-      const { value: formValues } = await Swal.fire({
-        title: mediaType === 'صورة' ? 'إضافة صورة' : 'إضافة رابط/وسيط',
-        width: 700,
-        html: `
-          <div class="text-end">
-            <label class="form-label">العنوان</label>
-            <input id="swalMediaTitle" class="form-control mb-3" placeholder="عنوان الوسيط">
-
-            <label class="form-label">الوصف</label>
-            <textarea id="swalMediaDesc" class="form-control mb-3" rows="3" placeholder="وصف مختصر"></textarea>
-
-            <label class="form-label">الرابط</label>
-            <input id="swalMediaUrl" class="form-control mb-3" placeholder="${mediaType === 'صورة' ? 'رابط صورة مباشر' : 'رابط الوسيط'}">
-
-            <label class="form-label">الترتيب</label>
-            <input id="swalMediaOrder" type="number" class="form-control mb-3" value="1">
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="swalMediaEnabled" checked>
-              <label class="form-check-label" for="swalMediaEnabled">الوسيط مفعل</label>
-            </div>
-          </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'حفظ',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#fbc70d',
-        preConfirm: () => {
-          const title = document.getElementById('swalMediaTitle').value.trim();
-          const url = document.getElementById('swalMediaUrl').value.trim();
-
-          if (!title || !url) {
-            Swal.showValidationMessage('العنوان والرابط مطلوبان');
-            return false;
-          }
-
-          return {
-            title,
-            description: document.getElementById('swalMediaDesc').value.trim(),
-            url,
-            order: document.getElementById('swalMediaOrder').value,
-            enabled: document.getElementById('swalMediaEnabled').checked
-          };
-        }
-      });
-
-      if (!formValues) return;
-
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'saveYearMedia',
-            actor: currentUser?.name || 'مستخدم النظام',
-            data: {
-              'معرف_السنة': yearItem.id,
-              'السنة': yearItem.year,
-              'نوع_الوسيط': mediaType,
-              'العنوان': formValues.title,
-              'الوصف': formValues.description,
-              'معرف_الملف': '',
-              'الرابط': formValues.url,
-              'ترتيب_الظهور': Number(formValues.order || 0),
-              'مفعل': formValues.enabled
-            }
-          })
-        });
-
-        const json = await res.json();
-        if (!json.ok) throw new Error(json.message || 'فشل الحفظ');
-
-        await loadYears();
-        const refreshed = currentYears.find(x => String(x.id) === String(yearId));
-        if (refreshed) openMediaManager(refreshed.id);
-      } catch (e) {
-        console.error(e);
-        Swal.fire({
-          icon: 'error',
-          title: 'تعذر الحفظ',
-          text: e.message || 'حدث خطأ',
-          confirmButtonColor: '#58595b'
-        });
-      }
+  const result = await openMediaFormDialog({
+    title: mediaType === 'صورة' ? 'إضافة صورة' : 'إضافة رابط/وسيط',
+    mediaType,
+    initialData: {
+      title: '',
+      description: '',
+      url: '',
+      order: 1,
+      enabled: true
     }
+  });
+
+  if (!result.isConfirmed || !result.value) {
+    openMediaManager(yearId);
+    return;
+  }
+
+  const formValues = result.value;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'saveYearMedia',
+        actor: currentUser?.name || 'مستخدم النظام',
+        data: {
+          'معرف_السنة': yearItem.id,
+          'السنة': yearItem.year,
+          'نوع_الوسيط': mediaType,
+          'العنوان': formValues.title,
+          'الوصف': formValues.description,
+          'معرف_الملف': extractGoogleDriveFileId(formValues.url) || '',
+          'الرابط': formValues.url,
+          'ترتيب_الظهور': Number(formValues.order || 0),
+          'مفعل': formValues.enabled
+        }
+      })
+    });
+
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.message || 'فشل الحفظ');
+
+    await loadYears();
+    const refreshed = currentYears.find(x => String(x.id) === String(yearId));
+    if (refreshed) openMediaManager(refreshed.id);
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      icon: 'error',
+      title: 'تعذر الحفظ',
+      text: e.message || 'حدث خطأ',
+      confirmButtonColor: '#58595b'
+    }).then(() => openMediaManager(yearId));
+  }
+}
 
     async function editMedia(yearId, mediaId) {
-      const yearItem = currentYears.find(x => String(x.id) === String(yearId));
-      const media = (yearItem?.media || []).find(m => String(m.id) === String(mediaId));
-      if (!yearItem || !media) return;
+  const yearItem = currentYears.find(x => String(x.id) === String(yearId));
+  const media = (yearItem?.media || []).find(m => String(m.id) === String(mediaId));
+  if (!yearItem || !media) return;
 
-      const { value: formValues } = await Swal.fire({
-        title: 'تعديل وسيط',
-        width: 700,
-        html: `
-          <div class="text-end">
-            <label class="form-label">العنوان</label>
-            <input id="swalMediaTitle" class="form-control mb-3" value="${escapeAttr(media.title || '')}">
-
-            <label class="form-label">الوصف</label>
-            <textarea id="swalMediaDesc" class="form-control mb-3" rows="3">${escapeHtml(media.description || '')}</textarea>
-
-            <label class="form-label">الرابط</label>
-            <input id="swalMediaUrl" class="form-control mb-3" value="${escapeAttr(media.url || '')}">
-
-            <label class="form-label">الترتيب</label>
-            <input id="swalMediaOrder" type="number" class="form-control mb-3" value="${toNum(media.order || 1)}">
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="swalMediaEnabled" ${media.enabled ? 'checked' : ''}>
-              <label class="form-check-label" for="swalMediaEnabled">الوسيط مفعل</label>
-            </div>
-          </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'حفظ',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#fbc70d',
-        preConfirm: () => {
-          const title = document.getElementById('swalMediaTitle').value.trim();
-          const url = document.getElementById('swalMediaUrl').value.trim();
-
-          if (!title || !url) {
-            Swal.showValidationMessage('العنوان والرابط مطلوبان');
-            return false;
-          }
-
-          return {
-            title,
-            description: document.getElementById('swalMediaDesc').value.trim(),
-            url,
-            order: document.getElementById('swalMediaOrder').value,
-            enabled: document.getElementById('swalMediaEnabled').checked
-          };
-        }
-      });
-
-      if (!formValues) return;
-
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'saveYearMedia',
-            actor: currentUser?.name || 'مستخدم النظام',
-            data: {
-              'معرف_الوسيط': media.id,
-              'معرف_السنة': yearItem.id,
-              'السنة': yearItem.year,
-              'نوع_الوسيط': media.type,
-              'العنوان': formValues.title,
-              'الوصف': formValues.description,
-              'معرف_الملف': media.fileId || '',
-              'الرابط': formValues.url,
-              'ترتيب_الظهور': Number(formValues.order || 0),
-              'مفعل': formValues.enabled
-            }
-          })
-        });
-
-        const json = await res.json();
-        if (!json.ok) throw new Error(json.message || 'فشل الحفظ');
-
-        await loadYears();
-        const refreshed = currentYears.find(x => String(x.id) === String(yearId));
-        if (refreshed) openMediaManager(refreshed.id);
-      } catch (e) {
-        console.error(e);
-        Swal.fire({
-          icon: 'error',
-          title: 'تعذر الحفظ',
-          text: e.message || 'حدث خطأ',
-          confirmButtonColor: '#58595b'
-        });
-      }
+  const result = await openMediaFormDialog({
+    title: 'تعديل وسيط',
+    mediaType: media.type,
+    initialData: {
+      title: media.title || '',
+      description: media.description || '',
+      url: media.url || '',
+      order: media.order || 1,
+      enabled: media.enabled !== false
     }
+  });
+
+  if (!result.isConfirmed || !result.value) {
+    openMediaManager(yearId);
+    return;
+  }
+
+  const formValues = result.value;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'saveYearMedia',
+        actor: currentUser?.name || 'مستخدم النظام',
+        data: {
+          'معرف_الوسيط': media.id,
+          'معرف_السنة': yearItem.id,
+          'السنة': yearItem.year,
+          'نوع_الوسيط': media.type,
+          'العنوان': formValues.title,
+          'الوصف': formValues.description,
+          'معرف_الملف': extractGoogleDriveFileId(formValues.url) || media.fileId || '',
+          'الرابط': formValues.url,
+          'ترتيب_الظهور': Number(formValues.order || 0),
+          'مفعل': formValues.enabled
+        }
+      })
+    });
+
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.message || 'فشل الحفظ');
+
+    await loadYears();
+    const refreshed = currentYears.find(x => String(x.id) === String(yearId));
+    if (refreshed) openMediaManager(refreshed.id);
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      icon: 'error',
+      title: 'تعذر الحفظ',
+      text: e.message || 'حدث خطأ',
+      confirmButtonColor: '#58595b'
+    }).then(() => openMediaManager(yearId));
+  }
+}
 
     function openPreview(src, title) {
-      document.getElementById('previewImage').src = src || '';
-      document.getElementById('previewTitle').textContent = title || 'معاينة الصورة';
-      previewModal.show();
-    }
+  document.getElementById('previewImage').src = normalizeDriveImageUrl(src || '');
+  document.getElementById('previewTitle').textContent = title || 'معاينة الصورة';
+  previewModal.show();
+}
 
     function normalizeMediaType(type) {
       const t = String(type || '').trim().toLowerCase();
       if (t === 'صورة' || t === 'image' || t === 'img') return 'image';
       return 'link';
     }
+
+    function normalizeDriveImageUrl(url) {
+  url = String(url || '').trim();
+  if (!url) return '';
+
+  const fileId = extractGoogleDriveFileId(url);
+  if (fileId) {
+    return `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1600`;
+  }
+
+  return url;
+}
+
+function extractGoogleDriveFileId(url) {
+  url = String(url || '').trim();
+  if (!url) return '';
+
+  const patterns = [
+    /[?&]id=([^&]+)/,
+    /\/file\/d\/([^/]+)/,
+    /\/thumbnail\?id=([^&]+)/,
+    /\/uc\?(?:export=[^&]+&)?id=([^&]+)/
+  ];
+
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m && m[1]) return m[1];
+  }
+
+  return '';
+}
+
+async function openMediaFormDialog({ title, mediaType, initialData }) {
+  initialData = initialData || {};
+
+  const mediaModalEl = document.getElementById('mediaModal');
+  const mediaModalInstance = bootstrap.Modal.getInstance(mediaModalEl);
+  if (mediaModalInstance) mediaModalInstance.hide();
+
+  const result = await Swal.fire({
+    title,
+    width: 700,
+    html: `
+      <div class="text-end">
+        <label class="form-label">العنوان</label>
+        <input id="swalMediaTitle" class="form-control mb-3" value="${escapeAttr(initialData.title || '')}" placeholder="عنوان الوسيط">
+
+        <label class="form-label">الوصف</label>
+        <textarea id="swalMediaDesc" class="form-control mb-3" rows="3" placeholder="وصف مختصر">${escapeHtml(initialData.description || '')}</textarea>
+
+        <label class="form-label">الرابط</label>
+        <input id="swalMediaUrl" class="form-control mb-3" value="${escapeAttr(initialData.url || '')}" placeholder="${mediaType === 'صورة' ? 'رابط صورة أو رابط Google Drive' : 'رابط الوسيط'}">
+
+        <label class="form-label">الترتيب</label>
+        <input id="swalMediaOrder" type="number" class="form-control mb-3" value="${toNum(initialData.order || 1)}">
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="swalMediaEnabled" ${initialData.enabled === false ? '' : 'checked'}>
+          <label class="form-check-label" for="swalMediaEnabled">الوسيط مفعل</label>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'حفظ',
+    cancelButtonText: 'إلغاء',
+    confirmButtonColor: '#fbc70d',
+    didOpen: () => {
+      const el = document.getElementById('swalMediaTitle');
+      if (el) {
+        el.removeAttribute('readonly');
+        el.removeAttribute('disabled');
+        setTimeout(() => el.focus(), 50);
+      }
+    },
+    preConfirm: () => {
+      const titleVal = document.getElementById('swalMediaTitle').value.trim();
+      const urlVal = document.getElementById('swalMediaUrl').value.trim();
+
+      if (!titleVal || !urlVal) {
+        Swal.showValidationMessage('العنوان والرابط مطلوبان');
+        return false;
+      }
+
+      return {
+        title: titleVal,
+        description: document.getElementById('swalMediaDesc').value.trim(),
+        url: urlVal,
+        order: document.getElementById('swalMediaOrder').value,
+        enabled: document.getElementById('swalMediaEnabled').checked
+      };
+    }
+  });
+
+  return result;
+}
 
     function logout() {
       localStorage.removeItem('liveEnglishStaffUser');
