@@ -15,317 +15,49 @@
   <link href="assets/css/styles.css" rel="stylesheet">
 
   <style>
-    .brand-logo-img{
-      width:34px;
-      height:34px;
-      object-fit:contain;
-      display:block;
-      border-radius:10px;
-    }
-
-    .small-nav-btn{
-      padding:.5rem .9rem !important;
-      font-size:.92rem !important;
-      border-radius:12px !important;
-    }
-
-    .register-page{
-      padding-top:120px;
-      padding-bottom:60px;
-      min-height:100vh;
-    }
-
-    .register-head{
-      background:linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,248,223,.95));
-      border:1px solid rgba(251,199,13,.22);
-      border-radius:34px;
-      box-shadow:0 24px 60px rgba(88,89,91,.12);
-      padding:28px;
-      margin-bottom:26px;
-    }
-
-    .register-title{
-      font-size:2rem;
-      font-weight:900;
-      color:#58595b;
-      margin-bottom:8px;
-    }
-
-    .register-text{
-      color:#6f7075;
-      line-height:1.95;
-      margin:0;
-    }
-
-    .register-card{
-      background:#fff;
-      border:1px solid #efe7cf;
-      border-radius:30px;
-      box-shadow:0 18px 40px rgba(88,89,91,.08);
-      padding:24px;
-    }
-
-    .stepper-box{
-      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
-      border:1px solid #efe7cf;
-      border-radius:20px;
-      padding:12px 14px;
-      margin-bottom:18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .stepper-label{
-      font-size:.9rem;
-      font-weight:800;
-      color:#7a7b7f;
-    }
-
-    .stepper-value{
-      font-size:1rem;
-      font-weight:900;
-      color:#58595b;
-    }
-
-    .step-progress{
-      width:100%;
-      height:8px;
-      background:#f2eddc;
-      border-radius:999px;
-      overflow:hidden;
-      margin-top:8px;
-    }
-
-    .step-progress-bar{
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg, #fbc70d, #ffe06f);
-      transition:.25s ease;
-    }
-
-    .step-panel{
-      display:none;
-    }
-
-    .step-panel.active{
-      display:block;
-      animation:fadeSlide .25s ease;
-    }
-
-    @keyframes fadeSlide{
-      from{opacity:0;transform:translateY(8px)}
-      to{opacity:1;transform:none}
-    }
-
-    .section-mini-title{
-      font-size:1.12rem;
-      font-weight:900;
-      color:#58595b;
-      margin-bottom:16px;
-    }
-
-    .form-box{
-      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,249,229,.90));
-      border:1px solid #efe7cf;
-      border-radius:20px;
-      padding:16px;
-      height:100%;
-    }
-
-    .form-label{
-      font-weight:800;
-      color:#66686d;
-      margin-bottom:8px;
-    }
-
-    .hint-text{
-      font-size:.9rem;
-      color:#8a8b90;
-      margin-top:6px;
-      line-height:1.8;
-    }
-
-    .file-box{
-      border:1.5px dashed #dccf9b;
-      background:#fffaf0;
-      border-radius:18px;
-      padding:18px;
-      text-align:center;
-    }
-
-    .file-box i{
-      font-size:1.7rem;
-      color:#c99d00;
-      margin-bottom:10px;
-    }
-
-    .file-meta{
-      margin-top:8px;
-      font-size:.92rem;
-      color:#6f7075;
-      font-weight:700;
-      word-break:break-word;
-    }
-
-    .action-bar{
-      margin-top:20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      background:rgba(255,255,255,.92);
-      border:1px solid #efe7cf;
-      border-radius:18px;
-      padding:10px 12px;
-      position:sticky;
-      bottom:16px;
-      z-index:5;
-      backdrop-filter:blur(8px);
-    }
-
-    .action-info{
-      color:#7a7b7f;
-      font-size:.92rem;
-      font-weight:800;
-    }
-
-    .action-buttons{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .small-step-btn{
-      padding:.55rem .95rem !important;
-      font-size:.92rem !important;
-      border-radius:12px !important;
-    }
-
-    .loading-box{
-      background:#fff;
-      border:1px solid #efe7cf;
-      border-radius:24px;
-      padding:28px;
-      text-align:center;
-      box-shadow:0 10px 24px rgba(88,89,91,.06);
-    }
-
-    .loading-spinner{
-      width:2.2rem;
-      height:2.2rem;
-      color:#fbc70d;
-    }
-
-    .loading-text{
-      margin-top:12px;
-      color:#6f7075;
-      font-weight:800;
-    }
-
-    .footer-clean{
-      background:linear-gradient(135deg, #58595b, #4a4b4e);
-      color:#fff;
-      padding:28px 0;
-      margin-top:72px;
-    }
-
-    .footer-social{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:flex-end;
-    }
-
-    .footer-social a{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,.12);
-      color:#fff;
-      transition:.28s ease;
-    }
-
-    .footer-social a:hover{
-      background:#fbc70d;
-      color:#58595b;
-      transform:translateY(-3px);
-    }
-
-    .made-by-wrap{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      justify-content:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .made-by-link{
-      display:inline-flex;
-      flex-direction:column;
-      align-items:center;
-      gap:4px;
-      color:#fff;
-      text-decoration:none;
-      font-weight:700;
-      font-size:.88rem;
-      line-height:1;
-    }
-
-    .made-by-link:hover{
-      color:#fbc70d;
-    }
-
-    .made-by-line{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      justify-content:center;
-    }
-
-    .made-by-underline{
-      width:100%;
-      height:1px;
-      background:rgba(255,255,255,.45);
-      border-radius:999px;
-    }
-
-    .made-by-logo{
-      width:16px;
-      height:16px;
-      object-fit:contain;
-      display:block;
-    }
-
-    @media (max-width:991.98px){
-      .register-page{
-        padding-top:108px;
-      }
-    }
-
+    .brand-logo-img{width:34px;height:34px;object-fit:contain;display:block;border-radius:10px}
+    .small-nav-btn{padding:.5rem .9rem !important;font-size:.92rem !important;border-radius:12px !important;white-space:nowrap}
+    .register-page{padding-top:120px;padding-bottom:60px;min-height:100vh}
+    .register-head{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(255,248,223,.95));border:1px solid rgba(251,199,13,.22);border-radius:34px;box-shadow:0 24px 60px rgba(88,89,91,.12);padding:28px;margin-bottom:26px}
+    .register-title{font-size:2rem;font-weight:900;color:#58595b;margin-bottom:8px}
+    .register-text{color:#6f7075;line-height:1.95;margin:0}
+    .register-card{background:#fff;border:1px solid #efe7cf;border-radius:30px;box-shadow:0 18px 40px rgba(88,89,91,.08);padding:24px}
+    .stepper-box{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,249,229,.90));border:1px solid #efe7cf;border-radius:20px;padding:12px 14px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .stepper-label{font-size:.9rem;font-weight:800;color:#7a7b7f}
+    .stepper-value{font-size:1rem;font-weight:900;color:#58595b}
+    .step-progress{width:100%;height:8px;background:#f2eddc;border-radius:999px;overflow:hidden;margin-top:8px}
+    .step-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#fbc70d,#ffe06f);transition:.25s ease}
+    .step-panel{display:none}
+    .step-panel.active{display:block;animation:fadeSlide .25s ease}
+    @keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .section-mini-title{font-size:1.12rem;font-weight:900;color:#58595b;margin-bottom:16px}
+    .form-box{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,249,229,.90));border:1px solid #efe7cf;border-radius:20px;padding:16px;height:100%}
+    .form-label{font-weight:800;color:#66686d;margin-bottom:8px}
+    .hint-text{font-size:.9rem;color:#8a8b90;margin-top:6px;line-height:1.8}
+    .file-box{border:1.5px dashed #dccf9b;background:#fffaf0;border-radius:18px;padding:18px;text-align:center}
+    .file-box i{font-size:1.7rem;color:#c99d00;margin-bottom:10px}
+    .file-meta{margin-top:8px;font-size:.92rem;color:#6f7075;font-weight:700;word-break:break-word}
+    .action-bar{margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.92);border:1px solid #efe7cf;border-radius:18px;padding:10px 12px;position:sticky;bottom:16px;z-index:5;backdrop-filter:blur(8px)}
+    .action-info{color:#7a7b7f;font-size:.92rem;font-weight:800}
+    .action-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    .small-step-btn{padding:.55rem .95rem !important;font-size:.92rem !important;border-radius:12px !important}
+    .footer-clean{background:linear-gradient(135deg,#58595b,#4a4b4e);color:#fff;padding:28px 0;margin-top:72px}
+    .footer-social{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+    .footer-social a{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);color:#fff;transition:.28s ease}
+    .footer-social a:hover{background:#fbc70d;color:#58595b;transform:translateY(-3px)}
+    .made-by-wrap{display:flex;align-items:center;gap:8px;justify-content:flex-start;flex-wrap:wrap}
+    .made-by-link{display:inline-flex;flex-direction:column;align-items:center;gap:4px;color:#fff;text-decoration:none;font-weight:700;font-size:.88rem;line-height:1}
+    .made-by-link:hover{color:#fbc70d}
+    .made-by-line{display:inline-flex;align-items:center;gap:6px;justify-content:center}
+    .made-by-underline{width:100%;height:1px;background:rgba(255,255,255,.45);border-radius:999px}
+    .made-by-logo{width:16px;height:16px;object-fit:contain;display:block}
+    @media (max-width:991.98px){.register-page{padding-top:108px}}
     @media (max-width:767.98px){
-      .register-card{
-        padding:18px;
-      }
-      .stepper-box{
-        padding:10px 12px;
-      }
-      .stepper-label{
-        font-size:.84rem;
-      }
-      .stepper-value{
-        font-size:.92rem;
-      }
-      .small-step-btn{
-        padding:.5rem .8rem !important;
-        font-size:.88rem !important;
-      }
+      .register-card{padding:18px}
+      .stepper-box{padding:10px 12px}
+      .stepper-label{font-size:.84rem}
+      .stepper-value{font-size:.92rem}
+      .small-step-btn{padding:.5rem .8rem !important;font-size:.88rem !important}
     }
   </style>
 </head>
@@ -350,7 +82,7 @@
           <li class="nav-item"><a class="nav-link" href="staff-login.html">دخول العاملين</a></li>
         </ul>
 
-        <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3">
+        <div class="d-flex flex-row flex-nowrap gap-2 ms-lg-3">
           <a href="index.html" class="btn btn-le-outline small-nav-btn">
             <i class="fa-solid fa-house"></i>
             الرئيسية
@@ -390,143 +122,42 @@
           </div>
 
           <form id="registerForm" novalidate>
-            <!-- Step 1 -->
             <div class="step-panel active" data-step="1">
               <div class="section-mini-title">البيانات الأساسية</div>
               <div class="row g-3">
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="studentName">اسم الطالب الثلاثي</label>
-                    <input type="text" class="form-control" id="studentName" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="studentIdentity">هوية الطالب</label>
-                    <input type="text" class="form-control" id="studentIdentity" inputmode="numeric" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="city">مدينة السكن</label>
-                    <input type="text" class="form-control" id="city" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="school">المدرسة</label>
-                    <input type="text" class="form-control" id="school" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="grade">الصف الدراسي</label>
-                    <input type="text" class="form-control" id="grade" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="age">العمر بالميلادي</label>
-                    <input type="number" min="1" class="form-control" id="age" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="hobbies">الهوايات</label>
-                    <input type="text" class="form-control" id="hobbies">
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="academicLevel">المستوى الدراسي</label>
-                    <input type="text" class="form-control" id="academicLevel">
-                  </div>
-                </div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="studentName">اسم الطالب الثلاثي</label><input type="text" class="form-control" id="studentName" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="studentIdentity">هوية الطالب</label><input type="text" class="form-control" id="studentIdentity" inputmode="numeric" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="city">مدينة السكن</label><input type="text" class="form-control" id="city" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="school">المدرسة</label><input type="text" class="form-control" id="school" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="grade">الصف الدراسي</label><input type="text" class="form-control" id="grade" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="age">العمر بالميلادي</label><input type="number" min="1" class="form-control" id="age" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="hobbies">الهوايات</label><input type="text" class="form-control" id="hobbies" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="academicLevel">المستوى الدراسي</label><input type="text" class="form-control" id="academicLevel" required></div></div>
               </div>
             </div>
 
-            <!-- Step 2 -->
             <div class="step-panel" data-step="2">
               <div class="section-mini-title">اللغة وبيانات التواصل</div>
               <div class="row g-3">
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="englishLevel">مستوى اللغة الإنجليزية</label>
-                    <select class="form-select" id="englishLevel" required>
-                      <option value="">اختر</option>
-                      <option value="مبتدئ">مبتدئ</option>
-                      <option value="متوسط">متوسط</option>
-                      <option value="متقدم">متقدم</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="healthStatus">الحالة الصحية</label>
-                    <input type="text" class="form-control" id="healthStatus">
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="studentPhone">جوال الابن</label>
-                    <input type="text" class="form-control" id="studentPhone" inputmode="numeric" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="guardianPhone">جوال ولي الأمر</label>
-                    <input type="text" class="form-control" id="guardianPhone" inputmode="numeric" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="guardianIdentity">هوية ولي الأمر</label>
-                    <input type="text" class="form-control" id="guardianIdentity" inputmode="numeric" required>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-box">
-                    <label class="form-label" for="category">الفئة المختارة</label>
-                    <select class="form-select" id="category" required>
-                      <option value="">اختر الفئة</option>
-                      <option value="أشبال">أشبال</option>
-                      <option value="قادة">قادة</option>
-                    </select>
-                    <div class="hint-text">إذا دخلت من صفحة الفئات فسيتم تحديد الفئة تلقائيًا.</div>
-                  </div>
-                </div>
-
-                <div class="col-12">
-                  <div class="form-box">
-                    <label class="form-label" for="source">كيف عرفت عن البرنامج؟</label>
-                    <input type="text" class="form-control" id="source">
-                  </div>
-                </div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="englishLevel">مستوى اللغة الإنجليزية</label><select class="form-select" id="englishLevel" required><option value="">اختر</option><option value="مبتدئ">مبتدئ</option><option value="متوسط">متوسط</option><option value="متقدم">متقدم</option></select></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="healthStatus">الحالة الصحية</label><input type="text" class="form-control" id="healthStatus" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="studentPhone">جوال الابن</label><input type="text" class="form-control" id="studentPhone" inputmode="numeric" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="guardianPhone">جوال ولي الأمر</label><input type="text" class="form-control" id="guardianPhone" inputmode="numeric" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="guardianIdentity">هوية ولي الأمر</label><input type="text" class="form-control" id="guardianIdentity" inputmode="numeric" required></div></div>
+                <div class="col-md-6"><div class="form-box"><label class="form-label" for="category">الفئة المختارة</label><select class="form-select" id="category" required><option value="">اختر الفئة</option><option value="أشبال">أشبال</option><option value="قادة">قادة</option></select><div class="hint-text">إذا دخلت من صفحة الفئات فسيتم تحديد الفئة تلقائيًا.</div></div></div>
+                <div class="col-12"><div class="form-box"><label class="form-label" for="source">كيف عرفت عن البرنامج؟</label><input type="text" class="form-control" id="source" required></div></div>
               </div>
             </div>
 
-            <!-- Step 3 -->
             <div class="step-panel" data-step="3">
               <div class="section-mini-title">رفع المرفقات</div>
               <div class="row g-3">
                 <div class="col-lg-6">
                   <div class="form-box">
-                    <label class="form-label" for="passportImage">صورة الهوية</label>
+                    <label class="form-label" for="passportImage">صورة الجواز</label>
                     <div class="file-box">
-                      <i class="fa-solid fa-id-card"></i>
-                      <div class="mb-2">ارفع صورة الهوية</div>
+                      <i class="fa-solid fa-passport"></i>
+                      <div class="mb-2">ارفع صورة الجواز</div>
                       <input type="file" class="form-control" id="passportImage" accept="image/*" required>
                       <div class="hint-text" id="passportLimitText">الحد الأقصى سيتم تحميله من الإعدادات.</div>
                       <div class="file-meta" id="passportMeta">لم يتم اختيار ملف بعد</div>
@@ -549,7 +180,6 @@
               </div>
             </div>
 
-            <!-- Step 4 -->
             <div class="step-panel" data-step="4">
               <div class="section-mini-title">المراجعة والإرسال</div>
               <div class="row g-3">
@@ -564,7 +194,7 @@
             <div class="action-bar">
               <div class="action-info" id="actionInfo">أكمل البيانات ثم انتقل للخطوة التالية</div>
               <div class="action-buttons">
-                <button type="button" class="btn btn-le-outline small-step-btn" id="prevBtn">
+                <button type="button" class="btn btn-le-outline small-step-btn d-none" id="prevBtn">
                   <i class="fa-solid fa-arrow-right-long"></i>
                   السابق
                 </button>
@@ -633,7 +263,6 @@
     const TOTAL_STEPS = 4;
     let currentStep = 1;
     let publicSettings = {};
-    let categoriesData = [];
     let maxPassportMb = 5;
     let maxVideoMb = 100;
 
@@ -646,7 +275,6 @@
       document.getElementById('nextBtn').addEventListener('click', nextStep);
       document.getElementById('prevBtn').addEventListener('click', prevStep);
       document.getElementById('registerForm').addEventListener('submit', submitForm);
-
       document.getElementById('passportImage').addEventListener('change', () => updateFileMeta('passportImage', 'passportMeta'));
       document.getElementById('introVideo').addEventListener('change', () => updateFileMeta('introVideo', 'videoMeta'));
 
@@ -655,23 +283,18 @@
         'englishLevel','healthStatus','studentPhone','guardianPhone','guardianIdentity','category','source'
       ].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.addEventListener('input', buildReview);
-        if (el) el.addEventListener('change', buildReview);
+        if (el) {
+          el.addEventListener('input', buildReview);
+          el.addEventListener('change', buildReview);
+        }
       });
     }
 
     async function bootstrapPage() {
       try {
-        const [initRes, packagesRes] = await Promise.all([
-          fetch(`${API_URL}?action=initData`),
-          fetch(`${API_URL}?action=getPackages`)
-        ]);
-
+        const initRes = await fetch(`${API_URL}?action=initData`);
         const initJson = await initRes.json();
-        const packagesJson = await packagesRes.json();
-
         publicSettings = initJson?.data?.settings || {};
-        categoriesData = packagesJson?.data || [];
 
         applySettings(publicSettings);
         applyCategoryFromQuery();
@@ -710,12 +333,10 @@
     function applyCategoryFromQuery() {
       const params = new URLSearchParams(window.location.search);
       const category = (params.get('category') || '').trim();
-
       if (!category) return;
 
       const select = document.getElementById('category');
       const exists = Array.from(select.options).some(opt => opt.value === category);
-
       if (exists) {
         select.value = category;
       }
@@ -744,9 +365,9 @@
       document.getElementById('submitBtn').classList.toggle('d-none', currentStep !== TOTAL_STEPS);
 
       const actionInfoMap = {
-        1: 'أدخل بيانات الطالب الأساسية',
-        2: 'أدخل بيانات التواصل وحدد الفئة',
-        3: 'ارفع صورة الهوية والفيديو',
+        1: 'أدخل البيانات الأساسية كاملة',
+        2: 'أدخل اللغة والتواصل وحدد الفئة',
+        3: 'ارفع صورة الجواز والفيديو',
         4: 'راجع البيانات ثم أرسل الطلب'
       };
       document.getElementById('actionInfo').textContent = actionInfoMap[currentStep] || '';
@@ -778,7 +399,9 @@
           ['city', 'مدينة السكن مطلوبة'],
           ['school', 'المدرسة مطلوبة'],
           ['grade', 'الصف الدراسي مطلوب'],
-          ['age', 'العمر مطلوب']
+          ['age', 'العمر مطلوب'],
+          ['hobbies', 'الهوايات مطلوبة'],
+          ['academicLevel', 'المستوى الدراسي مطلوب']
         ];
         return validateRequired(required);
       }
@@ -786,10 +409,12 @@
       if (currentStep === 2) {
         const required = [
           ['englishLevel', 'مستوى اللغة الإنجليزية مطلوب'],
+          ['healthStatus', 'الحالة الصحية مطلوبة'],
           ['studentPhone', 'جوال الابن مطلوب'],
           ['guardianPhone', 'جوال ولي الأمر مطلوب'],
           ['guardianIdentity', 'هوية ولي الأمر مطلوبة'],
-          ['category', 'الفئة مطلوبة']
+          ['category', 'الفئة مطلوبة'],
+          ['source', 'حقل كيف عرفت عن البرنامج مطلوب']
         ];
         return validateRequired(required);
       }
@@ -798,17 +423,10 @@
         const passportFile = document.getElementById('passportImage').files[0];
         const videoFile = document.getElementById('introVideo').files[0];
 
-        if (!passportFile) {
-          showWarn('صورة الهوية مطلوبة');
-          return false;
-        }
+        if (!passportFile) return showWarn('صورة الجواز مطلوبة'), false;
+        if (!videoFile) return showWarn('الفيديو التعريفي مطلوب'), false;
 
-        if (!videoFile) {
-          showWarn('الفيديو التعريفي مطلوب');
-          return false;
-        }
-
-        if (!validateFileSize(passportFile, maxPassportMb, 'صورة الهوية')) return false;
+        if (!validateFileSize(passportFile, maxPassportMb, 'صورة الجواز')) return false;
         if (!validateFileSize(videoFile, maxVideoMb, 'الفيديو')) return false;
       }
 
@@ -861,10 +479,15 @@
           <div class="col-md-6"><strong>المدرسة:</strong> ${escapeHtml(data.school || '—')}</div>
           <div class="col-md-6"><strong>الصف:</strong> ${escapeHtml(data.grade || '—')}</div>
           <div class="col-md-6"><strong>العمر:</strong> ${escapeHtml(data.age || '—')}</div>
+          <div class="col-md-6"><strong>الهوايات:</strong> ${escapeHtml(data.hobbies || '—')}</div>
+          <div class="col-md-6"><strong>المستوى الدراسي:</strong> ${escapeHtml(data.academicLevel || '—')}</div>
           <div class="col-md-6"><strong>مستوى الإنجليزية:</strong> ${escapeHtml(data.englishLevel || '—')}</div>
+          <div class="col-md-6"><strong>الحالة الصحية:</strong> ${escapeHtml(data.healthStatus || '—')}</div>
+          <div class="col-md-6"><strong>جوال الابن:</strong> ${escapeHtml(data.studentPhone || '—')}</div>
           <div class="col-md-6"><strong>جوال ولي الأمر:</strong> ${escapeHtml(data.guardianPhone || '—')}</div>
+          <div class="col-md-6"><strong>هوية ولي الأمر:</strong> ${escapeHtml(data.guardianIdentity || '—')}</div>
           <div class="col-md-6"><strong>الفئة:</strong> ${escapeHtml(data.category || '—')}</div>
-          <div class="col-md-6"><strong>مصدر المعرفة:</strong> ${escapeHtml(data.source || '—')}</div>
+          <div class="col-12"><strong>كيف عرفت عن البرنامج:</strong> ${escapeHtml(data.source || '—')}</div>
         </div>
       `;
     }
@@ -896,6 +519,19 @@
       return data;
     }
 
+    async function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          const base64 = result.indexOf(',') >= 0 ? result.split(',')[1] : result;
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
     async function submitForm(e) {
       e.preventDefault();
 
@@ -916,8 +552,11 @@
       if (!confirm.isConfirmed) return;
 
       try {
+        const passportBase64 = await fileToBase64(data.passportImage);
+        const videoBase64 = await fileToBase64(data.introVideo);
+
         const payload = {
-          action: 'submitApplication',
+          action: 'submitRegistration',
           data: {
             'اسم_الطالب_الثلاثي': data.studentName,
             'هوية_الطالب': data.studentIdentity,
@@ -933,7 +572,17 @@
             'جوال_ولي_الأمر': data.guardianPhone,
             'هوية_ولي_الأمر': data.guardianIdentity,
             'الفئة': data.category,
-            'كيف_عرفت_عن_البرنامج': data.source
+            'كيف_عرفت_عن_البرنامج': data.source,
+            'صورة_الجواز': {
+              base64: passportBase64,
+              mimeType: data.passportImage.type || 'image/jpeg',
+              extension: getFileExtension(data.passportImage.name || 'jpg')
+            },
+            'فيديو_تعريفي': {
+              base64: videoBase64,
+              mimeType: data.introVideo.type || 'video/mp4',
+              extension: getFileExtension(data.introVideo.name || 'mp4')
+            }
           }
         };
 
@@ -974,6 +623,11 @@
           confirmButtonColor: '#58595b'
         });
       }
+    }
+
+    function getFileExtension(fileName) {
+      const parts = String(fileName || '').split('.');
+      return parts.length > 1 ? parts.pop().toLowerCase() : '';
     }
 
     function setLink(id, url) {
