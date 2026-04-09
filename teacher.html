@@ -100,8 +100,8 @@
       <div class="head-box">
         <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
           <div>
-            <div class="head-title">لوحة المعلم</div>
-            <p class="head-text" id="welcomeText">جاري تحميل بيانات المعلم...</p>
+            <div class="head-title">لوحة </div>
+            <p class="head-text" id="welcomeText">جاري تحميل بيانات ...</p>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-le" id="refreshBtn">
@@ -225,7 +225,7 @@
       tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">جاري تحميل البيانات...</td></tr>';
 
       try {
-        const res = await fetch(`${API_URL}?action=getTeacherAssignedStudents&teacher=${encodeURIComponent(currentUser.name || '')}`);
+        const res = await fetch(`${API_URL}?action=getTeacherAssignedStudents&teacherId=${encodeURIComponent(currentUser.id || '')}`);
         const json = await res.json();
         let rows = json?.data || [];
 
