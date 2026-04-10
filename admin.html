@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -280,7 +282,7 @@
           <div class="stage-text">المقبولون</div>
           <div class="stage-count" id="studentsCount">0</div>
         </div>
-        <div class="stage-card" data-stage="rejectedShortcut" onclick="window.location.href='admin-rejected.html'">
+        <div class="stage-card" onclick="window.location.href='admin-rejected.html'">
           <div class="stage-icon"><i class="fa-solid fa-user-xmark"></i></div>
           <div class="stage-title">المرفوضون</div>
           <div class="stage-text">الطلبات المرفوضة</div>
@@ -364,6 +366,8 @@
     const profileCache = {};
     const whatsappCache = { reminder: {} };
     const publicSettings = {};
+    const teacherOptionsCache = {};
+    let teacherOptionsLoaded = false;
 
     const stageConfig = {
       registration: {
@@ -1013,12 +1017,128 @@
       }
     }
 
+    function normalizeProfileData(raw) {
+      raw = raw || {};
+      const appRaw = raw.application || raw.app || {};
+      const studentRaw = raw.student || {};
+      const invoiceRaw = raw.invoice || {};
+      const assignedTeacher = raw.assignedTeacher || {};
+
+      const application = {
+        'رقم_الطلب': appRaw['رقم_الطلب'] || appRaw.applicationNo || '',
+        'معرف_الطالب': appRaw['معرف_الطالب'] || appRaw.studentId || '',
+        'اسم_الطالب_الثلاثي': appRaw['اسم_الطالب_الثلاثي'] || appRaw.name || '',
+        'هوية_الطالب': appRaw['هوية_الطالب'] || appRaw.studentIdentity || '',
+        'رقم_الجواز': appRaw['رقم_الجواز'] || appRaw.passportNo || '',
+        'جوال_الابن': appRaw['جوال_الابن'] || appRaw.studentPhone || '',
+        'جوال_ولي_الأمر': appRaw['جوال_ولي_الأمر'] || appRaw.guardianPhone || '',
+        'هوية_ولي_الأمر': appRaw['هوية_ولي_الأمر'] || appRaw.guardianIdentity || '',
+        'الفئة': appRaw['الفئة'] || appRaw.category || '',
+        'الباقة': appRaw['الباقة'] || appRaw.packageName || '',
+        'حالة_الطلب': appRaw['حالة_الطلب'] || appRaw.applicationStatus || '',
+        'حالة_السداد': appRaw['حالة_السداد'] || appRaw.paymentStatus || invoiceRaw['حالة_السداد'] || invoiceRaw.paymentStatus || '',
+        'مبلغ_الباقة': appRaw['مبلغ_الباقة'] ?? appRaw.amount ?? invoiceRaw['الإجمالي'] ?? invoiceRaw.total ?? 0,
+        'المدفوع': appRaw['المدفوع'] ?? appRaw.paid ?? invoiceRaw['المدفوع'] ?? invoiceRaw.paid ?? 0,
+        'المتبقي': appRaw['المتبقي'] ?? appRaw.remaining ?? invoiceRaw['المتبقي'] ?? invoiceRaw.remaining ?? 0,
+        'رقم_الفاتورة': appRaw['رقم_الفاتورة'] || appRaw.invoiceNo || '',
+        'رابط_الفاتورة': appRaw['رابط_الفاتورة'] || appRaw.invoiceUrl || '',
+        'موعد_المقابلة': appRaw['موعد_المقابلة'] || appRaw.interviewDate || '',
+        'ملاحظات_عامة': appRaw['ملاحظات_عامة'] || appRaw.notes || '',
+        'سبب_الرفض': appRaw['سبب_الرفض'] || appRaw.rejectReason || '',
+        'تاريخ_الإنشاء': appRaw['تاريخ_الإنشاء'] || appRaw.createdAt || '',
+        'آخر_تحديث': appRaw['آخر_تحديث'] || appRaw.updatedAt || ''
+      };
+
+      const student = {
+        'معرف_الطالب': studentRaw['معرف_الطالب'] || studentRaw.id || application['معرف_الطالب'] || '',
+        'اسم_الطالب_الثلاثي': studentRaw['اسم_الطالب_الثلاثي'] || studentRaw.name || application['اسم_الطالب_الثلاثي'] || '',
+        'هوية_الطالب': studentRaw['هوية_الطالب'] || studentRaw.identity || application['هوية_الطالب'] || '',
+        'رقم_الجواز': studentRaw['رقم_الجواز'] || studentRaw.passportNo || application['رقم_الجواز'] || '',
+        'مدينة_السكن': studentRaw['مدينة_السكن'] || studentRaw.city || '',
+        'المدرسة': studentRaw['المدرسة'] || studentRaw.school || '',
+        'الصف_الدراسي': studentRaw['الصف_الدراسي'] || studentRaw.grade || '',
+        'العمر_بالميلادي': studentRaw['العمر_بالميلادي'] || studentRaw.age || '',
+        'الهوايات': studentRaw['الهوايات'] || studentRaw.hobbies || '',
+        'المستوى_الدراسي': studentRaw['المستوى_الدراسي'] || studentRaw.academicLevel || '',
+        'مستوى_اللغة_الإنجليزية': studentRaw['مستوى_اللغة_الإنجليزية'] || studentRaw.englishLevel || '',
+        'الحالة_الصحية': studentRaw['الحالة_الصحية'] || studentRaw.healthStatus || '',
+        'جوال_الابن': studentRaw['جوال_الابن'] || studentRaw.studentPhone || application['جوال_الابن'] || '',
+        'جوال_ولي_الأمر': studentRaw['جوال_ولي_الأمر'] || studentRaw.guardianPhone || application['جوال_ولي_الأمر'] || '',
+        'هوية_ولي_الأمر': studentRaw['هوية_ولي_الأمر'] || studentRaw.guardianIdentity || application['هوية_ولي_الأمر'] || '',
+        'الفئة': studentRaw['الفئة'] || studentRaw.category || application['الفئة'] || '',
+        'كيف_عرفت_عن_البرنامج': studentRaw['كيف_عرفت_عن_البرنامج'] || studentRaw.source || '',
+        'حالة_الطالب': studentRaw['حالة_الطالب'] || studentRaw.studentStatus || '',
+        'تاريخ_الإنشاء': studentRaw['تاريخ_الإنشاء'] || studentRaw.createdAt || '',
+        'آخر_تحديث': studentRaw['آخر_تحديث'] || studentRaw.updatedAt || ''
+      };
+
+      const attachments = (raw.attachments || []).map(item => ({
+        ...item,
+        'معرف_المرفق': item['معرف_المرفق'] || item.id || '',
+        'نوع_المرفق': item['نوع_المرفق'] || item.type || '',
+        'اسم_الملف': item['اسم_الملف'] || item.fileName || item.name || '',
+        'نوع_الملف': item['نوع_الملف'] || item.fileType || '',
+        'حجم_الملف': item['حجم_الملف'] || item.size || '',
+        'رابط_الملف': item['رابط_الملف'] || item.url || '',
+        'تاريخ_الرفع': item['تاريخ_الرفع'] || item.uploadedAt || ''
+      }));
+
+      const timeline = (raw.timeline || []).map(item => ({
+        ...item,
+        'الحالة': item['الحالة'] || item.status || '',
+        'الوصف': item['الوصف'] || item.description || '',
+        'نوع_الحركة': item['نوع_الحركة'] || item.type || '',
+        'بواسطة': item['بواسطة'] || item.by || '',
+        'التاريخ': item['التاريخ'] || item.date || ''
+      }));
+
+      const reports = (raw.reports || []).map(item => ({
+        ...item,
+        'المعلم': item['المعلم'] || item.teacher || '',
+        'تاريخ_الإنشاء': item['تاريخ_الإنشاء'] || item.createdAt || '',
+        'ملاحظات': item['ملاحظات'] || item.notes || '',
+        'التوصيات': item['التوصيات'] || item.recommendations || ''
+      }));
+
+      let payments = (raw.payments || []).map(item => ({
+        ...item,
+        'حالة_السداد': item['حالة_السداد'] || item.paymentStatus || '',
+        'تاريخ_العملية': item['تاريخ_العملية'] || item.date || item.updatedAt || item.createdAt || '',
+        'المدفوع': item['المدفوع'] ?? item.paid ?? 0,
+        'المتبقي': item['المتبقي'] ?? item.remaining ?? 0
+      }));
+
+      if (!payments.length && Object.keys(invoiceRaw).length) {
+        payments = [{
+          'حالة_السداد': invoiceRaw['حالة_السداد'] || invoiceRaw.paymentStatus || application['حالة_السداد'] || '',
+          'تاريخ_العملية': invoiceRaw['آخر_تحديث'] || invoiceRaw.updatedAt || invoiceRaw['تاريخ_الإنشاء'] || invoiceRaw.createdAt || '',
+          'المدفوع': invoiceRaw['المدفوع'] ?? invoiceRaw.paid ?? application['المدفوع'] ?? 0,
+          'المتبقي': invoiceRaw['المتبقي'] ?? invoiceRaw.remaining ?? application['المتبقي'] ?? 0
+        }];
+      }
+
+      return {
+        application,
+        student,
+        attachments,
+        timeline,
+        payments,
+        reports,
+        assignedTeacher: {
+          teacherName: assignedTeacher.teacherName || assignedTeacher['اسم_المعلم'] || '',
+          teacherId: assignedTeacher.teacherId || assignedTeacher['معرف_المعلم'] || '',
+          assignedAt: assignedTeacher.assignedAt || assignedTeacher['تاريخ_التسكين'] || '',
+          assignedBy: assignedTeacher.assignedBy || assignedTeacher['بواسطة'] || ''
+        }
+      };
+    }
+
     async function getProfileData(applicationNo) {
       if (profileCache[applicationNo]) return profileCache[applicationNo];
       const res = await fetch(`${API_URL}?action=getStudentProfile&applicationNo=${encodeURIComponent(applicationNo)}`);
       const json = await res.json();
       if (!json.ok) throw new Error(json.message || 'تعذر تحميل البيانات');
-      profileCache[applicationNo] = json.data || {};
+      profileCache[applicationNo] = normalizeProfileData(json.data || {});
       return profileCache[applicationNo];
     }
 
@@ -1035,7 +1155,8 @@
         const timeline = data.timeline || [];
         const payments = data.payments || [];
         const reports = data.reports || [];
-        const invoiceUrl = app['رابط_الفاتورة'] || buildInvoiceUrl(app['رقم_الطلب']);
+        const assignedTeacher = data.assignedTeacher || {};
+        const invoiceUrl = app['رابط_الفاتورة'] || buildInvoiceUrl(app['رقم_الطلب'] || applicationNo);
 
         document.getElementById('profileModalBody').innerHTML = `
           <div class="row g-4">
@@ -1049,6 +1170,7 @@
                 <div class="profile-item"><div class="profile-key">حالة السداد</div><div class="profile-value">${escapeHtml(app['حالة_السداد'] || '—')}</div></div>
                 <div class="profile-item"><div class="profile-key">جوال ولي الأمر</div><div class="profile-value">${escapeHtml(student['جوال_ولي_الأمر'] || app['جوال_ولي_الأمر'] || '')}</div></div>
                 <div class="profile-item"><div class="profile-key">رقم الفاتورة</div><div class="profile-value">${escapeHtml(app['رقم_الفاتورة'] || '—')}</div></div>
+                <div class="profile-item"><div class="profile-key">المعلم</div><div class="profile-value">${escapeHtml(assignedTeacher.teacherName || 'غير مسكن')}</div></div>
                 <div class="profile-item full"><div class="profile-key">ملاحظات عامة</div><div class="profile-value">${escapeHtml(app['ملاحظات_عامة'] || '—')}</div></div>
               </div>
 
