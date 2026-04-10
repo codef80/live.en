@@ -1001,6 +1001,28 @@
   }
 }
 
+
+    function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      const base64 = result.includes(',') ? result.split(',')[1] : result;
+      resolve(base64);
+    };
+    reader.onerror = () => reject(new Error('تعذر قراءة الملف: ' + (file?.name || '')));
+    reader.readAsDataURL(file);
+  });
+}
+
+function getFileExtension(fileName, fallback = '') {
+  const name = String(fileName || '').trim();
+  const idx = name.lastIndexOf('.');
+  if (idx === -1) return fallback;
+  return name.substring(idx + 1).toLowerCase() || fallback;
+}
+
+    
     function setLink(id, url) {
       const el = document.getElementById(id);
       if (!el) return;
